@@ -1,14 +1,13 @@
-import 'package:ecopoints/src/components/constants/properties/ecopoints_properties.dart';
-import 'package:ecopoints/src/components/constants/text_style/ecopoints_themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../components/buttons/custom_elevated_button.dart';
-import '../../components/constants/colors/ecopoints_colors.dart';
-import '../../components/fields/custom_text_form_field.dart';
+import '../../../components/buttons/custom_elevated_button.dart';
+import '../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../components/fields/custom_text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = "/auth";
@@ -61,14 +60,54 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 children: [
-                  Image.asset("assets/images/logo.png"),
+                  Image.asset(
+                    "assets/logos/logo.png",
+                    width: 100,
+                    height: 100,
+                  ),
                   Gap(height * 0.1),
-                  Text(
-                    EcopointsProperties.title,
-                    style: EcoPointsTextStyles.blackTextStyle(
-                      size: 50.0,
-                      weight: FontWeight.w600,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ShaderMask(
+                        shaderCallback: (bounds) {
+                          return const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              EcoPointsColors.darkGreen,
+                              EcoPointsColors.lightGreen,
+                            ],
+                          ).createShader(bounds);
+                        },
+                        child: Text(
+                          "Eco",
+                          style: EcoPointsTextStyles.whiteTextStyle(
+                            size: width * 0.1,
+                            weight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      ShaderMask(
+                        shaderCallback: (bounds) {
+                          return const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              EcoPointsColors.darkBlue,
+                              EcoPointsColors.lightBlue,
+                            ],
+                          ).createShader(bounds);
+                        },
+                        child: Text(
+                          "Points",
+                          style: EcoPointsTextStyles.whiteTextStyle(
+                            size: width * 0.1,
+                            weight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Text(
                     "Your partner in a sustainable future.",
@@ -150,11 +189,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       )),
-                  Gap(height * 0.025),
+                  Gap(height * 0.02),
                   CustomElevatedButton(
                     onPressed: () {
+                      //TODO: Add `Log in` event handler
                       onSubmit();
                     },
+                    backgroundColor: EcoPointsColors.darkGreen,
                     width: width,
                     padding: const EdgeInsets.all(10),
                     borderRadius: 10.0,
@@ -167,12 +208,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  Gap(height * 0.01),
-                  Text(
-                    "Forgot password?",
-                    style: EcoPointsTextStyles.grayTextStyle(
-                      size: 14.0,
-                      weight: FontWeight.w400,
+                  TextButton(
+                    onPressed:
+                        () {}, //TODO: Add `Forgot Password` event handler
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(0, 0),
+                      textStyle: TextStyle(
+                        fontSize: width * 0.035,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    child: const Text(
+                      "Forgot password?",
                     ),
                   ),
                   Expanded(
@@ -182,14 +230,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: TextSpan(
                           text: "Don't have an account? ",
                           style: EcoPointsTextStyles.grayTextStyle(
-                              size: 16.0, weight: FontWeight.w500),
+                            size: width * 0.035,
+                            weight: FontWeight.w500,
+                          ),
                           children: [
-                            TextSpan(
-                              text: "Join us!",
-                              style: GoogleFonts.poppins(
-                                fontSize: width * 0.035,
-                                color: EcoPointsColors.green,
-                                decoration: TextDecoration.underline,
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: TextButton(
+                                onPressed:
+                                    () {}, //TODO: Add `Register Account`event handler
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(0, 0),
+                                ),
+                                child: Text(
+                                  "Join us!",
+                                  style: EcoPointsTextStyles.greenTextStyle(
+                                    size: width * 0.035,
+                                    weight: FontWeight.w500,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
                               ),
                             )
                           ],
