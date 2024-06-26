@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../enums/enum.dart';
 import '../shared/utils/local_storage_util.dart';
@@ -12,14 +16,28 @@ class AuthController with ChangeNotifier {
   static AuthController get instance => GetIt.instance<AuthController>();
   static AuthController get I => GetIt.instance<AuthController>();
 
+  late StreamSubscription<User?> currentAuthedUser;
+
   AuthState state = AuthState.unauthenticated;
   SimulatedAPI api = SimulatedAPI();
 
-  AuthController() {
-    loadSession();
+  listen() {
+    currentAuthedUser =
+        FirebaseAuth.instance.authStateChanges().listen(handleUserChanges);
   }
 
-  //* Log in
+  void handleUserChanges(User? user) {
+    print("handleUserChanges: ${user?.email}, ${user?.displayName}");
+    if (user == null) {
+      state = AuthState.unauthenticated;
+    } else {
+      state = AuthState.authenticated;
+    }
+    print("State: $state");
+    notifyListeners();
+  }
+
+  //* Log in using email and password
   login(String userName, String password) async {
     bool isLoggedIn = await api.login(userName, password);
     if (isLoggedIn) {
@@ -30,25 +48,46 @@ class AuthController with ChangeNotifier {
     }
   }
 
+  //* Log in with Google Provider
+  loginWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        print("Google sign-in aborted by user.");
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print("Login Failed: $e");
+    }
+  }
+
   //* Log out
-  Future<void> logout() async {
-    await Future.delayed(const Duration(seconds: 2));
-    state = AuthState.unauthenticated;
-    notifyListeners();
-    await LocalStorage().clearSession();
-    print("Logged out...");
-    print("Session cleared, state reset to unauthenticated");
+  logout() {
+    return FirebaseAuth.instance.signOut();
   }
 
   //* Load Session
-  Future<void> loadSession() async {
-    String? userName = await LocalStorage().loadSession();
-    if (userName != null) {
-      state = AuthState.authenticated;
-    } else {
-      state = AuthState.unauthenticated;
-    }
-    notifyListeners();
+  loadSession() async {
+    listen();
+    User? user = FirebaseAuth.instance.currentUser;
+    handleUserChanges(user);
+  }
+
+  @override
+  void dispose() {
+    currentAuthedUser.cancel();
+    super.dispose();
   }
 }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "612866664185",
+    "project_id": "ecopoints-778b9",
+    "storage_bucket": "ecopoints-778b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612866664185:android:10c70761557951eef0e428",
+        "android_client_info": {
+          "package_name": "com.example.ecopoints"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOFIrK56f7Da5Fyyaq46ld8OkKxgAfqC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

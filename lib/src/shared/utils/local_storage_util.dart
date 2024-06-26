@@ -15,15 +15,15 @@ class LocalStorage {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  Future<void> saveSession(String userName) async {
-    await _prefs?.setString('user_name', userName);
+  Future<void> saveSession(String email) async {
+    await _prefs?.setString('email', email);
   }
 
   Future<void> clearSession() async {
-    await _prefs?.remove('user_name');
+    await _prefs?.remove('email');
   }
 
   Future<String?> loadSession() async {
-    return _prefs?.getString('user_name');
+    return _prefs?.getString('email');
   }
 }
