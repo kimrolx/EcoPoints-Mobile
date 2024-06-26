@@ -50,17 +50,26 @@ class AuthController with ChangeNotifier {
 
   //* Log in with Google Provider
   loginWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+      if (googleUser == null) {
+        print("Google sign-in aborted by user.");
+        return;
+      }
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-    await FirebaseAuth.instance.signInWithCredential(credential);
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print("Login Failed: $e");
+    }
   }
 
   //* Log out
