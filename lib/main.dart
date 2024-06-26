@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 
-void main() {
+import 'src/controllers/auth_controller.dart';
+import 'src/routes/router.dart';
+import 'src/shared/utils/local_storage_util.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalStorage.init();
+  AuthController.initialize();
+  GlobalRouter.initialize();
+  await AuthController.I.loadSession();
   runApp(const MainApp());
 }
 
@@ -9,12 +18,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: GlobalRouter.I.router,
+      title: 'EcoPoints',
     );
   }
 }

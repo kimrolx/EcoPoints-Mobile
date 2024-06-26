@@ -40,13 +40,13 @@ class CustomTextFormField extends StatelessWidget {
       onFieldSubmitted: onFieldSubmitted,
       onChanged: onChanged,
       focusNode: focusNode,
-      style: EcoPointsTextStyles.grayTextStyle(
+      style: EcoPointsTextStyles.blackTextStyle(
         size: 16.0,
         weight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: EcoPointsTextStyles.blackTextStyle(
+        labelStyle: EcoPointsTextStyles.grayTextStyle(
           size: 16.0,
           weight: FontWeight.w500,
         ),

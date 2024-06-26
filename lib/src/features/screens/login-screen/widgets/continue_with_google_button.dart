@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
+
+import '../../../../components/buttons/custom_elevated_button.dart';
+import '../../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../../components/constants/text_style/ecopoints_themes.dart';
+
+class ContinueWithGoogleButtonLoginScreen extends StatelessWidget {
+  const ContinueWithGoogleButtonLoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
+    return CustomElevatedButton(
+      onPressed: () {},
+      backgroundColor: EcoPointsColors.lighGray,
+      width: width,
+      borderRadius: 10.0,
+      padding: const EdgeInsets.all(7),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "assets/icons/google-icon.svg",
+            width: width * 0.035,
+            height: height * 0.035,
+          ),
+          Gap(width * 0.02),
+          Text(
+            "Continue with Google",
+            style: EcoPointsTextStyles.blackTextStyle(
+              size: width * 0.035,
+              weight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

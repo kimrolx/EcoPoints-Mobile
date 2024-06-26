@@ -4,13 +4,37 @@ import 'package:google_fonts/google_fonts.dart';
 import '../colors/ecopoints_colors.dart';
 
 class EcoPointsTextStyles {
-  static greenTextStyle({required double size, required FontWeight weight}) {
+  static whiteSuezOneTextStyle(
+      {required double size, required FontWeight weight}) {
+    return GoogleFonts.suezOne(
+      textStyle: TextStyle(
+        fontWeight: weight,
+        fontSize: size,
+        color: EcoPointsColors.white,
+      ),
+    );
+  }
+
+  static whiteTextStyle({required double size, required FontWeight weight}) {
     return GoogleFonts.poppins(
       textStyle: TextStyle(
         fontWeight: weight,
         fontSize: size,
-        color: EcoPointsColors.green,
+        color: EcoPointsColors.white,
       ),
+    );
+  }
+
+  static greenTextStyle(
+      {required double size,
+      required FontWeight weight,
+      TextDecoration? decoration}) {
+    return GoogleFonts.poppins(
+      textStyle: TextStyle(
+          fontWeight: weight,
+          fontSize: size,
+          color: EcoPointsColors.darkGreen,
+          decoration: decoration),
     );
   }
 
@@ -29,7 +53,7 @@ class EcoPointsTextStyles {
       textStyle: TextStyle(
         fontWeight: weight,
         fontSize: size,
-        color: EcoPointsColors.gray,
+        color: EcoPointsColors.darkGray,
       ),
     );
   }
