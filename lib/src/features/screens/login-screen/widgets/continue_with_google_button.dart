@@ -7,7 +7,9 @@ import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 
 class ContinueWithGoogleButtonLoginScreen extends StatelessWidget {
-  const ContinueWithGoogleButtonLoginScreen({super.key});
+  final Function() onPressed;
+  const ContinueWithGoogleButtonLoginScreen(
+      {super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class ContinueWithGoogleButtonLoginScreen extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return CustomElevatedButton(
-      onPressed: () {},
+      onPressed: onPressed,
       backgroundColor: EcoPointsColors.lighGray,
       width: width,
       borderRadius: 10.0,

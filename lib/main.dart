@@ -15,6 +15,7 @@ void main() async {
   AuthController.initialize();
   GlobalRouter.initialize();
   await AuthController.I.loadSession();
+
   runApp(const MainApp());
 }
 

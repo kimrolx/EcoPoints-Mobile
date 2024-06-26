@@ -93,7 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   const ForgotPasswordLoginScreen(), //TODO: Add `Forgot Password` event handler
                   const Divider(),
                   Gap(height * 0.02),
-                  const ContinueWithGoogleButtonLoginScreen(), //TODO: Add 'Continue With Google' event handler
+                  ContinueWithGoogleButtonLoginScreen(
+                    onPressed: () => onGoogleLoginClick(context),
+                  ),
                   const RegisterButtonLoginScreen(), //TODO: Add 'Join us!' event handler
                 ],
               ),
@@ -106,9 +108,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   onLoginButtonClick() async {
     if (formKey.currentState?.validate() ?? false) {
-      WaitingDialog.show(context,
-          future: AuthController.I
-              .login(username.text.trim(), password.text.trim()));
+      WaitingDialog.show(
+        context,
+        future:
+            AuthController.I.login(username.text.trim(), password.text.trim()),
+      );
     }
+  }
+
+  void onGoogleLoginClick(BuildContext context) async {
+    await WaitingDialog.show(context,
+        future: AuthController.I.loginWithGoogle());
   }
 }
