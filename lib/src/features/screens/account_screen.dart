@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../components/dialogs/loading_dialog.dart';
 import '../../controllers/auth_controller.dart';
 import '../../routes/router.dart';
-import 'home/home_screen.dart';
+import 'home-screen/home_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   static const String route = '/';

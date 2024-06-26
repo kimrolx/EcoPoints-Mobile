@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../controllers/auth_controller.dart';
 import '../enums/enum.dart';
 import '../features/screens/account_screen.dart';
-import '../features/screens/auth/login_screen.dart';
-import '../features/screens/home/home_screen.dart';
-import '../features/screens/home/home_wrapper.dart';
+import '../features/screens/home-screen/home_screen.dart';
+import '../features/screens/home-screen/wrapper.dart';
+import '../features/screens/login-screen/login_screen.dart';
+import '../features/screens/forgot_password_screen.dart';
+import '../features/screens/registration_screen.dart';
 import '../features/screens/sample_screen.dart';
 
 class GlobalRouter {
@@ -25,18 +27,25 @@ class GlobalRouter {
 
   Future<String?> handleRedirect(
       BuildContext context, GoRouterState state) async {
+    const List<String> unauthAllowedRoutes = [
+      ForgotPasswordScreen.route,
+      RegistrationScreen.route,
+    ];
+
     if (AuthController.I.state == AuthState.authenticated) {
       if (state.matchedLocation == LoginScreen.route) {
         return HomeScreen.route;
       }
       return null;
     }
+
     if (AuthController.I.state != AuthState.authenticated) {
-      if (state.matchedLocation == LoginScreen.route) {
+      if (unauthAllowedRoutes.contains(state.matchedLocation)) {
         return null;
       }
       return LoginScreen.route;
     }
+
     return null;
   }
 
@@ -56,6 +65,14 @@ class GlobalRouter {
           name: LoginScreen.name,
           builder: (context, _) {
             return const LoginScreen();
+          },
+        ),
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
+          path: RegistrationScreen.route,
+          name: RegistrationScreen.name,
+          builder: (context, _) {
+            return const RegistrationScreen();
           },
         ),
         GoRoute(

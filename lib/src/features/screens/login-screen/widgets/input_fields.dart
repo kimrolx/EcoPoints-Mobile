@@ -1,0 +1,103 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:gap/gap.dart';
+
+import '../../../../components/fields/custom_text_form_field.dart';
+
+class InputFieldsLoginScreen extends StatefulWidget {
+  final GlobalKey<FormState> formKey;
+  final TextEditingController username, password;
+  final FocusNode usernameFn, passwordFn;
+  final Function onSubmit;
+  const InputFieldsLoginScreen({
+    super.key,
+    required this.formKey,
+    required this.username,
+    required this.password,
+    required this.usernameFn,
+    required this.passwordFn,
+    required this.onSubmit,
+  });
+
+  @override
+  State<InputFieldsLoginScreen> createState() => _InputFieldsLoginScreenState();
+}
+
+class _InputFieldsLoginScreenState extends State<InputFieldsLoginScreen> {
+  bool obfuscate = true;
+
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+
+    return Form(
+      key: widget.formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: CustomTextFormField(
+              labelText: "Email",
+              focusNode: widget.usernameFn,
+              controller: widget.username,
+              obscureText: false,
+              keyboardType: TextInputType.text,
+              errorMaxLines: 3,
+              onEditingComplete: () {
+                widget.passwordFn.requestFocus();
+              },
+              validator: MultiValidator([
+                RequiredValidator(errorText: "Username is required"),
+                MinLengthValidator(
+                  4,
+                  errorText: "Username must be at least 6 characters long",
+                ),
+                PatternValidator(
+                  r'^[a-zA-Z0-9 ]+$',
+                  errorText: 'Username cannot contain any special characters',
+                ),
+              ]).call,
+            ),
+          ),
+          Gap(height * 0.015),
+          Flexible(
+            child: CustomTextFormField(
+              labelText: "Password",
+              focusNode: widget.passwordFn,
+              controller: widget.password,
+              obscureText: obfuscate,
+              keyboardType: TextInputType.visiblePassword,
+              errorMaxLines: 3,
+              onEditingComplete: () {
+                widget.passwordFn.unfocus();
+                widget.onSubmit();
+              },
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      obfuscate = !obfuscate;
+                    });
+                  },
+                  icon: Icon(obfuscate
+                      ? Icons.remove_red_eye_rounded
+                      : CupertinoIcons.eye_slash)),
+              validator: MultiValidator([
+                RequiredValidator(errorText: "Password is required"),
+                MinLengthValidator(
+                  8,
+                  errorText: "Password must to be at least 12 characters long",
+                ),
+                PatternValidator(
+                  r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+?\-=[\]{};':,.<>]).*$",
+                  errorText:
+                      'Password must contain at least one symbol, one uppercase letter, one lowercase letter, and one number',
+                ),
+              ]).call,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
