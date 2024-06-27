@@ -10,7 +10,7 @@ import '../features/screens/home-screen/wrapper.dart';
 import '../features/screens/login-screen/login_screen.dart';
 import '../features/screens/forgot_password_screen.dart';
 import '../features/screens/registration_screen.dart';
-import '../features/screens/rewards_catalog_screen.dart';
+import '../features/screens/rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../features/screens/scan_qr_screen.dart';
 
 class GlobalRouter {

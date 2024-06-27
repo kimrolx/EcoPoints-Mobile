@@ -29,7 +29,12 @@ class AccountScreen extends StatelessWidget {
     );
   }
 
-  onLogoutClick(BuildContext context) {
-    WaitingDialog.show(context, future: AuthController.I.logout());
+  void onLogoutClick(BuildContext context) {
+    WaitingDialog.show(
+      context,
+      future: Future.delayed(const Duration(seconds: 1)).then((_) async {
+        await AuthController.I.logout();
+      }),
+    );
   }
 }

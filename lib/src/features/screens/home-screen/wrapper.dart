@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../routes/router.dart';
-import '../rewards_catalog_screen.dart';
+import '../rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../scan_qr_screen.dart';
 import 'home_screen.dart';
 
@@ -32,35 +32,62 @@ class _HomeWrapperState extends State<HomeWrapper> {
     return Scaffold(
       body: widget.child ?? const Placeholder(),
       bottomNavigationBar: CurvedNavigationBar(
-        height: 60.0,
+        height: 55.0,
         buttonBackgroundColor: EcoPointsColors.darkGreen,
         backgroundColor: EcoPointsColors.lighGray,
-        animationDuration: const Duration(milliseconds: 200),
+        animationDuration: const Duration(milliseconds: 250),
         onTap: (i) {
           setState(() {
             index = i;
             GlobalRouter.I.router.go(routes[i]);
           });
         },
-        items: const [
-          Icon(
-            CupertinoIcons.home,
-            semanticLabel: "Home",
+        items: [
+          _buildNavItem(
+            selectedIndex: index,
+            itemIndex: 0,
+            icon: CupertinoIcons.house_fill,
+            unselectedIcon: CupertinoIcons.home,
+            label: "Home",
           ),
-          Icon(
-            CupertinoIcons.gift,
-            semanticLabel: "Rewards",
+          _buildNavItem(
+            selectedIndex: index,
+            itemIndex: 1,
+            icon: CupertinoIcons.gift_fill,
+            unselectedIcon: CupertinoIcons.gift,
+            label: "Rewards",
           ),
           Icon(
             CupertinoIcons.qrcode,
-            semanticLabel: "QR",
+            semanticLabel: "QR Code",
+            color:
+                index == 2 ? EcoPointsColors.lighGray : EcoPointsColors.black,
           ),
-          Icon(
-            CupertinoIcons.person,
-            semanticLabel: "Account",
+          _buildNavItem(
+            selectedIndex: index,
+            itemIndex: 3,
+            icon: CupertinoIcons.person_fill,
+            unselectedIcon: CupertinoIcons.person,
+            label: "Account",
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildNavItem({
+    required int selectedIndex,
+    required int itemIndex,
+    required IconData icon,
+    IconData? unselectedIcon,
+    required String label,
+  }) {
+    return Icon(
+      selectedIndex == itemIndex ? icon : unselectedIcon ?? icon,
+      semanticLabel: label,
+      color: selectedIndex == itemIndex
+          ? EcoPointsColors.lighGray
+          : EcoPointsColors.black,
     );
   }
 }
