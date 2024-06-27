@@ -4,13 +4,14 @@ import 'package:go_router/go_router.dart';
 
 import '../controllers/auth_controller.dart';
 import '../enums/enum.dart';
-import '../features/screens/account_screen.dart';
+import '../features/screens/account-screen/account_screen.dart';
 import '../features/screens/home-screen/home_screen.dart';
 import '../features/screens/home-screen/wrapper.dart';
 import '../features/screens/login-screen/login_screen.dart';
 import '../features/screens/forgot_password_screen.dart';
 import '../features/screens/registration_screen.dart';
-import '../features/screens/sample_screen.dart';
+import '../features/screens/rewards_catalog_screen.dart';
+import '../features/screens/scan_qr_screen.dart';
 
 class GlobalRouter {
   static void initialize() {
@@ -75,24 +76,6 @@ class GlobalRouter {
             return const RegistrationScreen();
           },
         ),
-        GoRoute(
-          parentNavigatorKey: _rootNavigatorKey,
-          path: AccountScreen.route,
-          name: AccountScreen.name,
-          builder: (context, _) {
-            return const AccountScreen();
-          },
-          routes: [
-            GoRoute(
-              parentNavigatorKey: _rootNavigatorKey,
-              path: CounterScreen.route,
-              name: CounterScreen.name,
-              builder: (context, _) {
-                return const CounterScreen();
-              },
-            ),
-          ],
-        ),
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
           routes: [
@@ -106,8 +89,24 @@ class GlobalRouter {
             ),
             GoRoute(
               parentNavigatorKey: _shellNavigatorKey,
-              path: "/account",
-              name: "Wrapped Account",
+              path: RewardsCatalogScreen.route,
+              name: RewardsCatalogScreen.name,
+              builder: (context, _) {
+                return const RewardsCatalogScreen();
+              },
+            ),
+            GoRoute(
+              parentNavigatorKey: _shellNavigatorKey,
+              path: ScanQRScreen.route,
+              name: ScanQRScreen.name,
+              builder: (context, _) {
+                return const ScanQRScreen();
+              },
+            ),
+            GoRoute(
+              parentNavigatorKey: _shellNavigatorKey,
+              path: AccountScreen.route,
+              name: AccountScreen.name,
               builder: (context, _) {
                 return const AccountScreen();
               },

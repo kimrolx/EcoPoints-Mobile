@@ -1,10 +1,10 @@
+import 'package:ecopoints/src/components/constants/colors/ecopoints_colors.dart';
+import 'package:ecopoints/src/features/screens/home-screen/widgets/points_indicator.dart';
+import 'package:ecopoints/src/features/screens/home-screen/widgets/trashcan_background.dart';
 import 'package:flutter/material.dart';
 
-import '../../../routes/router.dart';
-import '../sample_screen.dart';
-
 class HomeScreen extends StatelessWidget {
-  static const String route = '/home';
+  static const String route = "/home";
   static const String path = "/home";
   static const String name = "Home Screen";
 
@@ -12,18 +12,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: EcoPointsColors.lighGray,
+      body: SizedBox(
+        height: height,
+        width: width,
+        child: const Stack(
           children: [
-            const Text("Home Screen"),
-            ElevatedButton(
-              onPressed: () {
-                GlobalRouter.I.router.push(CounterScreen.path);
-              },
-              child: const Text("Go to Counter Screen"),
-            ),
+            TrashcanBackgroundHomeScreen(),
+            PointsIndicatorHomeScreen(),
           ],
         ),
       ),

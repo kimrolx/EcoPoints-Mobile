@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../components/dialogs/loading_dialog.dart';
-import '../../controllers/auth_controller.dart';
+import '../../../components/dialogs/loading_dialog.dart';
+import '../../../controllers/auth_controller.dart';
 
 class AccountScreen extends StatelessWidget {
-  static const String route = '/';
+  static const String route = "/account";
   static const String path = "/account";
   static const String name = "Account Name";
   const AccountScreen({super.key});
