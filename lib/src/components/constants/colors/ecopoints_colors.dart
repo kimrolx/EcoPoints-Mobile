@@ -7,7 +7,7 @@ class EcoPointsColors {
 
   static const Color darkGray = Colors.grey;
 
-  static const Color lighGray = Colors.white54;
+  static const Color lighGray = Color.fromRGBO(238, 238, 238, 1.0);
 
   static const Color darkGreen = Color.fromRGBO(54, 90, 50, 1.0);
 
