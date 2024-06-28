@@ -7,9 +7,9 @@ import '../../../controllers/auth_controller.dart';
 import 'widgets/continue_with_google_button.dart';
 import 'widgets/forgot_password.dart';
 import 'widgets/header.dart';
-import 'widgets/input_fields.dart';
+import 'widgets/login_input_fields.dart';
 import 'widgets/login_button.dart';
-import 'widgets/register_button.dart';
+import 'widgets/signup_button.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = "/auth";
@@ -80,13 +80,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Gap(height * 0.075),
                   InputFieldsLoginScreen(
                     formKey: formKey,
-                    username: username,
+                    email: username,
                     password: password,
-                    usernameFn: usernameFn,
+                    emailFn: usernameFn,
                     passwordFn: passwordFn,
                     onSubmit: onLoginButtonClick,
                   ),
-                  Gap(height * 0.02),
+                  Gap(height * 0.015),
                   LoginButtonLoginScreen(
                     onSubmit: onLoginButtonClick,
                   ),
@@ -94,9 +94,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Divider(),
                   Gap(height * 0.02),
                   ContinueWithGoogleButtonLoginScreen(
-                    onPressed: () => onGoogleLoginClick(context),
+                    onPressed: onGoogleLoginClick,
                   ),
-                  const RegisterButtonLoginScreen(), //TODO: Add 'Join us!' event handler
+                  const SignUpLoginScreen(),
                 ],
               ),
             ),
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   onLoginButtonClick() async {
     if (formKey.currentState?.validate() ?? false) {
-      WaitingDialog.show(
+      await WaitingDialog.show(
         context,
         future:
             AuthController.I.login(username.text.trim(), password.text.trim()),
@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void onGoogleLoginClick(BuildContext context) async {
+  onGoogleLoginClick() async {
     await WaitingDialog.show(context,
         future: AuthController.I.loginWithGoogle());
   }
