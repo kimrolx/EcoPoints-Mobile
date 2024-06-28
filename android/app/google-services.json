@@ -12,7 +12,20 @@
           "package_name": "com.example.ecopoints"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "612866664185-sc7nnvuivhelehbfsij1n3kme8gom9dd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ecopoints",
+            "certificate_hash": "6d10a3b7074c20a01fb1c7e7bc0291d74daae285"
+          }
+        },
+        {
+          "client_id": "612866664185-cc32hn7n2lk1ra3e2p76kp1h7atbev56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCOFIrK56f7Da5Fyyaq46ld8OkKxgAfqC0"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612866664185-cc32hn7n2lk1ra3e2p76kp1h7atbev56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

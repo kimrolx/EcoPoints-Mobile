@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../routes/router.dart';
-import '../../registration_screen.dart';
+import '../../register-screen/registration_screen.dart';
 
-class RegisterButtonLoginScreen extends StatelessWidget {
-  const RegisterButtonLoginScreen({super.key});
+class SignUpLoginScreen extends StatelessWidget {
+  const SignUpLoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

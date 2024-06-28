@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../enums/enum.dart';
-import '../shared/utils/local_storage_util.dart';
 
 class AuthController with ChangeNotifier {
   static void initialize() {
@@ -19,7 +18,13 @@ class AuthController with ChangeNotifier {
   late StreamSubscription<User?> currentAuthedUser;
 
   AuthState state = AuthState.unauthenticated;
-  SimulatedAPI api = SimulatedAPI();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
 
   listen() {
     currentAuthedUser =
@@ -39,37 +44,37 @@ class AuthController with ChangeNotifier {
 
   //* Log in using email and password
   login(String userName, String password) async {
-    bool isLoggedIn = await api.login(userName, password);
-    if (isLoggedIn) {
-      await LocalStorage().saveSession(userName);
-      state = AuthState.authenticated;
-      notifyListeners();
-      print("Login status: $isLoggedIn. Current State: $state");
-    }
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: userName, password: password);
+  }
+
+  //* Register using email and password
+  register(String userName, String password) async {
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: userName, password: password);
   }
 
   //* Log in with Google Provider
   loginWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    GoogleSignInAccount? gSign = await _googleSignIn.signIn();
 
-    if (googleUser == null) {
-      print("Google sign-in aborted by user.");
-      return;
-    }
+    if (gSign == null) throw Exception("No Signed In Account");
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+    GoogleSignInAuthentication googleAuth = await gSign.authentication;
 
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
-    await FirebaseAuth.instance.signInWithCredential(credential);
+    FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   //* Log out
   logout() {
+    if (_googleSignIn.currentUser != null) {
+      _googleSignIn.signOut();
+    }
     return FirebaseAuth.instance.signOut();
   }
 

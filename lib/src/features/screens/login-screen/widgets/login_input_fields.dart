@@ -7,15 +7,15 @@ import '../../../../components/fields/custom_text_form_field.dart';
 
 class InputFieldsLoginScreen extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  final TextEditingController username, password;
-  final FocusNode usernameFn, passwordFn;
+  final TextEditingController email, password;
+  final FocusNode emailFn, passwordFn;
   final Function onSubmit;
   const InputFieldsLoginScreen({
     super.key,
     required this.formKey,
-    required this.username,
+    required this.email,
     required this.password,
-    required this.usernameFn,
+    required this.emailFn,
     required this.passwordFn,
     required this.onSubmit,
   });
@@ -39,8 +39,8 @@ class _InputFieldsLoginScreenState extends State<InputFieldsLoginScreen> {
           Flexible(
             child: CustomTextFormField(
               labelText: "Email",
-              focusNode: widget.usernameFn,
-              controller: widget.username,
+              focusNode: widget.emailFn,
+              controller: widget.email,
               obscureText: false,
               keyboardType: TextInputType.text,
               errorMaxLines: 3,
@@ -48,14 +48,10 @@ class _InputFieldsLoginScreenState extends State<InputFieldsLoginScreen> {
                 widget.passwordFn.requestFocus();
               },
               validator: MultiValidator([
-                RequiredValidator(errorText: "Username is required"),
+                RequiredValidator(errorText: "Email is required"),
                 MinLengthValidator(
                   4,
-                  errorText: "Username must be at least 6 characters long",
-                ),
-                PatternValidator(
-                  r'^[a-zA-Z0-9 ]+$',
-                  errorText: 'Username cannot contain any special characters',
+                  errorText: "Email must be at least 6 characters long",
                 ),
               ]).call,
             ),
