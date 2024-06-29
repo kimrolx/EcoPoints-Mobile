@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../enums/enum.dart';
+import '../shared/services/user_service.dart';
 
 class AuthController with ChangeNotifier {
   static void initialize() {
@@ -16,6 +17,7 @@ class AuthController with ChangeNotifier {
   static AuthController get I => GetIt.instance<AuthController>();
 
   late StreamSubscription<User?> currentAuthedUser;
+  final UserService _userService = GetIt.instance<UserService>();
 
   AuthState state = AuthState.unauthenticated;
 
@@ -67,7 +69,14 @@ class AuthController with ChangeNotifier {
       idToken: googleAuth.idToken,
     );
 
-    FirebaseAuth.instance.signInWithCredential(credential);
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    User? user = userCredential.user;
+
+    if (user != null) {
+      _userService.createUserProfile();
+    }
   }
 
   //* Log out

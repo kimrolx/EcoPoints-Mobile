@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../../routes/router.dart';
 import '../rewards-catalog-screen/rewards_catalog_screen.dart';
-import '../scan_qr_screen.dart';
+import '../scan-qr-screen/scan_qr_screen.dart';
 import 'home_screen.dart';
 
 class HomeWrapper extends StatefulWidget {

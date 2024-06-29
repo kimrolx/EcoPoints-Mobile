@@ -65,12 +65,6 @@ class SettingsMenuAccountScreen extends StatelessWidget {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                onLogoutClick(context);
-              },
-              child: const Text("Log out"),
-            ),
           ],
         ),
       ),
