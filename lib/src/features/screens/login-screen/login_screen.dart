@@ -110,8 +110,11 @@ class _LoginScreenState extends State<LoginScreen> {
     if (formKey.currentState?.validate() ?? false) {
       await WaitingDialog.show(
         context,
-        future:
-            AuthController.I.login(username.text.trim(), password.text.trim()),
+        future: Future.delayed(const Duration(seconds: 2)).then(
+          (_) async {
+            AuthController.I.login(username.text.trim(), password.text.trim());
+          },
+        ),
       );
     }
   }

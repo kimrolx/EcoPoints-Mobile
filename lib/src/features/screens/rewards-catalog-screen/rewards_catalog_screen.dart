@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class RewardsCatalogScreen extends StatelessWidget {
-  static const String route = "/rewardscatalog";
-  static const String path = "/rewardscatalog";
-  static const String name = "Rewards Catalog Screen";
+  static const String route = "/rewards";
+  static const String path = "/rewards";
+  static const String name = "RewardsCatalogScreen";
   const RewardsCatalogScreen({super.key});
 
   @override
