@@ -118,9 +118,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   onRegisterButtonClick() {
     if (formKey.currentState?.validate() ?? false) {
-      WaitingDialog.show(context,
-          future: AuthController.I
-              .register(email.text.trim(), password.text.trim()));
+      WaitingDialog.show(
+        context,
+        future: Future.delayed(const Duration(seconds: 2)).then(
+          (_) async {
+            await AuthController.I
+                .register(email.text.trim(), password.text.trim());
+          },
+        ),
+      );
     }
   }
 

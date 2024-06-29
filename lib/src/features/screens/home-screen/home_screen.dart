@@ -9,7 +9,7 @@ import 'package:gap/gap.dart';
 class HomeScreen extends StatelessWidget {
   static const String route = "/home";
   static const String path = "/home";
-  static const String name = "Home Screen";
+  static const String name = "HomeScreen";
 
   const HomeScreen({super.key});
 

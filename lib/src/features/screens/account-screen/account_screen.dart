@@ -1,32 +1,114 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
+import '../../../models/setting_option_model.dart';
+import '../../../routes/router.dart';
+import '../../../shared/services/user_service.dart';
+import '../edit-profile-screen/edit_profile_screen.dart';
+import '../recycling-log-screen/recycling_log_screen.dart';
+import 'widgets/edit_profile.dart';
+import 'widgets/settings_menu.dart';
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
   static const String route = "/account";
   static const String path = "/account";
-  static const String name = "Account Name";
+  static const String name = "AccountScreen";
   const AccountScreen({super.key});
 
   @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  final UserService _userService = GetIt.instance<UserService>();
+  User? user;
+  String? photoURL;
+  String? displayName;
+  String? email;
+  late List<SettingOption> settingsOptions;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo();
+    initializeSettingsOptions();
+  }
+
+  void getUserInfo() {
+    setState(() {
+      user = _userService.getCurrentUser();
+      photoURL = _userService.getCurrentUserPhotoURL();
+      displayName = _userService.getCurrentUserName();
+      email = _userService.getCurrentUserEmail();
+    });
+  }
+
+  void initializeSettingsOptions() {
+    settingsOptions = [
+      SettingOption(
+        iconPath: 'assets/icons/recycle-icon.png',
+        name: 'Recycling Log',
+        onTap: onRecyclingLogClick,
+      ),
+      SettingOption(
+        iconPath: 'assets/icons/deduct-icon.png',
+        name: 'Transaction History',
+        onTap: () {
+          //TODO: add transaction history event handler here
+          print('Transaction History tapped');
+        },
+      ),
+    ];
+  }
+
+  @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Account Screen"),
-            ElevatedButton(
-              onPressed: () {
-                onLogoutClick(context);
-              },
-              child: const Text("Log out"),
-            ),
-          ],
+      backgroundColor: EcoPointsColors.lighGray,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.08, vertical: height * 0.02),
+                child: EditProfileAccountScreen(
+                  onTap: onEditProfileClick,
+                  displayName: displayName ?? "Name Here",
+                  photoURL: photoURL ?? '',
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: width * 0.03,
+                  right: width * 0.03,
+                  bottom: height * 0.02,
+                ),
+                child: SettingsMenuAccountScreen(
+                  settingsOptions: settingsOptions,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  onEditProfileClick() {
+    GlobalRouter.I.router.push(EditProfileScreen.route);
+  }
+
+  void onRecyclingLogClick() {
+    GlobalRouter.I.router
+        .push('${AccountScreen.path}/${RecyclingLogScreen.route}');
   }
 
   void onLogoutClick(BuildContext context) {
@@ -35,6 +117,7 @@ class AccountScreen extends StatelessWidget {
       future: Future.delayed(const Duration(seconds: 1)).then((_) async {
         await AuthController.I.logout();
       }),
+      prompt: "Logging out...",
     );
   }
 }

@@ -5,10 +5,12 @@ import 'package:go_router/go_router.dart';
 import '../controllers/auth_controller.dart';
 import '../enums/enum.dart';
 import '../features/screens/account-screen/account_screen.dart';
+import '../features/screens/edit-profile-screen/edit_profile_screen.dart';
 import '../features/screens/home-screen/home_screen.dart';
 import '../features/screens/home-screen/wrapper.dart';
 import '../features/screens/login-screen/login_screen.dart';
 import '../features/screens/forgot_password_screen.dart';
+import '../features/screens/recycling-log-screen/recycling_log_screen.dart';
 import '../features/screens/register-screen/registration_screen.dart';
 import '../features/screens/rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../features/screens/scan_qr_screen.dart';
@@ -76,6 +78,22 @@ class GlobalRouter {
             return const RegistrationScreen();
           },
         ),
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
+          path: ForgotPasswordScreen.route,
+          name: ForgotPasswordScreen.name,
+          builder: (context, _) {
+            return const ForgotPasswordScreen();
+          },
+        ),
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
+          path: EditProfileScreen.route,
+          name: EditProfileScreen.name,
+          builder: (context, _) {
+            return const EditProfileScreen();
+          },
+        ),
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
           routes: [
@@ -110,6 +128,16 @@ class GlobalRouter {
               builder: (context, _) {
                 return const AccountScreen();
               },
+              routes: [
+                GoRoute(
+                  parentNavigatorKey: _shellNavigatorKey,
+                  path: RecyclingLogScreen.route,
+                  name: RecyclingLogScreen.name,
+                  builder: (context, _) {
+                    return const RecyclingLogScreen();
+                  },
+                ),
+              ],
             ),
           ],
           builder: (context, state, child) {
