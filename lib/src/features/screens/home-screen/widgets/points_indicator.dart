@@ -5,7 +5,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 
 class PointsIndicatorHomeScreen extends StatelessWidget {
-  const PointsIndicatorHomeScreen({super.key});
+  final double points;
+  const PointsIndicatorHomeScreen({super.key, required this.points});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,8 @@ class PointsIndicatorHomeScreen extends StatelessWidget {
         height: height * 0.3,
         child: Center(
           child: CircularPercentIndicator(
-            percent: 0.1, //TODO: Dynamic points percentage (target points)
+            //TODO: Dynamic points percentage (target points)
+            percent: (points / 100).clamp(0.0, 1.0),
             radius: 115,
             lineWidth: width * 0.04,
             progressColor: EcoPointsColors.darkGreen,
@@ -36,8 +38,7 @@ class PointsIndicatorHomeScreen extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          //TODO: Dynamic points
-                          text: "0.00",
+                          text: points.toStringAsFixed(2),
                           style: EcoPointsTextStyles.blackTextStyle(
                             size: width * 0.06,
                             weight: FontWeight.w700,

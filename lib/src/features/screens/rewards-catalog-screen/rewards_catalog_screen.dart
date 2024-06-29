@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/constants/colors/ecopoints_colors.dart';
+
 class RewardsCatalogScreen extends StatelessWidget {
   static const String route = "/rewards";
   static const String path = "/rewards";
@@ -9,6 +11,7 @@ class RewardsCatalogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: EcoPointsColors.lighGray,
       body: Center(
         child: Text('Rewards Catalog'),
       ),
