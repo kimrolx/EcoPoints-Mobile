@@ -69,20 +69,25 @@ class AuthController with ChangeNotifier {
       idToken: googleAuth.idToken,
     );
 
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-    User? user = userCredential.user;
+      User? user = userCredential.user;
 
-    if (user != null) {
-      _userService.createUserProfile();
-    }
+      if (user != null) {
+        _userService.createUserProfile();
+        print("Login successful: ${user.email}, ${user.displayName}");
+      }
+    });
   }
 
   //* Log out
   logout() {
+    print("Current User: ${_googleSignIn.currentUser}");
     if (_googleSignIn.currentUser != null) {
       _googleSignIn.signOut();
+      print("Signed out: ${_googleSignIn.currentUser}");
     }
     return FirebaseAuth.instance.signOut();
   }

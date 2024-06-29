@@ -25,20 +25,20 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final UserService _userService = GetIt.instance<UserService>();
-  late TextEditingController fieldDisplayName,
-      fieldEmail,
-      fieldGender,
-      fieldNumber;
+  late TextEditingController displayNameController,
+      emailController,
+      genderController,
+      numberController;
   User? user;
   String? photoURL;
 
   @override
   void initState() {
     super.initState();
-    fieldDisplayName = TextEditingController();
-    fieldEmail = TextEditingController();
-    fieldGender = TextEditingController();
-    fieldNumber = TextEditingController();
+    displayNameController = TextEditingController();
+    emailController = TextEditingController();
+    genderController = TextEditingController();
+    numberController = TextEditingController();
     getUserInfo();
   }
 
@@ -52,15 +52,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     UserProfile? userProfile = await _userService.getUserProfile();
     if (userProfile != null) {
       setState(() {
-        fieldDisplayName.text = user?.displayName ?? "Name";
-        fieldEmail.text = user?.email ?? "Email";
-        fieldGender.text = userProfile.gender ?? "Gender";
-        fieldNumber.text = userProfile.phoneNumber ?? "Phone Number";
+        displayNameController.text = user?.displayName ?? "Name";
+        emailController.text = user?.email ?? "Email";
+        genderController.text = userProfile.gender ?? "Gender";
+        numberController.text = userProfile.phoneNumber ?? "Phone Number";
 
-        print("Name: ${fieldDisplayName.text}");
-        print("Email: ${fieldEmail.text}");
-        print("Gender: ${fieldGender.text}");
-        print("Phone Number: ${fieldNumber.text}");
+        print("Name: ${displayNameController.text}");
+        print("Email: ${emailController.text}");
+        print("Gender: ${genderController.text}");
+        print("Phone Number: ${numberController.text}");
       });
     } else {
       print("UserProfile is null");
@@ -69,10 +69,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void dispose() {
-    fieldDisplayName.dispose();
-    fieldEmail.dispose();
-    fieldGender.dispose();
-    fieldNumber.dispose();
+    displayNameController.dispose();
+    emailController.dispose();
+    genderController.dispose();
+    numberController.dispose();
     super.dispose();
   }
 
@@ -115,10 +115,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const Divider(thickness: 0.5),
               Gap(height * 0.01),
               UserFieldsProfileScreen(
-                displayName: fieldDisplayName,
-                email: fieldEmail,
-                gender: fieldGender,
-                number: fieldNumber,
+                displayName: displayNameController,
+                email: emailController,
+                gender: genderController,
+                number: numberController,
               ),
               Expanded(
                 child: Align(

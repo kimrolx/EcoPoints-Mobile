@@ -52,7 +52,7 @@ class SettingsMenuAccountScreen extends StatelessWidget {
                             Text(
                               option.name,
                               style: EcoPointsTextStyles.blackTextStyle(
-                                size: width * 0.045,
+                                size: width * 0.04,
                                 weight: FontWeight.normal,
                               ),
                             ),

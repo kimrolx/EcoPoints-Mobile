@@ -29,8 +29,8 @@ class GoalSetterHomeScreen extends StatelessWidget {
                   Text(
                     "Don't forget to set your target!",
                     style: EcoPointsTextStyles.blackTextStyle(
-                      size: width * 0.03,
-                      weight: FontWeight.w500,
+                      size: width * 0.035,
+                      weight: FontWeight.w600,
                     ),
                   ),
                   Gap(width * 0.005),
@@ -44,7 +44,7 @@ class GoalSetterHomeScreen extends StatelessWidget {
               Text(
                 "Saving is so much easier when you have a clear idea of what you're aiming for.",
                 style: EcoPointsTextStyles.grayTextStyle(
-                  size: width * 0.028,
+                  size: width * 0.03,
                   weight: FontWeight.w500,
                 ),
               ),
@@ -54,8 +54,8 @@ class GoalSetterHomeScreen extends StatelessWidget {
                 child: Text(
                   "Set Target",
                   style: EcoPointsTextStyles.greenTextStyle(
-                    size: width * 0.03,
-                    weight: FontWeight.w500,
+                    size: width * 0.0325,
+                    weight: FontWeight.w600,
                   ),
                 ),
               ),

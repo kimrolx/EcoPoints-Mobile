@@ -32,6 +32,7 @@ class UserService {
       DocumentSnapshot doc = await userDoc.get();
       if (!doc.exists) {
         UserProfile userProfile = UserProfile(
+          userId: user.uid,
           displayName: user.displayName,
           email: user.email,
           gender: '',
