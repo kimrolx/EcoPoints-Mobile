@@ -8,7 +8,7 @@ import '../../../controllers/auth_controller.dart';
 import '../../../models/setting_option_model.dart';
 import '../../../routes/router.dart';
 import '../../../shared/services/user_service.dart';
-import '../edit-profile-screen/edit_profile_screen.dart';
+import '../profile-screen/profile_screen.dart';
 import '../recycling-log-screen/recycling_log_screen.dart';
 import 'widgets/edit_profile.dart';
 import 'widgets/settings_menu.dart';

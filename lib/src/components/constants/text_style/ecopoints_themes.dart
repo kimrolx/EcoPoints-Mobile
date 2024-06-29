@@ -25,6 +25,16 @@ class EcoPointsTextStyles {
     );
   }
 
+  static redTextStyle({required double size, required FontWeight weight}) {
+    return GoogleFonts.poppins(
+      textStyle: TextStyle(
+        fontWeight: weight,
+        fontSize: size,
+        color: EcoPointsColors.red,
+      ),
+    );
+  }
+
   static greenTextStyle(
       {required double size,
       required FontWeight weight,

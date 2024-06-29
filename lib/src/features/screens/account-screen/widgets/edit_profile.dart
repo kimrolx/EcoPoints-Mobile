@@ -38,6 +38,7 @@ class EditProfileAccountScreen extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundImage: NetworkImage(photoURL),
+                backgroundColor: Colors.transparent,
                 radius: width * 0.09,
               ),
               Gap(height * 0.015),
