@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../models/recycling_log_model.dart';
 import '../../models/user_profile_model.dart';
 
 class UserService {
@@ -31,7 +30,7 @@ class UserService {
       DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
       DocumentSnapshot doc = await userDoc.get();
       if (!doc.exists) {
-        UserProfile userProfile = UserProfile(
+        UserProfileModel userProfile = UserProfileModel(
           userId: user.uid,
           displayName: user.displayName,
           email: user.email,
@@ -51,7 +50,7 @@ class UserService {
     }
   }
 
-  Future<void> updateUserProfile(UserProfile userProfile) async {
+  Future<void> updateUserProfile(UserProfileModel userProfile) async {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {
       await _firestore
@@ -61,42 +60,16 @@ class UserService {
     }
   }
 
-  Future<UserProfile?> getUserProfile() async {
+  //* Fetch user fields in firestore
+  Future<UserProfileModel?> getUserProfile() async {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {
       DocumentSnapshot doc =
           await _firestore.collection('users').doc(user.uid).get();
       if (doc.exists) {
-        return UserProfile.fromMap(doc.data() as Map<String, dynamic>);
+        return UserProfileModel.fromMap(doc.data() as Map<String, dynamic>);
       }
     }
     return null;
-  }
-
-  Future<void> addRecyclingLog(RecyclingLog log) async {
-    User? user = _firebaseAuth.currentUser;
-    if (user != null) {
-      await _firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('recyclingLogs')
-          .add(log.toMap());
-    }
-  }
-
-  Future<List<RecyclingLog>> getRecyclingLogs() async {
-    User? user = _firebaseAuth.currentUser;
-    if (user != null) {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('recyclingLogs')
-          .get();
-      return querySnapshot.docs
-          .map(
-              (doc) => RecyclingLog.fromMap(doc.data() as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
   }
 }

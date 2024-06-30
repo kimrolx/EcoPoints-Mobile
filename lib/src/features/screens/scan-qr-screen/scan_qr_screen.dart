@@ -1,5 +1,6 @@
-import 'package:ecopoints/src/components/constants/colors/ecopoints_colors.dart';
 import 'package:flutter/material.dart';
+
+import '../../../components/constants/colors/ecopoints_colors.dart';
 
 class ScanQRScreen extends StatelessWidget {
   static const String route = "/scanqr";
@@ -10,7 +11,7 @@ class ScanQRScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: EcoPointsColors.lighGray,
+      backgroundColor: EcoPointsColors.lightGray,
       body: Center(
         child: Text("QR"),
       ),

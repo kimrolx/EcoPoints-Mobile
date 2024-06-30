@@ -18,7 +18,7 @@ class ContinueWithGoogleButtonLoginScreen extends StatelessWidget {
 
     return CustomElevatedButton(
       onPressed: onPressed,
-      backgroundColor: EcoPointsColors.lighGray,
+      backgroundColor: EcoPointsColors.lightGray,
       width: width,
       borderRadius: 10.0,
       padding: const EdgeInsets.all(7),

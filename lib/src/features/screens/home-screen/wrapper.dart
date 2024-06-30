@@ -1,10 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:ecopoints/src/components/constants/colors/ecopoints_colors.dart';
-import 'package:ecopoints/src/features/screens/account-screen/account_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../routes/router.dart';
+import '../account-screen/account_screen.dart';
 import '../rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../scan-qr-screen/scan_qr_screen.dart';
 import 'home_screen.dart';
@@ -34,7 +34,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
       bottomNavigationBar: CurvedNavigationBar(
         height: 55.0,
         buttonBackgroundColor: EcoPointsColors.darkGreen,
-        backgroundColor: EcoPointsColors.lighGray,
+        backgroundColor: EcoPointsColors.lightGray,
         animationDuration: const Duration(milliseconds: 250),
         onTap: (i) {
           setState(() {
@@ -61,7 +61,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
             CupertinoIcons.qrcode,
             semanticLabel: "QR Code",
             color:
-                index == 2 ? EcoPointsColors.lighGray : EcoPointsColors.black,
+                index == 2 ? EcoPointsColors.lightGray : EcoPointsColors.black,
           ),
           _buildNavItem(
             selectedIndex: index,
@@ -86,7 +86,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
       selectedIndex == itemIndex ? icon : unselectedIcon ?? icon,
       semanticLabel: label,
       color: selectedIndex == itemIndex
-          ? EcoPointsColors.lighGray
+          ? EcoPointsColors.lightGray
           : EcoPointsColors.black,
     );
   }

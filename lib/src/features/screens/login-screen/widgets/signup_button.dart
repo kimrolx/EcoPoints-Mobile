@@ -34,7 +34,7 @@ class SignUpLoginScreen extends StatelessWidget {
                   ),
                   child: Text(
                     "Join us!",
-                    style: EcoPointsTextStyles.greenTextStyle(
+                    style: EcoPointsTextStyles.darkGreenTextStyle(
                       size: width * 0.035,
                       weight: FontWeight.w500,
                       decoration: TextDecoration.underline,

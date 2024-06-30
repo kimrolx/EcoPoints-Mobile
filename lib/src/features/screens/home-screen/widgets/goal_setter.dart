@@ -1,8 +1,8 @@
-import 'package:ecopoints/src/components/constants/text_style/ecopoints_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../../components/constants/text_style/ecopoints_themes.dart';
 
 class GoalSetterHomeScreen extends StatelessWidget {
   const GoalSetterHomeScreen({super.key});
@@ -53,7 +53,7 @@ class GoalSetterHomeScreen extends StatelessWidget {
                 onTap: () {}, //TODO: Add set target event handler
                 child: Text(
                   "Set Target",
-                  style: EcoPointsTextStyles.greenTextStyle(
+                  style: EcoPointsTextStyles.darkGreenTextStyle(
                     size: width * 0.0325,
                     weight: FontWeight.w600,
                   ),

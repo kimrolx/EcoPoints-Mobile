@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> loadUserProfile() async {
-    UserProfile? userProfile = await _userService.getUserProfile();
+    UserProfileModel? userProfile = await _userService.getUserProfile();
     if (userProfile != null) {
       setState(() {
         points = userProfile.points;
@@ -46,41 +46,36 @@ class _HomeScreenState extends State<HomeScreen> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: EcoPointsColors.lighGray,
+      backgroundColor: EcoPointsColors.lightGray,
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: height,
-          width: width,
-          child: Stack(
-            children: [
-              const TrashcanBackgroundHomeScreen(),
-              Positioned(
-                top: height * 0.12,
-                left: width * 0.16,
-                right: width * 0.16,
-                child: PointsIndicatorHomeScreen(
-                  points: points,
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                SizedBox(
+                  height: height * 0.45,
+                  width: width,
                 ),
-              ),
-              Positioned(
-                top: height * 0.45,
-                left: 0,
-                right: 0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-                      child: const GoalSetterHomeScreen(),
-                    ),
-                    Gap(height * 0.015),
-                    const TransactionsHomeScreen()
-                  ],
+                const TrashcanBackgroundHomeScreen(),
+                Positioned(
+                  top: height * 0.12,
+                  left: width * 0.16,
+                  right: width * 0.16,
+                  child: PointsIndicatorHomeScreen(
+                    points: points,
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+              child: const GoalSetterHomeScreen(),
+            ),
+            Gap(height * 0.025),
+            const TransactionsHomeScreen(),
+          ],
         ),
       ),
     );
