@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../models/recycling_log_model.dart';
+import '../../../shared/services/recycling_log_service.dart';
 
 class RewardsCatalogScreen extends StatelessWidget {
   static const String route = "/rewards";
@@ -10,10 +13,25 @@ class RewardsCatalogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: EcoPointsColors.lighGray,
+    return Scaffold(
+      backgroundColor: EcoPointsColors.lightGray,
       body: Center(
-        child: Text('Rewards Catalog'),
+        child: ElevatedButton(
+          onPressed: () async {
+            RecyclingLogService recyclingLogService =
+                GetIt.instance<RecyclingLogService>();
+
+            RecyclingLogModel newLog = RecyclingLogModel(
+              dateTime: DateTime.now(),
+              bottlesRecycled: 10,
+              pointsGained: 21.52,
+            );
+
+            await recyclingLogService.addRecyclingLog(newLog);
+            print("Recycling log added and user points updated.");
+          },
+          child: const Text('Add Recycling Log'),
+        ),
       ),
     );
   }

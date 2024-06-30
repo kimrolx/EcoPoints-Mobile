@@ -22,7 +22,7 @@ class EditPictureProfileScreen extends StatelessWidget {
         Gap(height * 0.01),
         Text(
           "Edit picture",
-          style: EcoPointsTextStyles.greenTextStyle(
+          style: EcoPointsTextStyles.darkGreenTextStyle(
             size: width * 0.035,
             weight: FontWeight.w500,
           ),

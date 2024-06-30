@@ -35,7 +35,7 @@ class EcoPointsTextStyles {
     );
   }
 
-  static greenTextStyle(
+  static darkGreenTextStyle(
       {required double size,
       required FontWeight weight,
       TextDecoration? decoration}) {
@@ -44,6 +44,19 @@ class EcoPointsTextStyles {
           fontWeight: weight,
           fontSize: size,
           color: EcoPointsColors.darkGreen,
+          decoration: decoration),
+    );
+  }
+
+  static lightGreenTextStyle(
+      {required double size,
+      required FontWeight weight,
+      TextDecoration? decoration}) {
+    return GoogleFonts.poppins(
+      textStyle: TextStyle(
+          fontWeight: weight,
+          fontSize: size,
+          color: EcoPointsColors.lightGreen,
           decoration: decoration),
     );
   }

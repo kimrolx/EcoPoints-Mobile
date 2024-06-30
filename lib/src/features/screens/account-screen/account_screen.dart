@@ -71,7 +71,7 @@ class _AccountScreenState extends State<AccountScreen> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: EcoPointsColors.lighGray,
+      backgroundColor: EcoPointsColors.lightGray,
       body: SafeArea(
         child: Center(
           child: Column(

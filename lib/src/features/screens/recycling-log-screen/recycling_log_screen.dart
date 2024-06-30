@@ -11,7 +11,7 @@ class RecyclingLogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: EcoPointsColors.lighGray,
+      backgroundColor: EcoPointsColors.lightGray,
       body: Center(child: Text("Recycling Log")),
     );
   }

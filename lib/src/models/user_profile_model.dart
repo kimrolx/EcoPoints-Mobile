@@ -1,4 +1,4 @@
-class UserProfile {
+class UserProfileModel {
   String? userId;
   String? displayName;
   String? email;
@@ -6,7 +6,7 @@ class UserProfile {
   String? phoneNumber;
   double points;
 
-  UserProfile(
+  UserProfileModel(
       {required this.userId,
       this.displayName,
       this.email,
@@ -25,8 +25,8 @@ class UserProfile {
     };
   }
 
-  factory UserProfile.fromMap(Map<String, dynamic> map) {
-    return UserProfile(
+  factory UserProfileModel.fromMap(Map<String, dynamic> map) {
+    return UserProfileModel(
       userId: map['userId'],
       displayName: map['displayName'],
       email: map['email'],

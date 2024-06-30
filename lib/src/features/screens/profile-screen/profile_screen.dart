@@ -49,7 +49,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     print("Current User: ${user?.uid}");
     print("Photo URL: $photoURL");
 
-    UserProfile? userProfile = await _userService.getUserProfile();
+    UserProfileModel? userProfile = await _userService.getUserProfile();
     if (userProfile != null) {
       setState(() {
         displayNameController.text = user?.displayName ?? "Name";
@@ -82,7 +82,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: EcoPointsColors.lighGray,
+      backgroundColor: EcoPointsColors.lightGray,
       appBar: AppBar(
         backgroundColor: EcoPointsColors.darkGreen,
         leading: IconButton(

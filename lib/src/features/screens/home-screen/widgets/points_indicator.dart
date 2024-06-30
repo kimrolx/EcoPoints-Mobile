@@ -1,8 +1,8 @@
-import 'package:ecopoints/src/components/constants/text_style/ecopoints_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../../components/constants/text_style/ecopoints_themes.dart';
 
 class PointsIndicatorHomeScreen extends StatelessWidget {
   final double points;
@@ -25,8 +25,8 @@ class PointsIndicatorHomeScreen extends StatelessWidget {
             percent: (points / 100).clamp(0.0, 1.0),
             radius: 115,
             lineWidth: width * 0.04,
-            progressColor: EcoPointsColors.darkGreen,
-            backgroundColor: EcoPointsColors.lighGray,
+            progressColor: EcoPointsColors.lightGreen,
+            backgroundColor: EcoPointsColors.lightGray,
             circularStrokeCap: CircularStrokeCap.round,
             center: Column(
               mainAxisAlignment: MainAxisAlignment.center,
