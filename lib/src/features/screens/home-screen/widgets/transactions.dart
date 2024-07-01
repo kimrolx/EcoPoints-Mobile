@@ -75,7 +75,7 @@ class _TransactionsHomeScreenState extends State<TransactionsHomeScreen> {
 
   Widget _buildRecyclingLogRow(RecyclingLogModel log, BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final formattedDate = DateFormatterUtil.formatDate(log.dateTime);
+    final formattedDate = DateFormatterUtil.formatDateWithTime(log.dateTime);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,

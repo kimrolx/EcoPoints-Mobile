@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../models/user_profile_model.dart';
 
-class UserService {
+class UserFirestoreService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -34,12 +34,14 @@ class UserService {
           userId: user.uid,
           displayName: user.displayName,
           email: user.email,
-          gender: '',
-          phoneNumber: '',
+          gender: null,
+          phoneNumber: null,
           points: 0.0,
+          targetPoints: 0.0,
+          targetDate: null,
         );
         await userDoc.set(userProfile.toMap());
-        await userDoc.collection('recyclingLog').doc('logId').set({});
+        await userDoc.collection('recyclingLogs').doc('logId').set({});
         // await userDoc.collection('transactionHistories').doc('init').set({});
         print('User profile created for ${user.uid}');
       } else {
@@ -58,6 +60,40 @@ class UserService {
           .doc(user.uid)
           .update(userProfile.toMap());
     }
+  }
+
+  //* Update target date and points in firestore
+  Future<void> updateUserProfileTarget(String userId,
+      {double? targetPoints, DateTime? targetDate}) async {
+    if (targetDate != null && targetPoints == null) {
+      throw Exception('Cannot set a target date without target points.');
+    }
+
+    Map<String, dynamic> updates = {};
+
+    if (targetPoints != null && targetPoints != 0) {
+      updates['targetPoints'] = targetPoints;
+    }
+
+    if (targetDate != null) {
+      updates['targetDate'] = targetDate.toIso8601String();
+    }
+
+    if (updates.isNotEmpty) {
+      DocumentReference userDoc = _firestore.collection('users').doc(userId);
+      await userDoc.update(updates);
+    }
+  }
+
+  //* Reset target date and points
+  Future<void> resetTargets(String userId) async {
+    Map<String, dynamic> updates = {
+      'targetPoints': 0.0,
+      'targetDate': null,
+    };
+
+    DocumentReference userDoc = _firestore.collection('users').doc(userId);
+    await userDoc.update(updates);
   }
 
   //* Fetch user fields in firestore

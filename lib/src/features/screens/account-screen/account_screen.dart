@@ -24,7 +24,8 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  final UserService _userService = GetIt.instance<UserService>();
+  final UserFirestoreService _userService =
+      GetIt.instance<UserFirestoreService>();
   User? user;
   String? photoURL;
   String? displayName;
