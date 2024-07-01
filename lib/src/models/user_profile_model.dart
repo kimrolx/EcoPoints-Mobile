@@ -1,18 +1,23 @@
 class UserProfileModel {
-  String? userId;
-  String? displayName;
-  String? email;
-  String? gender;
-  String? phoneNumber;
+  final String userId;
+  final String? displayName;
+  final String? email;
+  final String? gender;
+  final String? phoneNumber;
   double points;
+  double? targetPoints;
+  DateTime? targetDate;
 
-  UserProfileModel(
-      {required this.userId,
-      this.displayName,
-      this.email,
-      this.gender,
-      this.phoneNumber,
-      required this.points});
+  UserProfileModel({
+    required this.userId,
+    this.displayName,
+    this.email,
+    this.gender,
+    this.phoneNumber,
+    required this.points,
+    this.targetPoints,
+    this.targetDate,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -22,6 +27,8 @@ class UserProfileModel {
       'gender': gender,
       'phoneNumber': phoneNumber,
       'points': points,
+      'targetPoints': targetPoints,
+      'targetDate': targetDate?.toIso8601String(),
     };
   }
 
@@ -35,6 +42,13 @@ class UserProfileModel {
       points: (map['points'] is int)
           ? (map['points'] as int).toDouble()
           : map['points'] as double,
+      targetPoints: map['targetPoints'] != null
+          ? (map['targetPoints'] is int)
+              ? (map['targetPoints'] as int).toDouble()
+              : map['targetPoints'] as double
+          : map['points'] as double,
+      targetDate:
+          map['targetDate'] != null ? DateTime.parse(map['targetDate']) : null,
     );
   }
 }

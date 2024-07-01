@@ -23,7 +23,8 @@ void main() async {
 }
 
 void setupServices() {
-  GetIt.instance.registerLazySingleton<UserService>(() => UserService());
+  GetIt.instance.registerLazySingleton<UserFirestoreService>(
+      () => UserFirestoreService());
   GetIt.instance
       .registerLazySingleton<RecyclingLogService>(() => RecyclingLogService());
   AuthController.initialize();

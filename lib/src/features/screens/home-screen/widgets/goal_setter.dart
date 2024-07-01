@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../../components/constants/properties/ecopoints_properties.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 
 class GoalSetterHomeScreen extends StatelessWidget {
-  const GoalSetterHomeScreen({super.key});
+  final VoidCallback onUpdate;
+  final Function(BuildContext, double, double) displayBottomSheet;
+
+  const GoalSetterHomeScreen({
+    super.key,
+    required this.onUpdate,
+    required this.displayBottomSheet,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +50,7 @@ class GoalSetterHomeScreen extends StatelessWidget {
               ),
               Gap(height * 0.003),
               Text(
-                "Saving is so much easier when you have a clear idea of what you're aiming for.",
+                EcopointsProperties.helpKeepTrack,
                 style: EcoPointsTextStyles.grayTextStyle(
                   size: width * 0.03,
                   weight: FontWeight.w500,
@@ -50,7 +58,9 @@ class GoalSetterHomeScreen extends StatelessWidget {
               ),
               const Spacer(),
               InkWell(
-                onTap: () {}, //TODO: Add set target event handler
+                onTap: () {
+                  displayBottomSheet(context, height, width);
+                },
                 child: Text(
                   "Set Target",
                   style: EcoPointsTextStyles.darkGreenTextStyle(

@@ -6,7 +6,9 @@ import '../../../../components/constants/text_style/ecopoints_themes.dart';
 
 class PointsIndicatorHomeScreen extends StatelessWidget {
   final double points;
-  const PointsIndicatorHomeScreen({super.key, required this.points});
+  final double? targetPoints;
+  const PointsIndicatorHomeScreen(
+      {super.key, required this.points, this.targetPoints});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,9 @@ class PointsIndicatorHomeScreen extends StatelessWidget {
         child: Center(
           child: CircularPercentIndicator(
             //TODO: Dynamic points percentage (target points)
-            percent: (points / 100).clamp(0.0, 1.0),
+            percent: targetPoints != null && targetPoints != 0
+                ? (points / targetPoints!).clamp(0.0, 1.0)
+                : (points / 100).clamp(0.0, 1.0),
             radius: 115,
             lineWidth: width * 0.04,
             progressColor: EcoPointsColors.lightGreen,
@@ -52,6 +56,16 @@ class PointsIndicatorHomeScreen extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: targetPoints != null && targetPoints != 0,
+                  child: Text(
+                    "of ${targetPoints?.toStringAsFixed(2)}",
+                    style: EcoPointsTextStyles.blackTextStyle(
+                      size: width * 0.035,
+                      weight: FontWeight.w500,
                     ),
                   ),
                 ),

@@ -40,6 +40,7 @@ class RecyclingLogService {
     }
   }
 
+  //* Get real time recycling logs from firestore
   Stream<List<RecyclingLogModel>> getRecyclingLogs() {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {

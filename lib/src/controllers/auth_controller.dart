@@ -17,7 +17,8 @@ class AuthController with ChangeNotifier {
   static AuthController get I => GetIt.instance<AuthController>();
 
   late StreamSubscription<User?> currentAuthedUser;
-  final UserService _userService = GetIt.instance<UserService>();
+  final UserFirestoreService _userService =
+      GetIt.instance<UserFirestoreService>();
 
   AuthState state = AuthState.unauthenticated;
 

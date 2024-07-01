@@ -24,7 +24,8 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final UserService _userService = GetIt.instance<UserService>();
+  final UserFirestoreService _userService =
+      GetIt.instance<UserFirestoreService>();
   late TextEditingController displayNameController,
       emailController,
       genderController,
