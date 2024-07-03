@@ -47,14 +47,30 @@ class AuthController with ChangeNotifier {
 
   //* Log in using email and password
   login(String userName, String password) async {
-    FirebaseAuth.instance
+    UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: userName, password: password);
+
+    User? user = userCredential.user;
+
+    if (user != null) {
+      _userService.createUserProfile();
+      print(
+          "Login successful: ${user.email}, ${user.displayName ?? "No Display Name"}");
+    }
   }
 
   //* Register using email and password
   register(String userName, String password) async {
-    FirebaseAuth.instance
+    UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: userName, password: password);
+
+    User? user = userCredential.user;
+
+    if (user != null) {
+      _userService.createUserProfile();
+      print(
+          "Login successful: ${user.email}, ${user.displayName ?? "No Display Name"}");
+    }
   }
 
   //* Log in with Google Provider

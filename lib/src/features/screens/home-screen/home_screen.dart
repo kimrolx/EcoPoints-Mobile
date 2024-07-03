@@ -5,10 +5,10 @@ import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../models/user_profile_model.dart';
+import '../../../providers/bottom_sheet_provider.dart';
 import '../../../shared/services/user_service.dart';
 import 'widgets/goal_setter.dart';
 import 'widgets/points_indicator.dart';
-import 'widgets/set_target_bottom_sheet.dart';
 import 'widgets/target_points_date_row.dart';
 import 'widgets/transactions.dart';
 import 'widgets/trashcan_background.dart';
@@ -53,24 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
     loadUserProfile();
   }
 
-  void _displayBottomSheet(BuildContext context, double height, double width) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: EcoPointsColors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(15),
-        ),
-      ),
-      builder: (context) => TargetBottomSheetHomeScreen(
-          onUpdate: _updateTargets, initialDate: targetDate),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    final bottomSheetProvider = BottomSheetProvider.of(context);
 
     return Scaffold(
       backgroundColor: EcoPointsColors.lightGray,
@@ -91,13 +78,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SafeArea(
                     child: InkWell(
                       onTap: () {
-                        _displayBottomSheet(context, height, width);
+                        bottomSheetProvider?.showBottomSheet(context);
                       },
-                      child: Text(
-                        "...",
-                        style: EcoPointsTextStyles.whiteTextStyle(
-                          size: width * 0.07,
-                          weight: FontWeight.w500,
+                      child: SizedBox(
+                        width: 35,
+                        height: 35,
+                        child: Center(
+                          child: Text(
+                            "...",
+                            style: EcoPointsTextStyles.whiteTextStyle(
+                              size: width * 0.07,
+                              weight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -120,7 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? const TargetPointsDateHomeScreen()
                   : GoalSetterHomeScreen(
                       onUpdate: _updateTargets,
-                      displayBottomSheet: _displayBottomSheet,
+                      displayBottomSheet: () {
+                        bottomSheetProvider?.showBottomSheet(context);
+                      },
                     ),
             ),
             Gap(height * 0.025),

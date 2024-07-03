@@ -53,10 +53,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     UserProfileModel? userProfile = await _userService.getUserProfile();
     if (userProfile != null) {
       setState(() {
-        displayNameController.text = user?.displayName ?? "Name";
-        emailController.text = user?.email ?? "Email";
-        genderController.text = userProfile.gender ?? "Gender";
-        numberController.text = userProfile.phoneNumber ?? "Phone Number";
+        displayNameController.text = user?.displayName ?? "";
+        emailController.text = user?.email ?? "";
+        genderController.text = userProfile.gender ?? "";
+        numberController.text = userProfile.phoneNumber ?? "";
 
         print("Name: ${displayNameController.text}");
         print("Email: ${emailController.text}");
@@ -112,7 +112,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Center(
           child: Column(
             children: [
-              EditPictureProfileScreen(photoURL: photoURL ?? ""),
+              EditPictureProfileScreen(photoURL: photoURL),
               const Divider(thickness: 0.5),
               Gap(height * 0.01),
               UserFieldsProfileScreen(

@@ -82,7 +82,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     horizontal: width * 0.08, vertical: height * 0.02),
                 child: EditProfileAccountScreen(
                   onTap: onEditProfileClick,
-                  displayName: displayName ?? "Name Here",
+                  displayName: displayName ?? "No Display Name",
                   photoURL: photoURL ?? '',
                 ),
               ),

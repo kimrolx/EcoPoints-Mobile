@@ -63,167 +63,176 @@ class _TargetBottomSheetHomeScreenState
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return SizedBox(
-      height: height,
-      child: Padding(
+    return FractionallySizedBox(
+      heightFactor: 0.7,
+      child: Container(
+        decoration: const BoxDecoration(
+            color: EcoPointsColors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         padding: EdgeInsets.only(
           left: width * 0.04,
           right: width * 0.04,
           top: height * 0.015,
-          bottom: height * 0.03,
+          bottom: MediaQuery.of(context).viewInsets.bottom + height * 0.02,
         ),
-        child: Column(
-          children: [
-            Container(
-              height: height * 0.007,
-              width: width * 0.12,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: EcoPointsColors.lightGray,
+        child: SizedBox(
+          height: height * 0.5,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: height * 0.007,
+                width: width * 0.12,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: EcoPointsColors.lightGray,
+                ),
               ),
-            ),
-            Gap(height * 0.01),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Set Target",
-                  style: EcoPointsTextStyles.darkGreenTextStyle(
-                    size: width * 0.04,
-                    weight: FontWeight.w600,
+              Gap(height * 0.015),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Set Target",
+                    style: EcoPointsTextStyles.darkGreenTextStyle(
+                      size: width * 0.04,
+                      weight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                Gap(width * 0.02),
-                Image.asset("assets/icons/target-icon.png"),
-              ],
-            ),
-            Gap(height * 0.025),
-            Text(
-              EcopointsProperties.helpKeepTrack,
-              textAlign: TextAlign.center,
-              style: EcoPointsTextStyles.grayTextStyle(
-                size: width * 0.035,
-                weight: FontWeight.normal,
+                  Gap(width * 0.02),
+                  Image.asset("assets/icons/target-icon.png"),
+                ],
               ),
-            ),
-            Gap(height * 0.015),
-            pointsTextField(
-              width,
-              targetController,
-              targetFn,
-              formKey,
-              (value) => setState(() => _validate()),
-            ),
-            Gap(height * 0.015),
-            Container(
-              height: height * 0.06,
-              width: width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: EcoPointsColors.lightGreenShade,
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.05,
-                  vertical: height * 0.01,
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      "Target Date",
-                      style: EcoPointsTextStyles.darkGreenTextStyle(
-                        size: width * 0.035,
-                        weight: FontWeight.w600,
-                      ),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: _selectedDate ?? DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2101),
-                        );
-
-                        if (pickedDate != null) {
-                          setState(() {
-                            _selectedDate = pickedDate;
-                            _validate();
-                          });
-                        }
-                      },
-                      child: _selectedDate == null
-                          ? Container(
-                              width: width * 0.12,
-                              height: height * 0.035,
-                              decoration: BoxDecoration(
-                                color: EcoPointsColors.darkGreen,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: const Icon(
-                                CupertinoIcons.add,
-                                color: EcoPointsColors.white,
-                              ),
-                            )
-                          : Text(
-                              DateFormatterUtil.formatDateWithoutTime(
-                                _selectedDate!,
-                              ),
-                              style: EcoPointsTextStyles.blackTextStyle(
-                                size: width * 0.035,
-                                weight: FontWeight.w600,
-                              ),
-                            ),
-                    ),
-                  ],
+              Gap(height * 0.03),
+              Text(
+                EcopointsProperties.helpKeepTrack,
+                textAlign: TextAlign.center,
+                style: EcoPointsTextStyles.grayTextStyle(
+                  size: width * 0.035,
+                  weight: FontWeight.normal,
                 ),
               ),
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
+              Gap(height * 0.015),
+              pointsTextField(
+                width,
+                targetController,
+                targetFn,
+                formKey,
+                (value) => setState(() => _validate()),
+              ),
+              Gap(height * 0.03),
+              Container(
+                height: height * 0.06,
+                width: width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: EcoPointsColors.lightGreenShade,
+                ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.075),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.05,
+                    vertical: height * 0.01,
+                  ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      CustomElevatedButton(
-                        backgroundColor: EcoPointsColors.red,
-                        borderRadius: 50,
-                        width: width * 0.05,
-                        onPressed: () {
-                          onClearTargetsClick();
-                        },
-                        child: Text(
-                          "Clear",
-                          style: EcoPointsTextStyles.whiteTextStyle(
-                            size: width * 0.04,
-                            weight: FontWeight.w600,
-                          ),
+                      Text(
+                        "Target Date",
+                        style: EcoPointsTextStyles.darkGreenTextStyle(
+                          size: width * 0.035,
+                          weight: FontWeight.w600,
                         ),
                       ),
-                      CustomElevatedButton(
-                        backgroundColor: _isValid
-                            ? EcoPointsColors.darkGreen
-                            : EcoPointsColors.lightGray,
-                        borderRadius: 50,
-                        onPressed: _isValid ? () => onSetTargetClick() : () {},
-                        child: Text(
-                          "Set Target",
-                          style: EcoPointsTextStyles.whiteTextStyle(
-                            size: width * 0.04,
-                            weight: FontWeight.w600,
-                          ),
-                        ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: _selectedDate ?? DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2101),
+                          );
+
+                          if (pickedDate != null) {
+                            setState(() {
+                              _selectedDate = pickedDate;
+                              _validate();
+                            });
+                          }
+                        },
+                        child: _selectedDate == null
+                            ? Container(
+                                width: width * 0.12,
+                                height: height * 0.035,
+                                decoration: BoxDecoration(
+                                  color: EcoPointsColors.darkGreen,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: const Icon(
+                                  CupertinoIcons.add,
+                                  color: EcoPointsColors.white,
+                                ),
+                              )
+                            : Text(
+                                DateFormatterUtil.formatDateWithoutTime(
+                                  _selectedDate!,
+                                ),
+                                style: EcoPointsTextStyles.blackTextStyle(
+                                  size: width * 0.035,
+                                  weight: FontWeight.w600,
+                                ),
+                              ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+              Gap(height * 0.015),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.075),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        CustomElevatedButton(
+                          backgroundColor: EcoPointsColors.red,
+                          borderRadius: 50,
+                          width: width * 0.05,
+                          onPressed: () {
+                            onClearTargetsClick();
+                          },
+                          child: Text(
+                            "Clear",
+                            style: EcoPointsTextStyles.whiteTextStyle(
+                              size: width * 0.04,
+                              weight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        CustomElevatedButton(
+                          backgroundColor: _isValid
+                              ? EcoPointsColors.darkGreen
+                              : EcoPointsColors.lightGray,
+                          borderRadius: 50,
+                          onPressed:
+                              _isValid ? () => onSetTargetClick() : () {},
+                          child: Text(
+                            "Set Target",
+                            style: EcoPointsTextStyles.whiteTextStyle(
+                              size: width * 0.04,
+                              weight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -42,6 +42,7 @@ class _RegisterInputFieldsRegistrationScreenState
         children: [
           Flexible(
             child: CustomTextFormField(
+              hintText: "Email",
               labelText: "Email",
               obscureText: false,
               keyboardType: TextInputType.text,
@@ -63,6 +64,7 @@ class _RegisterInputFieldsRegistrationScreenState
           Gap(height * 0.015),
           Flexible(
             child: CustomTextFormField(
+              hintText: "Password",
               labelText: "Password",
               obscureText: obfuscate,
               keyboardType: TextInputType.visiblePassword,
@@ -105,6 +107,7 @@ class _RegisterInputFieldsRegistrationScreenState
           Gap(height * 0.015),
           Flexible(
             child: CustomTextFormField(
+              hintText: "Confirm Password",
               labelText: "Confirm Password",
               obscureText: obfuscate,
               keyboardType: TextInputType.visiblePassword,

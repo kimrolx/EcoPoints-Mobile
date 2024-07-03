@@ -37,24 +37,28 @@ class UserFieldsProfileScreen extends StatelessWidget {
           children: [
             CustomTextFormField(
               labelText: "Name",
+              hintText: "Name",
               controller: displayName,
               readOnly: true,
             ),
             Gap(height * 0.0125),
             CustomTextFormField(
               labelText: "Gender",
+              hintText: "Gender",
               controller: gender,
               readOnly: true,
             ),
             Gap(height * 0.0125),
             CustomTextFormField(
               labelText: "Email",
+              hintText: "Email",
               controller: email,
               readOnly: true,
             ),
             Gap(height * 0.0125),
             CustomTextFormField(
               labelText: "Phone Number",
+              hintText: "Phone Number",
               controller: number,
               readOnly: true,
             ),
