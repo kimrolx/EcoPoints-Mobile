@@ -1,5 +1,4 @@
-
-![EcoPoints Logo](https://github.com/kimrolx/EcoPoints-Mobile/assets/valid-image-link.jpg)
+![EcoPoints text](https://github.com/kimrolx/EcoPoints-Mobile/assets/144353795/c0140377-4a14-4d84-8aec-b85405ac5da5)
 
 # EcoPoints Mobile Application
 **EcoPoints** is an innovative system that utilizes IoT and gamification to boost recycling initiatives at the University of San Jose - Recoletos, making environmental engagement both rewarding and fun.
