@@ -9,7 +9,7 @@ import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../models/user_profile_model.dart';
-import '../../../shared/services/user_service.dart';
+import '../../../shared/services/user_firestore_service.dart';
 import 'widgets/edit_picture.dart';
 import 'widgets/user_fields.dart';
 

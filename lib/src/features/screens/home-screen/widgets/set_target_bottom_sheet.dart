@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -9,7 +8,7 @@ import '../../../../components/buttons/custom_elevated_button.dart';
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/properties/ecopoints_properties.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
-import '../../../../shared/services/user_service.dart';
+import '../../../../shared/services/user_profile_service.dart';
 import '../../../../shared/utils/date_formatter_util.dart';
 
 class TargetBottomSheetHomeScreen extends StatefulWidget {
@@ -25,8 +24,8 @@ class TargetBottomSheetHomeScreen extends StatefulWidget {
 
 class _TargetBottomSheetHomeScreenState
     extends State<TargetBottomSheetHomeScreen> {
-  final UserFirestoreService _userService =
-      GetIt.instance<UserFirestoreService>();
+  final UserProfileService _userProfileService =
+      GetIt.instance<UserProfileService>();
 
   late GlobalKey<FormState> formKey;
   late TextEditingController targetController;
@@ -64,7 +63,7 @@ class _TargetBottomSheetHomeScreenState
     double height = MediaQuery.of(context).size.height;
 
     return FractionallySizedBox(
-      heightFactor: 0.7,
+      heightFactor: 0.8,
       child: Container(
         decoration: const BoxDecoration(
             color: EcoPointsColors.white,
@@ -293,44 +292,16 @@ class _TargetBottomSheetHomeScreenState
   }
 
   onSetTargetClick() async {
-    if (_isValid) {
-      double? targetPoints = double.tryParse(targetController.text);
-      DateTime? targetDate = _selectedDate;
-
-      try {
-        User? user = FirebaseAuth.instance.currentUser;
-
-        if (user != null) {
-          await _userService.updateUserProfileTarget(user.uid,
-              targetPoints: targetPoints, targetDate: targetDate);
-
-          widget.onUpdate();
-          Navigator.of(context).pop();
-        } else {
-          print('No user is currently logged in.');
-        }
-      } catch (e) {
-        print('Error updating user profile: $e');
-      }
-    }
+    double? targetPoints = double.tryParse(targetController.text);
+    DateTime? targetDate = _selectedDate;
+    _userProfileService.updateUserProfileTarget(targetPoints, targetDate);
+    widget.onUpdate();
+    Navigator.of(context).pop();
   }
 
   onClearTargetsClick() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      print("I AM CLICKED");
-
-      if (user != null) {
-        print("User is: $user");
-        await _userService.resetTargets(user.uid);
-
-        widget.onUpdate();
-        Navigator.of(context).pop();
-      } else {
-        print('No user is currently logged in.');
-      }
-    } catch (e) {
-      print('Error clearing targets: $e');
-    }
+    _userProfileService.resetTargets();
+    widget.onUpdate();
+    Navigator.of(context).pop();
   }
 }

@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../models/recycling_log_model.dart';
+import 'user_profile_service.dart';
 
 class RecyclingLogService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final UserProfileService _userProfileService =
+      GetIt.instance<UserProfileService>();
 
   Future<void> addRecyclingLog(RecyclingLogModel log) async {
     User? user = _firebaseAuth.currentUser;
@@ -37,6 +41,7 @@ class RecyclingLogService {
         log.refId = newLogRef.id;
         transaction.set(newLogRef, log.toMap());
       });
+      await _userProfileService.loadUserProfile();
     }
   }
 

@@ -7,7 +7,7 @@ import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../models/setting_option_model.dart';
 import '../../../routes/router.dart';
-import '../../../shared/services/user_service.dart';
+import '../../../shared/services/user_firestore_service.dart';
 import '../profile-screen/profile_screen.dart';
 import '../recycling-log-screen/recycling_log_screen.dart';
 import 'widgets/edit_profile.dart';

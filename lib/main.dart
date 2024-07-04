@@ -6,7 +6,8 @@ import 'firebase_options.dart';
 import 'src/controllers/auth_controller.dart';
 import 'src/routes/router.dart';
 import 'src/shared/services/recycling_log_service.dart';
-import 'src/shared/services/user_service.dart';
+import 'src/shared/services/user_firestore_service.dart';
+import 'src/shared/services/user_profile_service.dart';
 import 'src/shared/utils/local_storage_util.dart';
 
 void main() async {
@@ -23,8 +24,9 @@ void main() async {
 }
 
 void setupServices() {
-  GetIt.instance.registerLazySingleton<UserFirestoreService>(
-      () => UserFirestoreService());
+  GetIt.instance
+      .registerSingleton<UserFirestoreService>(UserFirestoreService());
+  GetIt.instance.registerSingleton<UserProfileService>(UserProfileService());
   GetIt.instance
       .registerLazySingleton<RecyclingLogService>(() => RecyclingLogService());
   AuthController.initialize();

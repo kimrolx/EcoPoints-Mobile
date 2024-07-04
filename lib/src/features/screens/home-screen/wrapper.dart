@@ -7,7 +7,7 @@ import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../models/user_profile_model.dart';
 import '../../../providers/bottom_sheet_provider.dart';
 import '../../../routes/router.dart';
-import '../../../shared/services/user_service.dart';
+import '../../../shared/services/user_firestore_service.dart';
 import '../account-screen/account_screen.dart';
 import '../rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../scan-qr-screen/scan_qr_screen.dart';

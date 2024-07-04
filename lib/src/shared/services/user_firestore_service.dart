@@ -42,7 +42,6 @@ class UserFirestoreService {
         );
         await userDoc.set(userProfile.toMap());
         await userDoc.collection('recyclingLogs').doc('logId').set({});
-        // await userDoc.collection('transactionHistories').doc('init').set({});
         print('User profile created for ${user.uid}');
       } else {
         print('User profile already exists for ${user.uid}');
@@ -52,6 +51,7 @@ class UserFirestoreService {
     }
   }
 
+  //* Update user profile
   Future<void> updateUserProfile(UserProfileModel userProfile) async {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {
