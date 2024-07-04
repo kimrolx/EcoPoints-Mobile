@@ -88,6 +88,14 @@ class GlobalRouter {
         ),
         GoRoute(
           parentNavigatorKey: _rootNavigatorKey,
+          path: ScanQRScreen.route,
+          name: ScanQRScreen.name,
+          builder: (context, _) {
+            return const ScanQRScreen();
+          },
+        ),
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
           path: EditProfileScreen.route,
           name: EditProfileScreen.name,
           builder: (context, _) {
@@ -101,8 +109,10 @@ class GlobalRouter {
               parentNavigatorKey: _shellNavigatorKey,
               path: HomeScreen.route,
               name: HomeScreen.name,
-              builder: (context, _) {
-                return const HomeScreen();
+              builder: (context, state) {
+                return const HomeWrapper(
+                  child: HomeScreen(),
+                );
               },
             ),
             GoRoute(
@@ -111,14 +121,6 @@ class GlobalRouter {
               name: RewardsCatalogScreen.name,
               builder: (context, _) {
                 return const RewardsCatalogScreen();
-              },
-            ),
-            GoRoute(
-              parentNavigatorKey: _shellNavigatorKey,
-              path: ScanQRScreen.route,
-              name: ScanQRScreen.name,
-              builder: (context, _) {
-                return const ScanQRScreen();
               },
             ),
             GoRoute(

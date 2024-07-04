@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/text_style/ecopoints_themes.dart';
 
 class CustomTextFormField extends StatelessWidget {
+  final String? hintText;
   final String? labelText;
   final bool? obscureText;
   final bool? readOnly;
@@ -17,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   const CustomTextFormField({
     super.key,
+    this.hintText,
     this.labelText,
     this.obscureText,
     this.focusNode,
@@ -48,8 +50,15 @@ class CustomTextFormField extends StatelessWidget {
         weight: FontWeight.w500,
       ),
       decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: EcoPointsTextStyles.grayTextStyle(
+        hintText: hintText,
+        hintStyle: EcoPointsTextStyles.grayTextStyle(
+          size: 16.0,
+          weight: FontWeight.w500,
+        ),
+        // labelText: controller!.text.isNotEmpty && controller != null
+        //     ? labelText
+        //     : null,
+        labelStyle: EcoPointsTextStyles.blackTextStyle(
           size: 16.0,
           weight: FontWeight.w500,
         ),

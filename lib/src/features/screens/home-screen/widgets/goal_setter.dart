@@ -7,7 +7,7 @@ import '../../../../components/constants/text_style/ecopoints_themes.dart';
 
 class GoalSetterHomeScreen extends StatelessWidget {
   final VoidCallback onUpdate;
-  final Function(BuildContext, double, double) displayBottomSheet;
+  final Function() displayBottomSheet;
 
   const GoalSetterHomeScreen({
     super.key,
@@ -58,9 +58,7 @@ class GoalSetterHomeScreen extends StatelessWidget {
               ),
               const Spacer(),
               InkWell(
-                onTap: () {
-                  displayBottomSheet(context, height, width);
-                },
+                onTap: displayBottomSheet,
                 child: Text(
                   "Set Target",
                   style: EcoPointsTextStyles.darkGreenTextStyle(

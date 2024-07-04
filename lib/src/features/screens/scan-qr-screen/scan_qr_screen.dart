@@ -1,19 +1,71 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../../../components/constants/colors/ecopoints_colors.dart';
+import 'widgets/color_filter_background.dart';
+import 'widgets/instruction_text.dart';
+import 'widgets/mobile_scanner.dart';
+import 'widgets/upload_qr_code.dart';
 
-class ScanQRScreen extends StatelessWidget {
+class ScanQRScreen extends StatefulWidget {
   static const String route = "/scanqr";
   static const String path = "/scanqr";
   static const String name = "ScanQRScreen";
   const ScanQRScreen({super.key});
 
   @override
+  State<ScanQRScreen> createState() => _ScanQRScreenState();
+}
+
+class _ScanQRScreenState extends State<ScanQRScreen> {
+  final MobileScannerController _controller = MobileScannerController(
+    detectionSpeed: DetectionSpeed.noDuplicates,
+    returnImage: true,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.start();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: EcoPointsColors.lightGray,
-      body: Center(
-        child: Text("QR"),
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
+    double cutoutSize = width * 0.65;
+
+    return Material(
+      child: Stack(
+        children: [
+          MobileScannerQRScreen(controller: _controller),
+          ColorFilterBackgroundQRScreen(
+            cutoutSize: cutoutSize,
+            width: width,
+          ),
+          SafeArea(
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
+            ),
+          ),
+          InstructionTextQRScreen(
+            width: width,
+            height: height,
+          ),
+          UploadQRCodeScreen(
+            width: width,
+            height: height,
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }

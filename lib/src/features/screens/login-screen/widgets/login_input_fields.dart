@@ -39,6 +39,7 @@ class _InputFieldsLoginScreenState extends State<InputFieldsLoginScreen> {
           Flexible(
             child: CustomTextFormField(
               labelText: "Email",
+              hintText: "Email",
               focusNode: widget.emailFn,
               controller: widget.email,
               obscureText: false,
@@ -60,6 +61,7 @@ class _InputFieldsLoginScreenState extends State<InputFieldsLoginScreen> {
           Flexible(
             child: CustomTextFormField(
               labelText: "Password",
+              hintText: "Password",
               focusNode: widget.passwordFn,
               controller: widget.password,
               obscureText: obfuscate,

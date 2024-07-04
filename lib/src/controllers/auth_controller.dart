@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../enums/enum.dart';
-import '../shared/services/user_service.dart';
+import '../shared/services/user_firestore_service.dart';
 
 class AuthController with ChangeNotifier {
   static void initialize() {
@@ -47,14 +47,30 @@ class AuthController with ChangeNotifier {
 
   //* Log in using email and password
   login(String userName, String password) async {
-    FirebaseAuth.instance
+    UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: userName, password: password);
+
+    User? user = userCredential.user;
+
+    if (user != null) {
+      _userService.createUserProfile();
+      print(
+          "Login successful: ${user.email}, ${user.displayName ?? "No Display Name"}");
+    }
   }
 
   //* Register using email and password
   register(String userName, String password) async {
-    FirebaseAuth.instance
+    UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: userName, password: password);
+
+    User? user = userCredential.user;
+
+    if (user != null) {
+      _userService.createUserProfile();
+      print(
+          "Login successful: ${user.email}, ${user.displayName ?? "No Display Name"}");
+    }
   }
 
   //* Log in with Google Provider

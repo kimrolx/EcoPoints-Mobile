@@ -9,7 +9,7 @@ import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../models/user_profile_model.dart';
-import '../../../shared/services/user_service.dart';
+import '../../../shared/services/user_firestore_service.dart';
 import 'widgets/edit_picture.dart';
 import 'widgets/user_fields.dart';
 
@@ -53,10 +53,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     UserProfileModel? userProfile = await _userService.getUserProfile();
     if (userProfile != null) {
       setState(() {
-        displayNameController.text = user?.displayName ?? "Name";
-        emailController.text = user?.email ?? "Email";
-        genderController.text = userProfile.gender ?? "Gender";
-        numberController.text = userProfile.phoneNumber ?? "Phone Number";
+        displayNameController.text = user?.displayName ?? "";
+        emailController.text = user?.email ?? "";
+        genderController.text = userProfile.gender ?? "";
+        numberController.text = userProfile.phoneNumber ?? "";
 
         print("Name: ${displayNameController.text}");
         print("Email: ${emailController.text}");
@@ -112,7 +112,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Center(
           child: Column(
             children: [
-              EditPictureProfileScreen(photoURL: photoURL ?? ""),
+              EditPictureProfileScreen(photoURL: photoURL),
               const Divider(thickness: 0.5),
               Gap(height * 0.01),
               UserFieldsProfileScreen(

@@ -42,7 +42,6 @@ class UserFirestoreService {
         );
         await userDoc.set(userProfile.toMap());
         await userDoc.collection('recyclingLogs').doc('logId').set({});
-        // await userDoc.collection('transactionHistories').doc('init').set({});
         print('User profile created for ${user.uid}');
       } else {
         print('User profile already exists for ${user.uid}');
@@ -52,6 +51,20 @@ class UserFirestoreService {
     }
   }
 
+  //* Fetch user fields in firestore
+  Future<UserProfileModel?> getUserProfile() async {
+    User? user = _firebaseAuth.currentUser;
+    if (user != null) {
+      DocumentSnapshot doc =
+          await _firestore.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return UserProfileModel.fromMap(doc.data() as Map<String, dynamic>);
+      }
+    }
+    return null;
+  }
+
+  //* Update user profile
   Future<void> updateUserProfile(UserProfileModel userProfile) async {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {
@@ -94,18 +107,5 @@ class UserFirestoreService {
 
     DocumentReference userDoc = _firestore.collection('users').doc(userId);
     await userDoc.update(updates);
-  }
-
-  //* Fetch user fields in firestore
-  Future<UserProfileModel?> getUserProfile() async {
-    User? user = _firebaseAuth.currentUser;
-    if (user != null) {
-      DocumentSnapshot doc =
-          await _firestore.collection('users').doc(user.uid).get();
-      if (doc.exists) {
-        return UserProfileModel.fromMap(doc.data() as Map<String, dynamic>);
-      }
-    }
-    return null;
   }
 }
