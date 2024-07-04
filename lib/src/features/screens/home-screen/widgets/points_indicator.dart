@@ -49,13 +49,13 @@ class _PointsIndicatorHomeScreenState extends State<PointsIndicatorHomeScreen> {
           color: EcoPointsColors.white,
           elevation: 2,
           child: SizedBox(
-            height: height * 0.3,
+            height: height * 0.31,
             child: Center(
               child: CircularPercentIndicator(
                 percent: targetPoints != null && targetPoints != 0
                     ? (points / targetPoints).clamp(0.0, 1.0)
                     : (points / 100).clamp(0.0, 1.0),
-                radius: 115,
+                radius: 110,
                 lineWidth: width * 0.04,
                 progressColor: EcoPointsColors.lightGreen,
                 backgroundColor: EcoPointsColors.lightGray,

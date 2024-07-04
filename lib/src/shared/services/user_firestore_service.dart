@@ -51,6 +51,19 @@ class UserFirestoreService {
     }
   }
 
+  //* Fetch user fields in firestore
+  Future<UserProfileModel?> getUserProfile() async {
+    User? user = _firebaseAuth.currentUser;
+    if (user != null) {
+      DocumentSnapshot doc =
+          await _firestore.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return UserProfileModel.fromMap(doc.data() as Map<String, dynamic>);
+      }
+    }
+    return null;
+  }
+
   //* Update user profile
   Future<void> updateUserProfile(UserProfileModel userProfile) async {
     User? user = _firebaseAuth.currentUser;
@@ -94,18 +107,5 @@ class UserFirestoreService {
 
     DocumentReference userDoc = _firestore.collection('users').doc(userId);
     await userDoc.update(updates);
-  }
-
-  //* Fetch user fields in firestore
-  Future<UserProfileModel?> getUserProfile() async {
-    User? user = _firebaseAuth.currentUser;
-    if (user != null) {
-      DocumentSnapshot doc =
-          await _firestore.collection('users').doc(user.uid).get();
-      if (doc.exists) {
-        return UserProfileModel.fromMap(doc.data() as Map<String, dynamic>);
-      }
-    }
-    return null;
   }
 }

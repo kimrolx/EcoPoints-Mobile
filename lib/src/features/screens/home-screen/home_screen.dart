@@ -31,7 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _userProfileService.loadUserProfile();
+    _userProfileService.loadUserProfile().then((_) {
+      if (_userProfileService.userProfile == null) {
+        print('User profile was not created.');
+      }
+    }).catchError((error) {
+      print('Error loading user profile: $error');
+    });
   }
 
   @override

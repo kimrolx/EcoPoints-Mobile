@@ -18,7 +18,12 @@ class UserProfileService extends ChangeNotifier {
   UserProfileModel? get userProfile => _userProfileNotifier.value;
 
   Future<void> loadUserProfile() async {
-    _userProfileNotifier.value = await _userService.getUserProfile();
+    UserProfileModel? profile = await _userService.getUserProfile();
+    if (profile == null) {
+      await _userService.createUserProfile();
+      profile = await _userService.getUserProfile();
+    }
+    _userProfileNotifier.value = profile;
     notifyListeners();
   }
 
