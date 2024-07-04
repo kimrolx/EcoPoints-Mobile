@@ -11,19 +11,18 @@ import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../shared/services/user_profile_service.dart';
 import '../../../../shared/utils/date_formatter_util.dart';
 
-class TargetBottomSheetHomeScreen extends StatefulWidget {
+class SetTargetDialogHomeScreen extends StatefulWidget {
   final VoidCallback onUpdate;
   final DateTime? initialDate;
-  const TargetBottomSheetHomeScreen(
+  const SetTargetDialogHomeScreen(
       {super.key, required this.onUpdate, this.initialDate});
 
   @override
-  State<TargetBottomSheetHomeScreen> createState() =>
-      _TargetBottomSheetHomeScreenState();
+  State<SetTargetDialogHomeScreen> createState() =>
+      _SetTargetDialogHomeScreenState();
 }
 
-class _TargetBottomSheetHomeScreenState
-    extends State<TargetBottomSheetHomeScreen> {
+class _SetTargetDialogHomeScreenState extends State<SetTargetDialogHomeScreen> {
   final UserProfileService _userProfileService =
       GetIt.instance<UserProfileService>();
 

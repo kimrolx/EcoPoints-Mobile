@@ -4,6 +4,7 @@ class CustomElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget child;
   final Color? backgroundColor;
+  final Color? foregroundColor;
   final Color? textColor;
   final double borderRadius;
   final double? width;
@@ -20,6 +21,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.padding,
     this.width,
     this.height,
+    this.foregroundColor,
   });
 
   @override
@@ -28,6 +30,7 @@ class CustomElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),

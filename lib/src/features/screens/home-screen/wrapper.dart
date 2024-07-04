@@ -12,7 +12,7 @@ import '../account-screen/account_screen.dart';
 import '../rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../scan-qr-screen/scan_qr_screen.dart';
 import 'home_screen.dart';
-import 'widgets/set_target_bottom_sheet.dart';
+import 'widgets/set_target_dialog.dart';
 
 class HomeWrapper extends StatefulWidget {
   final Widget? child;
@@ -41,7 +41,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
   List<String> routes = [
     HomeScreen.route,
     RewardsCatalogScreen.route,
-    ScanQRScreen.route,
+    AccountScreen.route,
     AccountScreen.route
   ];
 
@@ -70,7 +70,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
           top: Radius.circular(15),
         ),
       ),
-      builder: (context) => TargetBottomSheetHomeScreen(
+      builder: (context) => SetTargetDialogHomeScreen(
           onUpdate: _updateTargets, initialDate: targetDate),
     );
   }
@@ -86,7 +86,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
           children: const [
             HomeScreen(),
             RewardsCatalogScreen(),
-            ScanQRScreen(),
+            AccountScreen(),
             AccountScreen(),
           ],
         ),
@@ -138,7 +138,9 @@ class _HomeWrapperState extends State<HomeWrapper> {
           height: 50,
           child: FittedBox(
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                onScanQRClick();
+              },
               backgroundColor: EcoPointsColors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50)),
@@ -153,6 +155,10 @@ class _HomeWrapperState extends State<HomeWrapper> {
         ),
       ),
     );
+  }
+
+  onScanQRClick() {
+    GlobalRouter.I.router.push(ScanQRScreen.route);
   }
 
   Widget _buildNavItem({
