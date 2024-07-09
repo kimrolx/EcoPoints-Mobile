@@ -1,36 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
-import '../../../models/recycling_log_model.dart';
-import '../../../shared/services/recycling_log_service.dart';
+import 'widgets/search_bar.dart';
 
-class RewardsCatalogScreen extends StatelessWidget {
+class RewardsCatalogScreen extends StatefulWidget {
   static const String route = "/rewards";
   static const String path = "/rewards";
   static const String name = "RewardsCatalogScreen";
   const RewardsCatalogScreen({super.key});
 
   @override
+  State<RewardsCatalogScreen> createState() => _RewardsCatalogScreenState();
+}
+
+class _RewardsCatalogScreenState extends State<RewardsCatalogScreen> {
+  late TextEditingController searchController;
+  late FocusNode searchFn;
+
+  @override
+  void initState() {
+    super.initState();
+    searchController = TextEditingController();
+    searchFn = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    searchFn.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: EcoPointsColors.lightGray,
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            RecyclingLogService recyclingLogService =
-                GetIt.instance<RecyclingLogService>();
-
-            RecyclingLogModel newLog = RecyclingLogModel(
-              dateTime: DateTime.now(),
-              bottlesRecycled: 10,
-              pointsGained: 21.52,
-            );
-
-            await recyclingLogService.addRecyclingLog(newLog);
-            print("Recycling log added and user points updated.");
-          },
-          child: const Text('Add Recycling Log'),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                SizedBox(
+                  height: height * 0.135,
+                  width: width,
+                ),
+                Container(
+                  color: EcoPointsColors.darkGreen,
+                  height: height * 0.1,
+                  width: width,
+                ),
+                Positioned(
+                  top: height * 0.07,
+                  right: width * 0.03,
+                  left: width * 0.03,
+                  child: SearchBarRewardsScreen(
+                    searchController: searchController,
+                    searchFn: searchFn,
+                  ),
+                ),
+              ],
+            ),
+            Text("Yes"),
+          ],
         ),
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -9,7 +8,7 @@ import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../models/user_profile_model.dart';
-import '../../../shared/services/user_firestore_service.dart';
+import '../../../shared/services/user_profile_service.dart';
 import 'widgets/edit_picture.dart';
 import 'widgets/user_fields.dart';
 
@@ -24,14 +23,12 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final UserFirestoreService _userService =
-      GetIt.instance<UserFirestoreService>();
+  final UserProfileService _userProfileService =
+      GetIt.instance<UserProfileService>();
   late TextEditingController displayNameController,
       emailController,
       genderController,
       numberController;
-  User? user;
-  String? photoURL;
 
   @override
   void initState() {
@@ -40,32 +37,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     emailController = TextEditingController();
     genderController = TextEditingController();
     numberController = TextEditingController();
-    getUserInfo();
-  }
-
-  void getUserInfo() async {
-    user = _userService.getCurrentUser();
-    photoURL = _userService.getCurrentUserPhotoURL();
-
-    print("Current User: ${user?.uid}");
-    print("Photo URL: $photoURL");
-
-    UserProfileModel? userProfile = await _userService.getUserProfile();
-    if (userProfile != null) {
-      setState(() {
-        displayNameController.text = user?.displayName ?? "";
-        emailController.text = user?.email ?? "";
-        genderController.text = userProfile.gender ?? "";
-        numberController.text = userProfile.phoneNumber ?? "";
-
-        print("Name: ${displayNameController.text}");
-        print("Email: ${emailController.text}");
-        print("Gender: ${genderController.text}");
-        print("Phone Number: ${numberController.text}");
-      });
-    } else {
-      print("UserProfile is null");
-    }
+    _userProfileService.loadUserProfile();
   }
 
   @override
@@ -110,35 +82,52 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           bottom: height * 0.07,
         ),
         child: Center(
-          child: Column(
-            children: [
-              EditPictureProfileScreen(photoURL: photoURL),
-              const Divider(thickness: 0.5),
-              Gap(height * 0.01),
-              UserFieldsProfileScreen(
-                displayName: displayNameController,
-                email: emailController,
-                gender: genderController,
-                number: numberController,
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: InkWell(
-                    onTap: () {
-                      onLogoutClick(context);
-                    },
-                    child: Text(
-                      "Log out",
-                      style: EcoPointsTextStyles.redTextStyle(
-                        size: width * 0.04,
-                        weight: FontWeight.w600,
+          child: ValueListenableBuilder<UserProfileModel?>(
+            valueListenable: _userProfileService.userProfileNotifier,
+            builder: (context, userProfile, _) {
+              if (userProfile == null) {
+                //TODO: Add shimmer loading
+                return const CircularProgressIndicator();
+              }
+
+              displayNameController.text = userProfile.displayName ?? "";
+              emailController.text = userProfile.email ?? "";
+              genderController.text = userProfile.gender ?? "";
+              numberController.text = userProfile.phoneNumber ?? "";
+              String? photoURL = userProfile.customPictureUrl ??
+                  userProfile.originalPictureUrl;
+
+              return Column(
+                children: [
+                  EditPictureProfileScreen(photoURL: photoURL),
+                  const Divider(thickness: 0.5),
+                  Gap(height * 0.01),
+                  UserFieldsProfileScreen(
+                    displayName: displayNameController,
+                    email: emailController,
+                    gender: genderController,
+                    number: numberController,
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: InkWell(
+                        onTap: () {
+                          onLogoutClick(context);
+                        },
+                        child: Text(
+                          "Log out",
+                          style: EcoPointsTextStyles.redTextStyle(
+                            size: width * 0.04,
+                            weight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ),
       ),

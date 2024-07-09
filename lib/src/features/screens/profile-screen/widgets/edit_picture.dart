@@ -1,24 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../../shared/services/user_profile_service.dart';
+import 'edit_picture_dialog.dart';
+import 'preview_picture.dart';
 
-class EditPictureProfileScreen extends StatelessWidget {
+class EditPictureProfileScreen extends StatefulWidget {
   final String? photoURL;
   const EditPictureProfileScreen({super.key, required this.photoURL});
+
+  @override
+  State<EditPictureProfileScreen> createState() =>
+      _EditPictureProfileScreenState();
+}
+
+class _EditPictureProfileScreenState extends State<EditPictureProfileScreen> {
+  final UserProfileService _userProfileService =
+      GetIt.instance<UserProfileService>();
+
+  Future<void> _chooseFromLibrary() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      _navigateToPreviewScreen(pickedFile);
+    }
+  }
+
+  Future<void> _takePhoto() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      _navigateToPreviewScreen(pickedFile);
+    }
+  }
+
+  void _removeCurrentPicture() async {
+    await _userProfileService.removeCurrentUserPicture();
+  }
+
+  void _navigateToPreviewScreen(XFile imageFile) {
+    //TODO Change to gorouter
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PreviewPictureScreen(
+          imageFile: imageFile,
+          onTakePhoto: _takePhoto,
+          onSave: () async {
+            Navigator.pop(context);
+            await _userProfileService.updateUserProfilePicture(imageFile.path);
+          },
+        ),
+      ),
+    );
+  }
+
+  void _showEditPictureDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return EditPictureBottomDialog(
+          onChooseFromLibrary: _chooseFromLibrary,
+          onTakePhoto: _takePhoto,
+          onRemoveCurrentPicture: _removeCurrentPicture,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    print("PHOTO URLLLLLLLLLLLLLLLL $photoURL");
-
     return Column(
       children: [
-        photoURL != null && photoURL!.isNotEmpty
+        widget.photoURL != null && widget.photoURL!.isNotEmpty
             ? CircleAvatar(
-                backgroundImage: NetworkImage(photoURL!),
+                backgroundImage: NetworkImage(widget.photoURL!),
                 backgroundColor: Colors.transparent,
                 radius: width * 0.1,
               )
@@ -30,11 +92,14 @@ class EditPictureProfileScreen extends StatelessWidget {
                 ),
               ),
         Gap(height * 0.01),
-        Text(
-          "Edit picture",
-          style: EcoPointsTextStyles.darkGreenTextStyle(
-            size: width * 0.035,
-            weight: FontWeight.w500,
+        GestureDetector(
+          onTap: () => _showEditPictureDialog(),
+          child: Text(
+            "Edit picture",
+            style: EcoPointsTextStyles.darkGreenTextStyle(
+              size: width * 0.035,
+              weight: FontWeight.w500,
+            ),
           ),
         ),
       ],
