@@ -50,6 +50,7 @@ class CustomTextFormField extends StatelessWidget {
         weight: FontWeight.w500,
       ),
       decoration: InputDecoration(
+        isDense: true,
         hintText: hintText,
         hintStyle: EcoPointsTextStyles.grayTextStyle(
           size: 16.0,

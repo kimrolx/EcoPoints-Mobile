@@ -1,6 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+
+import '../../../../models/recycling_log_model.dart';
+import '../../../../shared/services/recycling_log_service.dart';
 
 class MobileScannerQRScreen extends StatefulWidget {
   final MobileScannerController controller;
@@ -17,7 +21,7 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
   Widget build(BuildContext context) {
     return MobileScanner(
       controller: widget.controller,
-      onDetect: (capture) {
+      onDetect: (capture) async {
         if (_isProcessing) return;
 
         setState(() {
@@ -29,6 +33,7 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
         for (final barcode in barcodes) {
           print('Barcode found! ${barcode.rawValue}');
         }
+
         if (image != null) {
           showDialog(
             context: context,
@@ -43,7 +48,7 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
               );
             },
           ).then((_) {
-            Future.delayed(const Duration(seconds: 5), () {
+            Future.delayed(const Duration(seconds: 7), () {
               setState(() {
                 _isProcessing = false;
               });
@@ -51,12 +56,25 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
           });
         } else {
           print("No image found");
-          Future.delayed(const Duration(seconds: 5), () {
+          Future.delayed(const Duration(seconds: 7), () {
             setState(() {
               _isProcessing = false;
             });
           });
         }
+
+        // Add points whenever a QR code is scanned
+        RecyclingLogService recyclingLogService =
+            GetIt.instance<RecyclingLogService>();
+
+        RecyclingLogModel newLog = RecyclingLogModel(
+          dateTime: DateTime.now(),
+          bottlesRecycled: 10,
+          pointsGained: 21.52,
+        );
+
+        await recyclingLogService.addRecyclingLog(newLog);
+        print("Recycling log added and user points updated.");
       },
     );
   }

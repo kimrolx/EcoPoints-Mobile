@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../models/user_profile_model.dart';
 
 class UserFirestoreService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   User? getCurrentUser() {
     return _firebaseAuth.currentUser;
@@ -36,13 +40,13 @@ class UserFirestoreService {
           email: user.email,
           gender: null,
           phoneNumber: null,
+          customPictureUrl: null,
+          originalPictureUrl: user.photoURL,
           points: 0.0,
           targetPoints: 0.0,
           targetDate: null,
         );
         await userDoc.set(userProfile.toMap());
-        await userDoc.collection('recyclingLogs').doc('logId').set({});
-        print('User profile created for ${user.uid}');
       } else {
         print('User profile already exists for ${user.uid}');
       }
@@ -58,20 +62,34 @@ class UserFirestoreService {
       DocumentSnapshot doc =
           await _firestore.collection('users').doc(user.uid).get();
       if (doc.exists) {
-        return UserProfileModel.fromMap(doc.data() as Map<String, dynamic>);
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+        return UserProfileModel.fromMap(data ?? {});
       }
     }
     return null;
   }
 
-  //* Update user profile
-  Future<void> updateUserProfile(UserProfileModel userProfile) async {
+  //* Update user profile picture
+  Future<void> updateUserProfilePicture(String userId, String imagePath) async {
+    File file = File(imagePath);
+    String storagePath =
+        'profile_pictures/$userId/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    TaskSnapshot uploadTask = await _storage.ref(storagePath).putFile(file);
+    String downloadURL = await uploadTask.ref.getDownloadURL();
+
+    await _firestore.collection('users').doc(userId).update({
+      'customPictureUrl': downloadURL,
+    });
+  }
+
+  //* Remove current user profile picture, restore to default, and delete the custom photo from Firebase Storage
+  Future<void> removeCurrentUserPicture() async {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {
-      await _firestore
-          .collection('users')
-          .doc(user.uid)
-          .update(userProfile.toMap());
+      DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
+      await userDoc.update({
+        'customPictureUrl': null,
+      });
     }
   }
 

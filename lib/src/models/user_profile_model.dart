@@ -4,6 +4,8 @@ class UserProfileModel {
   final String? email;
   final String? gender;
   final String? phoneNumber;
+  final String? customPictureUrl;
+  final String? originalPictureUrl;
   double points;
   double? targetPoints;
   DateTime? targetDate;
@@ -14,6 +16,8 @@ class UserProfileModel {
     this.email,
     this.gender,
     this.phoneNumber,
+    this.customPictureUrl,
+    this.originalPictureUrl,
     required this.points,
     this.targetPoints,
     this.targetDate,
@@ -26,6 +30,8 @@ class UserProfileModel {
       'email': email,
       'gender': gender,
       'phoneNumber': phoneNumber,
+      'photoUrl': customPictureUrl,
+      'originalPictureUrl': originalPictureUrl,
       'points': points,
       'targetPoints': targetPoints,
       'targetDate': targetDate?.toIso8601String(),
@@ -39,6 +45,8 @@ class UserProfileModel {
       email: map['email'],
       gender: map['gender'],
       phoneNumber: map['phoneNumber'],
+      customPictureUrl: map['customPictureUrl'],
+      originalPictureUrl: map['originalPictureUrl'],
       points: (map['points'] is int)
           ? (map['points'] as int).toDouble()
           : map['points'] as double,
