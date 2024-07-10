@@ -82,7 +82,28 @@ class UserFirestoreService {
     });
   }
 
-  //* Remove current user profile picture, restore to default, and delete the custom photo from Firebase Storage
+  //* Update user gender
+  Future<void> updateUserGender(String gender) async {
+    User? user = _firebaseAuth.currentUser;
+    if (user != null) {
+      await _firestore.collection('users').doc(user.uid).update({
+        'gender': gender,
+      });
+    }
+  }
+
+  //* Update user phone number
+  Future<void> updateUserPhoneNumber(String phoneNumber) async {
+    User? user = _firebaseAuth.currentUser;
+    if (user != null) {
+      await _firestore.collection('users').doc(user.uid).update({
+        'phoneNumber': phoneNumber,
+      });
+    }
+  }
+
+  //* Remove current user profile picture, restore to default.
+  //TODO: delete picture from storage
   Future<void> removeCurrentUserPicture() async {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {

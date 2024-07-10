@@ -30,6 +30,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       genderController,
       numberController;
 
+  late FocusNode numberFn;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +39,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     emailController = TextEditingController();
     genderController = TextEditingController();
     numberController = TextEditingController();
+    numberFn = FocusNode();
     _userProfileService.loadUserProfile();
   }
 
@@ -46,6 +49,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     emailController.dispose();
     genderController.dispose();
     numberController.dispose();
+    numberFn.dispose();
     super.dispose();
   }
 
@@ -55,7 +59,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: EcoPointsColors.lightGray,
+      backgroundColor: EcoPointsColors.white,
       appBar: AppBar(
         backgroundColor: EcoPointsColors.darkGreen,
         leading: IconButton(
@@ -100,13 +104,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               return Column(
                 children: [
                   EditPictureProfileScreen(photoURL: photoURL),
-                  const Divider(thickness: 0.5),
+                  const Divider(thickness: 0.5, color: EcoPointsColors.black),
                   Gap(height * 0.01),
                   UserFieldsProfileScreen(
-                    displayName: displayNameController,
-                    email: emailController,
-                    gender: genderController,
-                    number: numberController,
+                    displayNameController: displayNameController,
+                    emailController: emailController,
+                    genderController: genderController,
+                    numberController: numberController,
+                    numberFn: numberFn,
                   ),
                   Expanded(
                     child: Align(
@@ -140,6 +145,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       future: Future.delayed(const Duration(seconds: 1)).then((_) async {
         await AuthController.I.logout();
       }),
+      prompt: "Logging out...",
     );
   }
 }

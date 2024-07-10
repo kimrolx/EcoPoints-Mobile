@@ -27,6 +27,7 @@ class UserProfileService extends ChangeNotifier {
     notifyListeners();
   }
 
+  //* Function to update user points target
   Future<void> updateUserProfileTarget(
       double? targetPoints, DateTime? targetDate) async {
     User? user = _userService.getCurrentUser();
@@ -37,6 +38,25 @@ class UserProfileService extends ChangeNotifier {
     }
   }
 
+  //* Function to update user gender
+  Future<void> updateUserGender(String gender) async {
+    User? user = _userService.getCurrentUser();
+    if (user != null) {
+      await _userService.updateUserGender(gender);
+      await loadUserProfile();
+    }
+  }
+
+  //* Function to update user phone number
+  Future<void> updateUserPhoneNumber(String phoneNumber) async {
+    User? user = _userService.getCurrentUser();
+    if (user != null) {
+      await _userService.updateUserPhoneNumber(phoneNumber);
+      await loadUserProfile();
+    }
+  }
+
+  //* Function to reset user points target
   Future<void> resetTargets() async {
     User? user = _userService.getCurrentUser();
     if (user != null) {
@@ -45,6 +65,7 @@ class UserProfileService extends ChangeNotifier {
     }
   }
 
+  //* Function to update user profile picture
   Future<void> updateUserProfilePicture(String imagePath) async {
     User? user = _userService.getCurrentUser();
     if (user != null) {
@@ -53,6 +74,7 @@ class UserProfileService extends ChangeNotifier {
     }
   }
 
+  //* Function to remove user profile picture
   Future<void> removeCurrentUserPicture() async {
     User? user = _userService.getCurrentUser();
     if (user != null) {

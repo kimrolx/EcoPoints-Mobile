@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../components/fields/search-bar-field/custom_search_bar_field.dart';
+import '../../../../components/fields/custom_search_bar_field.dart';
 
 class SearchBarRewardsScreen extends StatelessWidget {
   final TextEditingController searchController;
