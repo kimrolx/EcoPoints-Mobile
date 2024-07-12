@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 import '../buttons/custom_elevated_button.dart';
 import '../constants/colors/ecopoints_colors.dart';
@@ -42,11 +43,35 @@ class SuccessfulScanDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            "assets/images/successful-recycle-image.png",
-            height: height * 0.15,
-            width: width * 0.3,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                height: height * 0.11,
+              ),
+              SizedBox(
+                height: height * 0.05,
+                width: width * 0.4,
+                child: Lottie.asset(
+                  "assets/animations/recycle-animation.json",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: height * 0.055,
+                child: SizedBox(
+                  height: height * 0.05,
+                  width: width * 0.3,
+                  child: Lottie.asset(
+                    "assets/animations/star-animation.json",
+                    height: height * 0.5,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ],
           ),
+          Gap(height * 0.15),
           Text(
             "Good job!",
             style: EcoPointsTextStyles.lightGreenTextStyle(
@@ -75,7 +100,7 @@ class SuccessfulScanDialog extends StatelessWidget {
               ],
             ),
           ),
-          Gap(height * 0.05),
+          Gap(height * 0.025),
           CustomElevatedButton(
             borderRadius: 50,
             width: width,
