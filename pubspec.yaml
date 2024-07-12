@@ -29,6 +29,7 @@ dependencies:
   image_picker: ^1.1.2
   firebase_storage: ^12.1.0
   intl_phone_field: ^3.2.0
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -41,3 +42,4 @@ flutter:
     - assets/logos/
     - assets/icons/
     - assets/images/
+    - assets/animations/

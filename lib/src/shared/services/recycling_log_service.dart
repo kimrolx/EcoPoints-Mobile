@@ -10,6 +10,8 @@ class RecyclingLogService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final UserProfileService _userProfileService =
       GetIt.instance<UserProfileService>();
+  final CollectionReference _recyclingLogsCollection =
+      FirebaseFirestore.instance.collection('recyclingLogs');
 
   Future<void> addRecyclingLog(RecyclingLogModel log) async {
     User? user = _firebaseAuth.currentUser;
@@ -67,5 +69,10 @@ class RecyclingLogService {
       print("No user is currently logged in.");
     }
     return Stream.value([]);
+  }
+
+  Future<void> refreshRecyclingLogs() async {
+    //TODO: fetch latest data and store in local cache???
+    await _recyclingLogsCollection.get();
   }
 }

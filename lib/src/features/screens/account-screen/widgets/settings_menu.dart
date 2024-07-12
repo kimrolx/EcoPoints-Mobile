@@ -3,8 +3,6 @@ import 'package:gap/gap.dart';
 
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
-import '../../../../components/dialogs/loading_dialog.dart';
-import '../../../../controllers/auth_controller.dart';
 import '../../../../models/setting_option_model.dart';
 
 class SettingsMenuAccountScreen extends StatelessWidget {
@@ -68,15 +66,6 @@ class SettingsMenuAccountScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void onLogoutClick(BuildContext context) {
-    WaitingDialog.show(
-      context,
-      future: Future.delayed(const Duration(seconds: 1)).then((_) async {
-        await AuthController.I.logout();
-      }),
     );
   }
 }

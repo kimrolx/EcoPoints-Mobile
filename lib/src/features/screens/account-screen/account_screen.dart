@@ -107,8 +107,9 @@ class _AccountScreenState extends State<AccountScreen> {
     GlobalRouter.I.router.push(EditProfileScreen.route);
   }
 
-  void onRecyclingLogClick() {
+  onRecyclingLogClick() {
     GlobalRouter.I.router
-        .push('${AccountScreen.path}/${RecyclingLogScreen.route}');
+        .push("${AccountScreen.route}/${RecyclingLogScreen.route}");
+    print("Navigating to: ${AccountScreen.route}/${RecyclingLogScreen.route}");
   }
 }
