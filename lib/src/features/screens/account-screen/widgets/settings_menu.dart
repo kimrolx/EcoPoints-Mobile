@@ -18,7 +18,7 @@ class SettingsMenuAccountScreen extends StatelessWidget {
 
     return Container(
       width: width,
-      height: height * 0.718,
+      height: height * 0.7,
       decoration: BoxDecoration(
         color: EcoPointsColors.white,
         borderRadius: BorderRadius.circular(10),
