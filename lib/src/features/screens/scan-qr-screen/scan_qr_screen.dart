@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 
 import 'widgets/color_filter_background.dart';
 import 'widgets/instruction_text.dart';
@@ -18,23 +17,6 @@ class ScanQRScreen extends StatefulWidget {
 }
 
 class _ScanQRScreenState extends State<ScanQRScreen> {
-  final MobileScannerController _controller = MobileScannerController(
-    detectionSpeed: DetectionSpeed.noDuplicates,
-    returnImage: true,
-  );
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.start();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -45,7 +27,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
     return Material(
       child: Stack(
         children: [
-          MobileScannerQRScreen(controller: _controller),
+          const MobileScannerQRScreen(),
           ColorFilterBackgroundQRScreen(
             cutoutSize: cutoutSize,
             width: width,
