@@ -54,67 +54,75 @@ class _HomeScreenState extends State<HomeScreen> {
           if (userProfile == null) {
             return const Center(child: CircularProgressIndicator());
           }
-          return SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    SizedBox(
-                      height: height * 0.45,
-                      width: width,
-                    ),
-                    const TrashcanBackgroundHomeScreen(),
-                    Positioned(
-                      right: width * 0.05,
-                      child: SafeArea(
-                        child: InkWell(
-                          onTap: () {
-                            bottomSheetProvider?.showBottomSheet(context);
-                          },
-                          child: SizedBox(
-                            width: 35,
-                            height: 35,
-                            child: Center(
-                              child: Text(
-                                "...",
-                                style: EcoPointsTextStyles.whiteTextStyle(
-                                  size: width * 0.07,
-                                  weight: FontWeight.w500,
+          return RefreshIndicator(
+            onRefresh: () async {
+              await _userProfileService.loadUserProfile();
+              setState(() {
+                //* Refresh the UI
+              });
+            },
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      SizedBox(
+                        height: height * 0.45,
+                        width: width,
+                      ),
+                      const TrashcanBackgroundHomeScreen(),
+                      Positioned(
+                        right: width * 0.05,
+                        child: SafeArea(
+                          child: InkWell(
+                            onTap: () {
+                              bottomSheetProvider?.showBottomSheet(context);
+                            },
+                            child: SizedBox(
+                              width: 35,
+                              height: 35,
+                              child: Center(
+                                child: Text(
+                                  "...",
+                                  style: EcoPointsTextStyles.whiteTextStyle(
+                                    size: width * 0.07,
+                                    weight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      top: height * 0.12,
-                      left: width * 0.16,
-                      right: width * 0.16,
-                      child: PointsIndicatorHomeScreen(
-                        points: userProfile.points,
-                        targetPoints: userProfile.targetPoints,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-                  child: userProfile.targetPoints != null &&
-                          userProfile.targetPoints != 0
-                      ? const TargetPointsDateHomeScreen()
-                      : GoalSetterHomeScreen(
-                          onUpdate: _userProfileService.loadUserProfile,
-                          displayBottomSheet: () {
-                            bottomSheetProvider?.showBottomSheet(context);
-                          },
+                      Positioned(
+                        top: height * 0.12,
+                        left: width * 0.16,
+                        right: width * 0.16,
+                        child: PointsIndicatorHomeScreen(
+                          points: userProfile.points,
+                          targetPoints: userProfile.targetPoints,
                         ),
-                ),
-                Gap(height * 0.025),
-                const TransactionsHomeScreen(),
-              ],
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                    child: userProfile.targetPoints != null &&
+                            userProfile.targetPoints != 0
+                        ? const TargetPointsDateHomeScreen()
+                        : GoalSetterHomeScreen(
+                            onUpdate: _userProfileService.loadUserProfile,
+                            displayBottomSheet: () {
+                              bottomSheetProvider?.showBottomSheet(context);
+                            },
+                          ),
+                  ),
+                  Gap(height * 0.025),
+                  const TransactionsHomeScreen(),
+                ],
+              ),
             ),
           );
         },

@@ -36,6 +36,7 @@ class SettingsMenuAccountScreen extends StatelessWidget {
             Gap(height * 0.02),
             Expanded(
               child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: settingsOptions.length,
                 itemBuilder: (context, index) {
                   final option = settingsOptions[index];
