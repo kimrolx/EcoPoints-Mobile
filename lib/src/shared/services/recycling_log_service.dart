@@ -51,7 +51,6 @@ class RecyclingLogService {
   Stream<List<RecyclingLogModel>> getRecyclingLogs() {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {
-      print("Listening to recycling logs for user: ${user.uid}");
       return _firestore
           .collection('users')
           .doc(user.uid)
@@ -60,7 +59,7 @@ class RecyclingLogService {
           .snapshots()
           .map((snapshot) {
         print(
-            "Recycling logs snapshot received: ${snapshot.docs.length} documents");
+            "Recycling logs snapshot received: ${snapshot.docs.length} documents for user ${user.uid}");
         return snapshot.docs
             .map((doc) => RecyclingLogModel.fromMap(doc.data()))
             .toList();

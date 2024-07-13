@@ -108,9 +108,16 @@ class UserFirestoreService {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {
       DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
-      await userDoc.update({
-        'customPictureUrl': null,
-      });
+      DocumentSnapshot userSnapshot = await userDoc.get();
+      String? customPictureUrl = userSnapshot['customPictureUrl'];
+
+      if (customPictureUrl != null && customPictureUrl.isNotEmpty) {
+        await _storage.refFromURL(customPictureUrl).delete();
+
+        await userDoc.update({
+          'customPictureUrl': null,
+        });
+      }
     }
   }
 

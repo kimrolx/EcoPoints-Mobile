@@ -42,7 +42,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
   List<String> routes = [
     HomeScreen.route,
     RewardsCatalogScreen.route,
-    AccountScreen.route,
+    PlaceholderScreen.route,
     AccountScreen.route
   ];
 
@@ -82,6 +82,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
       showBottomSheet: _displayBottomSheet,
       child: Scaffold(
         key: _scaffoldKey,
+        // body: widget.child,
         body: IndexedStack(
           index: index,
           children: const [
