@@ -64,12 +64,19 @@ class EcoPointsTextStyles {
     );
   }
 
-  static blackTextStyle({required double size, required FontWeight weight}) {
+  static blackTextStyle({
+    required double size,
+    required FontWeight weight,
+    TextDecoration? decoration,
+    Color? decorationColor,
+  }) {
     return GoogleFonts.poppins(
       textStyle: TextStyle(
         fontWeight: weight,
         fontSize: size,
         color: EcoPointsColors.black,
+        decoration: decoration,
+        decorationColor: decorationColor,
       ),
     );
   }

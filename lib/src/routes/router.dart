@@ -14,7 +14,9 @@ import '../features/screens/forgot_password_screen.dart';
 import '../features/screens/recycling-log-screen/recycling_log_screen.dart';
 import '../features/screens/register-screen/registration_screen.dart';
 import '../features/screens/rewards-catalog-screen/rewards_catalog_screen.dart';
+import '../features/screens/reward-details-screen/reward_details_screen.dart';
 import '../features/screens/scan-qr-screen/scan_qr_screen.dart';
+import '../models/reward_model.dart';
 
 class GlobalRouter {
   static void initialize() {
@@ -101,6 +103,15 @@ class GlobalRouter {
           name: EditProfileScreen.name,
           builder: (context, _) {
             return const EditProfileScreen();
+          },
+        ),
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
+          path: RewardDetailsScreen.route,
+          name: RewardDetailsScreen.name,
+          builder: (context, state) {
+            final RewardModel reward = state.extra as RewardModel;
+            return RewardDetailsScreen(reward: reward);
           },
         ),
         ShellRoute(
