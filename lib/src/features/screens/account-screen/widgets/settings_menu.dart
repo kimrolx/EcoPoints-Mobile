@@ -3,8 +3,6 @@ import 'package:gap/gap.dart';
 
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
-import '../../../../components/dialogs/loading_dialog.dart';
-import '../../../../controllers/auth_controller.dart';
 import '../../../../models/setting_option_model.dart';
 
 class SettingsMenuAccountScreen extends StatelessWidget {
@@ -18,7 +16,7 @@ class SettingsMenuAccountScreen extends StatelessWidget {
 
     return Container(
       width: width,
-      height: height * 0.718,
+      height: height * 0.7,
       decoration: BoxDecoration(
         color: EcoPointsColors.white,
         borderRadius: BorderRadius.circular(10),
@@ -38,6 +36,7 @@ class SettingsMenuAccountScreen extends StatelessWidget {
             Gap(height * 0.02),
             Expanded(
               child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: settingsOptions.length,
                 itemBuilder: (context, index) {
                   final option = settingsOptions[index];
@@ -68,15 +67,6 @@ class SettingsMenuAccountScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void onLogoutClick(BuildContext context) {
-    WaitingDialog.show(
-      context,
-      future: Future.delayed(const Duration(seconds: 1)).then((_) async {
-        await AuthController.I.logout();
-      }),
     );
   }
 }

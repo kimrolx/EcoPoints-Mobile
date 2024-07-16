@@ -1,19 +1,25 @@
-import 'package:ecopoints/src/components/constants/colors/ecopoints_colors.dart';
-import 'package:ecopoints/src/components/fields/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+
+import '../../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../../components/fields/custom_text_form_field.dart';
+import 'edit_gender.dart';
+import 'edit_phone_number.dart';
 
 class UserFieldsProfileScreen extends StatelessWidget {
-  final TextEditingController displayName;
-  final TextEditingController email;
-  final TextEditingController gender;
-  final TextEditingController number;
+  final TextEditingController displayNameController;
+  final TextEditingController emailController;
+  final TextEditingController genderController;
+  final TextEditingController numberController;
+  final FocusNode numberFn;
   const UserFieldsProfileScreen({
     super.key,
-    required this.displayName,
-    required this.email,
-    required this.gender,
-    required this.number,
+    required this.displayNameController,
+    required this.emailController,
+    required this.genderController,
+    required this.numberController,
+    required this.numberFn,
   });
 
   @override
@@ -21,12 +27,23 @@ class UserFieldsProfileScreen extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    print("GEnder: $gender Phone number: $number");
+    if (numberController.text.length > 3) {
+      numberController.text = numberController.text.substring(3);
+    }
 
-    return Card(
-      color: EcoPointsColors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 8.5,
+    return Container(
+      decoration: BoxDecoration(
+        color: EcoPointsColors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 0.5,
+            blurRadius: 20,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: width * 0.03,
@@ -38,29 +55,67 @@ class UserFieldsProfileScreen extends StatelessWidget {
             CustomTextFormField(
               labelText: "Name",
               hintText: "Name",
-              controller: displayName,
+              controller: displayNameController,
               readOnly: true,
             ),
             Gap(height * 0.0125),
-            CustomTextFormField(
-              labelText: "Gender",
-              hintText: "Gender",
-              controller: gender,
-              readOnly: true,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditGenderProfileScreen(
+                      genderController: genderController,
+                    ),
+                  ),
+                );
+              },
+              child: IgnorePointer(
+                child: CustomTextFormField(
+                  labelText: "Gender",
+                  hintText: "Gender",
+                  controller: genderController,
+                  readOnly: true,
+                ),
+              ),
             ),
             Gap(height * 0.0125),
             CustomTextFormField(
               labelText: "Email",
               hintText: "Email",
-              controller: email,
+              controller: emailController,
               readOnly: true,
             ),
             Gap(height * 0.0125),
-            CustomTextFormField(
-              labelText: "Phone Number",
-              hintText: "Phone Number",
-              controller: number,
-              readOnly: true,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditPhoneNumberProfileScreen(
+                      numberController: numberController,
+                      numberFn: numberFn,
+                    ),
+                  ),
+                );
+              },
+              child: IgnorePointer(
+                child: IntlPhoneField(
+                  initialCountryCode: 'PH',
+                  controller: numberController,
+                  focusNode: numberFn,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    hintText: "910 123 4567",
+                    hintStyle: const TextStyle(color: EcoPointsColors.darkGray),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

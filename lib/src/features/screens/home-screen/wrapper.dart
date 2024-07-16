@@ -9,6 +9,7 @@ import '../../../providers/bottom_sheet_provider.dart';
 import '../../../routes/router.dart';
 import '../../../shared/services/user_firestore_service.dart';
 import '../account-screen/account_screen.dart';
+import '../placeholder_screen.dart';
 import '../rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../scan-qr-screen/scan_qr_screen.dart';
 import 'home_screen.dart';
@@ -41,7 +42,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
   List<String> routes = [
     HomeScreen.route,
     RewardsCatalogScreen.route,
-    AccountScreen.route,
+    PlaceholderScreen.route,
     AccountScreen.route
   ];
 
@@ -81,12 +82,13 @@ class _HomeWrapperState extends State<HomeWrapper> {
       showBottomSheet: _displayBottomSheet,
       child: Scaffold(
         key: _scaffoldKey,
+        // body: widget.child,
         body: IndexedStack(
           index: index,
           children: const [
             HomeScreen(),
             RewardsCatalogScreen(),
-            AccountScreen(),
+            PlaceholderScreen(),
             AccountScreen(),
           ],
         ),
@@ -117,8 +119,8 @@ class _HomeWrapperState extends State<HomeWrapper> {
               label: "Rewards",
             ),
             Icon(
-              CupertinoIcons.qrcode,
-              semanticLabel: "QR Code",
+              CupertinoIcons.leaf_arrow_circlepath,
+              semanticLabel: "Placeholder",
               color: index == 2
                   ? EcoPointsColors.lightGray
                   : EcoPointsColors.black,

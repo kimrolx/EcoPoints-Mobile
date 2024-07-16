@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../controllers/auth_controller.dart';
 import '../enums/enum.dart';
 import '../features/screens/account-screen/account_screen.dart';
+import '../features/screens/placeholder_screen.dart';
 import '../features/screens/profile-screen/profile_screen.dart';
 import '../features/screens/home-screen/home_screen.dart';
 import '../features/screens/home-screen/wrapper.dart';
@@ -136,19 +137,23 @@ class GlobalRouter {
             ),
             GoRoute(
               parentNavigatorKey: _shellNavigatorKey,
+              path: PlaceholderScreen.route,
+              name: PlaceholderScreen.name,
+              builder: (context, _) {
+                return const PlaceholderScreen();
+              },
+            ),
+            GoRoute(
+              parentNavigatorKey: _shellNavigatorKey,
               path: AccountScreen.route,
               name: AccountScreen.name,
-              builder: (context, _) {
-                return const AccountScreen();
-              },
+              builder: (context, state) => const AccountScreen(),
               routes: [
                 GoRoute(
-                  parentNavigatorKey: _shellNavigatorKey,
+                  parentNavigatorKey: _rootNavigatorKey,
                   path: RecyclingLogScreen.route,
                   name: RecyclingLogScreen.name,
-                  builder: (context, _) {
-                    return const RecyclingLogScreen();
-                  },
+                  builder: (context, state) => const RecyclingLogScreen(),
                 ),
               ],
             ),

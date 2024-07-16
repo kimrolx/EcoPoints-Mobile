@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../../components/dialogs/loading_dialog.dart';
 import '../../../../shared/services/user_profile_service.dart';
 import 'edit_picture_dialog.dart';
 import 'preview_picture.dart';
@@ -37,8 +38,15 @@ class _EditPictureProfileScreenState extends State<EditPictureProfileScreen> {
     }
   }
 
-  void _removeCurrentPicture() async {
-    await _userProfileService.removeCurrentUserPicture();
+  _removeCurrentPicture() async {
+    await WaitingDialog.show(
+      context,
+      future: Future.delayed(const Duration(seconds: 2)).then(
+        (_) async {
+          await _userProfileService.removeCurrentUserPicture();
+        },
+      ),
+    );
   }
 
   void _navigateToPreviewScreen(XFile imageFile) {
@@ -49,10 +57,7 @@ class _EditPictureProfileScreenState extends State<EditPictureProfileScreen> {
         builder: (context) => PreviewPictureScreen(
           imageFile: imageFile,
           onTakePhoto: _takePhoto,
-          onSave: () async {
-            Navigator.pop(context);
-            await _userProfileService.updateUserProfilePicture(imageFile.path);
-          },
+          onSave: () => onSave(context, imageFile),
         ),
       ),
     );
@@ -103,6 +108,18 @@ class _EditPictureProfileScreenState extends State<EditPictureProfileScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  onSave(BuildContext context, XFile imageFile) async {
+    await WaitingDialog.show(
+      context,
+      future: Future.delayed(const Duration(seconds: 2)).then(
+        (_) async {
+          Navigator.pop(context);
+          await _userProfileService.updateUserProfilePicture(imageFile.path);
+        },
+      ),
     );
   }
 }

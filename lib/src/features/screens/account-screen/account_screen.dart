@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
-import '../../../components/dialogs/loading_dialog.dart';
-import '../../../controllers/auth_controller.dart';
 import '../../../models/setting_option_model.dart';
 import '../../../models/user_profile_model.dart';
 import '../../../routes/router.dart';
@@ -109,18 +107,8 @@ class _AccountScreenState extends State<AccountScreen> {
     GlobalRouter.I.router.push(EditProfileScreen.route);
   }
 
-  void onRecyclingLogClick() {
+  onRecyclingLogClick() {
     GlobalRouter.I.router
-        .push('${AccountScreen.path}/${RecyclingLogScreen.route}');
-  }
-
-  void onLogoutClick(BuildContext context) {
-    WaitingDialog.show(
-      context,
-      future: Future.delayed(const Duration(seconds: 1)).then((_) async {
-        await AuthController.I.logout();
-      }),
-      prompt: "Logging out...",
-    );
+        .push("${AccountScreen.route}/${RecyclingLogScreen.route}");
   }
 }

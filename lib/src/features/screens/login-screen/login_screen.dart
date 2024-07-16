@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
@@ -50,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: EcoPointsColors.white,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: SizedBox(
@@ -110,11 +112,12 @@ class _LoginScreenState extends State<LoginScreen> {
     if (formKey.currentState?.validate() ?? false) {
       await WaitingDialog.show(
         context,
-        future: Future.delayed(const Duration(seconds: 2)).then(
+        future: Future.delayed(const Duration(seconds: 1)).then(
           (_) async {
             AuthController.I.login(username.text.trim(), password.text.trim());
           },
         ),
+        prompt: "Give us a sec...",
       );
     }
   }
