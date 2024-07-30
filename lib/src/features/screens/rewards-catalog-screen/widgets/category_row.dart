@@ -22,7 +22,7 @@ class CategoryRowRewardsScreen extends StatelessWidget {
           final category = categories[index];
           return Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: width * 0.1, vertical: height * 0.012),
+                horizontal: width * 0.107, vertical: height * 0.012),
             child: Column(
               children: [
                 InkWell(

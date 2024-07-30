@@ -67,7 +67,7 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
                               style: EcoPointsTextStyles.blackTextStyle(
                                   size: width * 0.04, weight: FontWeight.w500)),
                           const Spacer(),
-                          Text("${reward.requiredPoint}pts",
+                          Text("${reward.requiredPoint.toStringAsFixed(2)}pts",
                               style: EcoPointsTextStyles.lightGreenTextStyle(
                                   size: width * 0.04, weight: FontWeight.w500)),
                         ],
@@ -79,15 +79,15 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "Claim at LOCATION",
+                            reward.campus,
                             style: EcoPointsTextStyles.blackTextStyle(
-                                size: width * 0.03, weight: FontWeight.normal),
+                                size: width * 0.035, weight: FontWeight.normal),
                           ),
                           const Spacer(),
                           Text(
                             "Ends $formattedExpiryDate",
                             style: EcoPointsTextStyles.grayTextStyle(
-                                size: width * 0.03, weight: FontWeight.normal),
+                                size: width * 0.035, weight: FontWeight.normal),
                           ),
                         ],
                       ),
