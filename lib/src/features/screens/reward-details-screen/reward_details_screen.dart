@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
+import '../../../components/buttons/custom_elevated_button.dart';
 import '../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../models/reward_model.dart';
 import '../../../shared/utils/date_formatter_util.dart';
+import 'widgets/confirm_claim_dialog.dart';
 import 'widgets/picture_stack.dart';
+import 'widgets/text_details.dart';
 
 class RewardDetailsScreen extends StatelessWidget {
   final RewardModel reward;
@@ -14,11 +19,18 @@ class RewardDetailsScreen extends StatelessWidget {
 
   const RewardDetailsScreen({super.key, required this.reward});
 
+  void _showConfirmClaimDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => const ConfirmClaimDialog(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    // Format the expiry date
     String formattedExpiryDate =
         DateFormatterUtil.formatDateWithoutTime(reward.expiryDate);
 
@@ -28,29 +40,41 @@ class RewardDetailsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           PictureStackRewardDetailsScreen(reward: reward),
-          Text(
-            reward.rewardName,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: height * 0.02),
-          Text(
-            reward.rewardDescription,
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: height * 0.02),
-          Text(
-            "Points Required: ${reward.requiredPoint}",
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: height * 0.02),
-          Text(
-            "Stock: ${reward.rewardStock}",
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: height * 0.02),
-          Text(
-            "Expiry Date: $formattedExpiryDate",
-            style: TextStyle(fontSize: 16),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.03, vertical: height * 0.01),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                      child: TextDetailsRewardDetailsScreen(reward: reward)),
+                  Text(
+                    "Expires: $formattedExpiryDate",
+                    style: EcoPointsTextStyles.blackTextStyle(
+                        size: width * 0.035, weight: FontWeight.normal),
+                  ),
+                  Gap(height * 0.03),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: CustomElevatedButton(
+                      borderRadius: 7,
+                      width: width * 0.8,
+                      backgroundColor: EcoPointsColors.darkGreen,
+                      onPressed: () {
+                        _showConfirmClaimDialog(context);
+                      },
+                      child: Text(
+                        "Claim Reward",
+                        style: EcoPointsTextStyles.whiteTextStyle(
+                            size: width * 0.04, weight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
