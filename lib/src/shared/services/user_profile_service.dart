@@ -27,6 +27,18 @@ class UserProfileService extends ChangeNotifier {
     notifyListeners();
   }
 
+  //* Function to update user points in Firestore and locally
+  Future<void> updateUserPoints(double newPoints) async {
+    if (_userProfileNotifier.value != null) {
+      UserProfileModel updatedProfile = _userProfileNotifier.value!;
+      updatedProfile.points = newPoints;
+      await _userService.updateUserProfileFields(
+          updatedProfile.userId, {'points': newPoints});
+      _userProfileNotifier.value = updatedProfile;
+      await loadUserProfile();
+    }
+  }
+
   //* Function to update user points target
   Future<void> updateUserProfileTarget(
       double? targetPoints, DateTime? targetDate) async {

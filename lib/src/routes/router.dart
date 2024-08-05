@@ -16,7 +16,9 @@ import '../features/screens/register-screen/registration_screen.dart';
 import '../features/screens/rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../features/screens/reward-details-screen/reward_details_screen.dart';
 import '../features/screens/scan-qr-screen/scan_qr_screen.dart';
+import '../features/screens/transaction-receipt-screen/transaction_receipt_screen.dart';
 import '../models/reward_model.dart';
+import '../models/transaction_model.dart';
 
 class GlobalRouter {
   static void initialize() {
@@ -112,6 +114,16 @@ class GlobalRouter {
           builder: (context, state) {
             final RewardModel reward = state.extra as RewardModel;
             return RewardDetailsScreen(reward: reward);
+          },
+        ),
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
+          path: TransactionReceiptScreen.route,
+          name: TransactionReceiptScreen.name,
+          builder: (context, state) {
+            final TransactionModel transaction =
+                state.extra as TransactionModel;
+            return TransactionReceiptScreen(transaction: transaction);
           },
         ),
         ShellRoute(
