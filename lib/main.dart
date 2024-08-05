@@ -7,6 +7,7 @@ import 'src/controllers/auth_controller.dart';
 import 'src/routes/router.dart';
 import 'src/shared/services/recycling_log_service.dart';
 import 'src/shared/services/rewards_firestore_service.dart';
+import 'src/shared/services/transaction_service.dart';
 import 'src/shared/services/user_firestore_service.dart';
 import 'src/shared/services/user_profile_service.dart';
 import 'src/shared/utils/local_storage_util.dart';
@@ -31,6 +32,8 @@ void setupServices() {
   GetIt.instance.registerLazySingleton<RewardsService>(() => RewardsService());
   GetIt.instance
       .registerLazySingleton<RecyclingLogService>(() => RecyclingLogService());
+  GetIt.instance
+      .registerLazySingleton<TransactionService>(() => TransactionService());
   AuthController.initialize();
 }
 

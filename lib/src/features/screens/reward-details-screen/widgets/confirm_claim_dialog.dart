@@ -1,3 +1,4 @@
+import 'package:ecopoints/src/components/dialogs/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -5,14 +6,21 @@ import 'package:go_router/go_router.dart';
 import '../../../../components/buttons/custom_elevated_button.dart';
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../../models/transaction_model.dart';
+import '../../../../routes/router.dart';
+import '../../../../shared/services/transaction_service.dart';
+import '../../transaction-receipt-screen/transaction_receipt_screen.dart';
 
 class ConfirmClaimDialog extends StatelessWidget {
-  const ConfirmClaimDialog({super.key});
+  final TransactionModel transaction;
+  const ConfirmClaimDialog({super.key, required this.transaction});
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final TransactionService transactionService = TransactionService();
+
     return Dialog(
       child: Container(
         height: height * 0.4,
@@ -62,7 +70,7 @@ class ConfirmClaimDialog extends StatelessWidget {
                     context.pop();
                   },
                   child: Text(
-                    "Go back",
+                    "Cancel",
                     style: EcoPointsTextStyles.whiteTextStyle(
                       size: width * 0.04,
                       weight: FontWeight.w600,
@@ -72,7 +80,9 @@ class ConfirmClaimDialog extends StatelessWidget {
                 CustomElevatedButton(
                   borderRadius: 50,
                   backgroundColor: EcoPointsColors.darkGreen,
-                  onPressed: () {}, // TODO: Add confirm event handler
+                  onPressed: () {
+                    onConfirmClick(context, transactionService);
+                  },
                   child: Text(
                     "Confirm",
                     style: EcoPointsTextStyles.whiteTextStyle(
@@ -85,6 +95,20 @@ class ConfirmClaimDialog extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  onConfirmClick(
+      BuildContext context, TransactionService transactionService) async {
+    await WaitingDialog.show(
+      context,
+      future: Future.delayed(const Duration(seconds: 2)).then(
+        (_) async {
+          await transactionService.addTransaction(transaction);
+          GlobalRouter.I.router
+              .go(TransactionReceiptScreen.route, extra: transaction);
+        },
       ),
     );
   }

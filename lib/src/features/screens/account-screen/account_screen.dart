@@ -71,7 +71,8 @@ class _AccountScreenState extends State<AccountScreen> {
               String? displayName =
                   userProfile.displayName ?? "No Display Name";
               String photoURL = (userProfile.customPictureUrl ??
-                  userProfile.originalPictureUrl)!;
+                  userProfile.originalPictureUrl ??
+                  "https://via.placeholder.com/150");
 
               return Column(
                 children: [

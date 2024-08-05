@@ -46,6 +46,24 @@ class RewardModel {
   }
 
   factory RewardModel.fromMap(Map<String, dynamic> map) {
+    DateTime parsedExpiryDate;
+    if (map['expiryDate'] is String) {
+      parsedExpiryDate = DateTime.parse(map['expiryDate']);
+    } else if (map['expiryDate'] is Timestamp) {
+      parsedExpiryDate = (map['expiryDate'] as Timestamp).toDate();
+    } else {
+      parsedExpiryDate = DateTime.now();
+    }
+
+    DateTime parsedCreatedAt;
+    if (map['createdAt'] is Timestamp) {
+      parsedCreatedAt = (map['createdAt'] as Timestamp).toDate();
+    } else if (map['createdAt'] is String) {
+      parsedCreatedAt = DateTime.parse(map['createdAt']);
+    } else {
+      parsedCreatedAt = DateTime.now();
+    }
+
     return RewardModel(
       category: map['category'] ?? "",
       rewardID: map['rewardID'] ?? "",
@@ -58,9 +76,8 @@ class RewardModel {
           ? (map['requiredPoint'] as int).toDouble()
           : map['requiredPoint'] ?? 0.00,
       rewardStock: map['rewardStock'] ?? 0,
-      expiryDate:
-          DateTime.parse(map['expiryDate'] ?? DateTime.now().toIso8601String()),
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
+      expiryDate: parsedExpiryDate,
+      createdAt: parsedCreatedAt,
       vendorID: map['vendorID'] ?? "",
     );
   }

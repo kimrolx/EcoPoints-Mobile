@@ -69,6 +69,11 @@ class UserFirestoreService {
     return null;
   }
 
+  Future<void> updateUserProfileFields(
+      String userId, Map<String, dynamic> fields) async {
+    await _firestore.collection("users").doc(userId).update(fields);
+  }
+
   //* Update user profile picture
   Future<void> updateUserProfilePicture(String userId, String imagePath) async {
     File file = File(imagePath);

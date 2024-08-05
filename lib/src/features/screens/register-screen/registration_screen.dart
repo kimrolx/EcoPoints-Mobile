@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
@@ -54,6 +55,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: EcoPointsColors.white,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: SizedBox(

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class RecyclingLogModel {
   final DateTime dateTime;
   final int bottlesRecycled;
@@ -15,7 +17,7 @@ class RecyclingLogModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'dateTime': dateTime.toIso8601String(),
+      'dateTime': Timestamp.fromDate(dateTime),
       'bottlesRecycled': bottlesRecycled,
       'pointsGained': pointsGained,
       'oldPoints': oldPoints,
@@ -24,9 +26,17 @@ class RecyclingLogModel {
   }
 
   factory RecyclingLogModel.fromMap(Map<String, dynamic> map) {
+    DateTime parsedDateTime;
+    if (map['dateTime'] is Timestamp) {
+      parsedDateTime = (map['dateTime'] as Timestamp).toDate();
+    } else if (map['dateTime'] is String) {
+      parsedDateTime = DateTime.parse(map['dateTime']);
+    } else {
+      parsedDateTime = DateTime.now();
+    }
+
     return RecyclingLogModel(
-      dateTime:
-          DateTime.parse(map['dateTime'] ?? DateTime.now().toIso8601String()),
+      dateTime: parsedDateTime,
       bottlesRecycled: map['bottlesRecycled'] ?? 0,
       pointsGained: (map['pointsGained'] is int)
           ? (map['pointsGained'] as int).toDouble()
