@@ -1,4 +1,3 @@
-import 'package:ecopoints/src/components/dialogs/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../components/buttons/custom_elevated_button.dart';
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../../components/dialogs/loading_dialog.dart';
 import '../../../../models/transaction_model.dart';
 import '../../../../routes/router.dart';
 import '../../../../shared/services/transaction_service.dart';

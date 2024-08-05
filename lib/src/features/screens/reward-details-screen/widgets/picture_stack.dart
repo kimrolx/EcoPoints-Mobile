@@ -17,7 +17,7 @@ class PictureStackRewardDetailsScreen extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: height * 0.3,
+          height: height * 0.55,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(reward.rewardPicture),
