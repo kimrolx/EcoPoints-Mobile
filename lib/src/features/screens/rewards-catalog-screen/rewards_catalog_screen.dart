@@ -116,7 +116,6 @@ class _RewardsCatalogScreenState extends State<RewardsCatalogScreen> {
             RewardsListBuilderRewardScreen(
               rewardsService: _rewardsService,
             ),
-            Text("asdasdasd"),
           ],
         ),
       ),

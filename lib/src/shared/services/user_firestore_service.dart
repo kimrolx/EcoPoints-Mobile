@@ -108,7 +108,6 @@ class UserFirestoreService {
   }
 
   //* Remove current user profile picture, restore to default.
-  //TODO: delete picture from storage
   Future<void> removeCurrentUserPicture() async {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {

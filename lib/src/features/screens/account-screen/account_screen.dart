@@ -8,6 +8,7 @@ import '../../../routes/router.dart';
 import '../../../shared/services/user_profile_service.dart';
 import '../profile-screen/profile_screen.dart';
 import '../recycling-log-screen/recycling_log_screen.dart';
+import '../transaction-history-screen/transaction_history_screen.dart';
 import 'widgets/edit_profile.dart';
 import 'widgets/settings_menu.dart';
 
@@ -36,17 +37,14 @@ class _AccountScreenState extends State<AccountScreen> {
   void initializeSettingsOptions() {
     settingsOptions = [
       SettingOption(
-        iconPath: 'assets/icons/recycle-icon.png',
-        name: 'Recycling Log',
+        iconPath: "assets/icons/recycle-icon.png",
+        name: "Recycling Log",
         onTap: onRecyclingLogClick,
       ),
       SettingOption(
-        iconPath: 'assets/icons/deduct-icon.png',
-        name: 'Transaction History',
-        onTap: () {
-          //TODO: add transaction history event handler here
-          print('Transaction History tapped');
-        },
+        iconPath: "assets/icons/deduct-icon.png",
+        name: "Transaction History",
+        onTap: onTransactionHistoryClick,
       ),
     ];
   }
@@ -111,5 +109,10 @@ class _AccountScreenState extends State<AccountScreen> {
   onRecyclingLogClick() {
     GlobalRouter.I.router
         .push("${AccountScreen.route}/${RecyclingLogScreen.route}");
+  }
+
+  onTransactionHistoryClick() {
+    GlobalRouter.I.router
+        .push("${AccountScreen.route}/${TransactionHistoryScreen.route}");
   }
 }
