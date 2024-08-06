@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../components/constants/colors/ecopoints_colors.dart';
+import '../constants/colors/ecopoints_colors.dart';
 
 class MySeparator extends StatelessWidget {
   const MySeparator(

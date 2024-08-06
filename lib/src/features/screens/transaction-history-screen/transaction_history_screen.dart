@@ -1,3 +1,4 @@
+import 'package:ecopoints/src/components/misc/error_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -5,40 +6,32 @@ import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../components/constants/text_style/ecopoints_themes.dart';
-import '../../../components/misc/error_text.dart';
-import '../../../models/recycling_log_model.dart';
-import '../../../shared/services/recycling_log_service.dart';
-import '../../../shared/services/user_profile_service.dart';
+import '../../../models/transaction_model.dart';
+import '../../../shared/services/transaction_service.dart';
 import '../../../shared/utils/date_formatter_util.dart';
-import 'widgets/recycling_details_dialog.dart';
+import 'widgets/transaction_details_dialog.dart';
 
-class RecyclingLogScreen extends StatefulWidget {
-  static const String route = "recyclinglog";
-  static const String path = "recyclinglog";
-  static const String name = "RecyclingLogScreen";
-  const RecyclingLogScreen({super.key});
+class TransactionHistoryScreen extends StatefulWidget {
+  static const String route = "transactionhistory";
+  static const String path = "transactionhistory";
+  static const String name = "TransactionHistoryScreen";
+  const TransactionHistoryScreen({super.key});
 
   @override
-  State<RecyclingLogScreen> createState() => _RecyclingLogScreenState();
+  State<TransactionHistoryScreen> createState() =>
+      _TransactionHistoryScreenState();
 }
 
-class _RecyclingLogScreenState extends State<RecyclingLogScreen> {
-  final RecyclingLogService _recyclingLogService =
-      GetIt.instance<RecyclingLogService>();
+class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
+  final TransactionService _transactionService =
+      GetIt.instance<TransactionService>();
 
-  Future<void> _refreshRecyclingLogs() async {
-    await _recyclingLogService.refreshRecyclingLogs();
-  }
-
-  void _showRecyclingLogDetails(
-      BuildContext context, RecyclingLogModel log, String userName) {
+  void _showTransactionDetailsDialog(
+      BuildContext context, TransactionModel transaction) {
     showDialog(
-      context: context,
-      builder: (context) => DetailedRecyclingLogDialog(
-        log: log,
-        userName: userName,
-      ),
-    );
+        context: context,
+        builder: (context) => TransactionDetailsDialogTransactionHistoryScreen(
+            transaction: transaction));
   }
 
   @override
@@ -66,34 +59,31 @@ class _RecyclingLogScreenState extends State<RecyclingLogScreen> {
           },
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: _refreshRecyclingLogs,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Recent Recycling Activities",
-                  style: EcoPointsTextStyles.blackTextStyle(
-                    size: width * 0.045,
-                    weight: FontWeight.w500,
-                  ),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Recent Recycling Activities",
+                style: EcoPointsTextStyles.blackTextStyle(
+                  size: width * 0.045,
+                  weight: FontWeight.w500,
                 ),
-                _buildRecyclingLogList(width, height),
-              ],
-            ),
+              ),
+              _buildTransactionHistoryList(width, height),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildRecyclingLogList(double width, double height) {
-    return StreamBuilder<List<RecyclingLogModel>>(
-      stream: _recyclingLogService.getRecyclingLogs(),
+  Widget _buildTransactionHistoryList(double width, double height) {
+    return StreamBuilder<List<TransactionModel>>(
+      stream: _transactionService.getUserTransactions(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorText(
@@ -104,8 +94,7 @@ class _RecyclingLogScreenState extends State<RecyclingLogScreen> {
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return ErrorText(
             width: width,
-            text:
-                "It seems you don't have any recycling activity yet. Start recycling now!",
+            text: "It seems you don't have any transactions yet.",
           );
         } else {
           final logs = snapshot.data!;
@@ -124,7 +113,7 @@ class _RecyclingLogScreenState extends State<RecyclingLogScreen> {
                 final log = logs[index];
                 return Padding(
                   padding: EdgeInsets.only(bottom: height * 0.02),
-                  child: _buildRecyclingLogRow(log, context),
+                  child: _buildTransactionRow(log, context),
                 );
               },
             ),
@@ -134,28 +123,26 @@ class _RecyclingLogScreenState extends State<RecyclingLogScreen> {
     );
   }
 
-  Widget _buildRecyclingLogRow(RecyclingLogModel log, BuildContext context) {
+  Widget _buildTransactionRow(
+      TransactionModel transaction, BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final formattedDate = DateFormatterUtil.formatDateWithTime(log.dateTime);
-
-    final userName =
-        GetIt.instance<UserProfileService>().userProfile?.displayName ??
-            "Error getting user name";
+    final formattedDate =
+        DateFormatterUtil.formatDateWithTime(transaction.timeCreated);
 
     return GestureDetector(
-      onTap: () => _showRecyclingLogDetails(context, log, userName),
+      onTap: () => _showTransactionDetailsDialog(context, transaction),
       child: Container(
         color: Colors.transparent,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset("assets/images/recycle-image.png"),
+            Image.asset("assets/images/deduct-image.png"),
             Gap(width * 0.03),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Points Received",
+                  "Points Deducted",
                   style: EcoPointsTextStyles.blackTextStyle(
                     size: width * 0.035,
                     weight: FontWeight.w500,
@@ -175,14 +162,14 @@ class _RecyclingLogScreenState extends State<RecyclingLogScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "${log.pointsGained.toStringAsFixed(2)}pts",
-                  style: EcoPointsTextStyles.lightGreenTextStyle(
+                  "-${transaction.totalPrice.toStringAsFixed(2)}pts",
+                  style: EcoPointsTextStyles.redTextStyle(
                     size: width * 0.035,
                     weight: FontWeight.w600,
                   ),
                 ),
                 Text(
-                  "${log.oldPoints.toStringAsFixed(2)}pts",
+                  "${transaction.oldPoints.toStringAsFixed(2)}pts",
                   style: EcoPointsTextStyles.grayTextStyle(
                     size: width * 0.032,
                     weight: FontWeight.w600,

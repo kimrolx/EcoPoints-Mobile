@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../controllers/auth_controller.dart';
+import '../enums/animation_type_enum.dart';
 import '../enums/enum.dart';
 import '../features/screens/account-screen/account_screen.dart';
 import '../features/screens/placeholder_screen.dart';
@@ -16,6 +17,7 @@ import '../features/screens/register-screen/registration_screen.dart';
 import '../features/screens/rewards-catalog-screen/rewards_catalog_screen.dart';
 import '../features/screens/reward-details-screen/reward_details_screen.dart';
 import '../features/screens/scan-qr-screen/scan_qr_screen.dart';
+import '../features/screens/transaction-history-screen/transaction_history_screen.dart';
 import '../features/screens/transaction-receipt-screen/transaction_receipt_screen.dart';
 import '../models/reward_model.dart';
 import '../models/transaction_model.dart';
@@ -111,9 +113,20 @@ class GlobalRouter {
           parentNavigatorKey: _rootNavigatorKey,
           path: RewardDetailsScreen.route,
           name: RewardDetailsScreen.name,
-          builder: (context, state) {
-            final RewardModel reward = state.extra as RewardModel;
-            return RewardDetailsScreen(reward: reward);
+          pageBuilder: (context, state) {
+            final reward = state.extra as RewardModel;
+            return CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: RewardDetailsScreen(reward: reward),
+              transitionsBuilder: (context, animation, secondaryAnimation,
+                      child) =>
+                  buildPageTransition(
+                      child: child,
+                      animation: animation,
+                      type: AnimationType.slideLeft,
+                      curve: Curves.easeInOut),
+              transitionDuration: const Duration(milliseconds: 250),
+            );
           },
         ),
         GoRoute(
@@ -165,7 +178,39 @@ class GlobalRouter {
                   parentNavigatorKey: _rootNavigatorKey,
                   path: RecyclingLogScreen.route,
                   name: RecyclingLogScreen.name,
-                  builder: (context, state) => const RecyclingLogScreen(),
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage<void>(
+                      key: state.pageKey,
+                      child: const RecyclingLogScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) =>
+                              buildPageTransition(
+                                  child: child,
+                                  animation: animation,
+                                  type: AnimationType.slideLeft,
+                                  curve: Curves.easeInOutQuart),
+                      transitionDuration: const Duration(milliseconds: 350),
+                    );
+                  },
+                ),
+                GoRoute(
+                  parentNavigatorKey: _rootNavigatorKey,
+                  path: TransactionHistoryScreen.route,
+                  name: TransactionHistoryScreen.name,
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage<void>(
+                      key: state.pageKey,
+                      child: const TransactionHistoryScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) =>
+                              buildPageTransition(
+                                  child: child,
+                                  animation: animation,
+                                  type: AnimationType.slideLeft,
+                                  curve: Curves.easeInOutQuart),
+                      transitionDuration: const Duration(milliseconds: 350),
+                    );
+                  },
                 ),
               ],
             ),

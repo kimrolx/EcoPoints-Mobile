@@ -1,8 +1,8 @@
-import 'package:ecopoints/src/components/buttons/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../components/buttons/custom_elevated_button.dart';
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../models/recycling_log_model.dart';

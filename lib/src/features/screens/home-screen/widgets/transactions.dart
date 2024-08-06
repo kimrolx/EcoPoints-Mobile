@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../../components/misc/error_text.dart';
 import '../../../../models/recycling_log_model.dart';
 import '../../../../models/transaction_model.dart';
 import '../../../../shared/services/recycling_log_service.dart';
@@ -80,18 +81,20 @@ class _TransactionsHomeScreenState extends State<TransactionsHomeScreen>
             if (recyclingLogSnapshot.hasError || transactionSnapshot.hasError) {
               print(
                   "Error loading data: ${recyclingLogSnapshot.error ?? transactionSnapshot.error}");
-              return errorText(
-                "Oh no! Something went wrong. Please try again later or contact support.",
-                width,
+              return ErrorText(
+                width: width,
+                text:
+                    "Oh no! Something went wrong. Please try again later or contact support.",
               );
             } else if (!recyclingLogSnapshot.hasData ||
                 !transactionSnapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             } else if (recyclingLogSnapshot.data!.isEmpty &&
                 transactionSnapshot.data!.isEmpty) {
-              return errorText(
-                "It seems you don't have any transactions yet. Start recycling now!",
-                width,
+              return ErrorText(
+                width: width,
+                text:
+                    "It seems you don't have any transactions yet. Start recycling now!",
               );
             }
 
@@ -275,19 +278,6 @@ class _TransactionsHomeScreenState extends State<TransactionsHomeScreen>
           ],
         ),
       ],
-    );
-  }
-
-  Widget errorText(String text, double width) {
-    return Center(
-      child: Text(
-        text,
-        style: EcoPointsTextStyles.grayTextStyle(
-          size: width * 0.035,
-          weight: FontWeight.w500,
-        ),
-        textAlign: TextAlign.center,
-      ),
     );
   }
 }

@@ -1,9 +1,9 @@
-import 'package:ecopoints/src/components/constants/text_style/ecopoints_themes.dart';
-import 'package:ecopoints/src/features/screens/transaction-receipt-screen/widgets/receipt_separator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../../components/misc/receipt_separator.dart';
 import '../../../../models/transaction_model.dart';
 import '../../../../shared/utils/date_formatter_util.dart';
 
@@ -98,16 +98,16 @@ class TransactionDetailsTransactionReceiptScreen extends StatelessWidget {
             ),
             Gap(height * 0.007),
             rowBuilder("Date and Time", formattedDate, width),
-            Gap(height * 0.04),
-            Center(
-              child: Text(
-                "Claim at ${transaction.reward.stallName} - ${transaction.reward.campus} Campus",
-                textAlign: TextAlign.center,
-                style: EcoPointsTextStyles.blackTextStyle(
-                    size: width * 0.04, weight: FontWeight.w500),
+            Expanded(
+              child: Center(
+                child: Text(
+                  "Claim at ${transaction.reward.stallName} - ${transaction.reward.campus} Campus",
+                  textAlign: TextAlign.center,
+                  style: EcoPointsTextStyles.blackTextStyle(
+                      size: width * 0.04, weight: FontWeight.w500),
+                ),
               ),
             ),
-            Gap(height * 0.04),
             const MySeparator(),
             Gap(height * 0.02),
             Center(
@@ -128,16 +128,19 @@ class TransactionDetailsTransactionReceiptScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: EcoPointsTextStyles.blackTextStyle(
-              size: width * 0.038, weight: FontWeight.normal),
+        Flexible(
+          child: Text(
+            title,
+            style: EcoPointsTextStyles.blackTextStyle(
+                size: width * 0.038, weight: FontWeight.normal),
+          ),
         ),
         Flexible(
           child: Text(
             value,
             style: EcoPointsTextStyles.blackTextStyle(
                 size: width * 0.038, weight: FontWeight.normal),
+            textAlign: TextAlign.end,
           ),
         ),
       ],
