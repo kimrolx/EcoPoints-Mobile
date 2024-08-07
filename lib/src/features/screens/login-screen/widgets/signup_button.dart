@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../../components/dialogs/loading_dialog.dart';
 import '../../../../routes/router.dart';
 import '../../register-screen/registration_screen.dart';
 
@@ -25,8 +26,7 @@ class SignUpLoginScreen extends StatelessWidget {
                 alignment: PlaceholderAlignment.middle,
                 child: TextButton(
                   onPressed: () {
-                    //TODO
-                    GlobalRouter.I.router.push(RegistrationScreen.path);
+                    onJoinUsPressed(context);
                   },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
@@ -45,6 +45,17 @@ class SignUpLoginScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  onJoinUsPressed(BuildContext context) async {
+    await WaitingDialog.show(
+      context,
+      future: Future.delayed(const Duration(seconds: 1)).then(
+        (_) async {
+          GlobalRouter.I.router.push(RegistrationScreen.path);
+        },
       ),
     );
   }

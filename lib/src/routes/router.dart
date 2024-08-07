@@ -81,8 +81,19 @@ class GlobalRouter {
           parentNavigatorKey: _rootNavigatorKey,
           path: RegistrationScreen.route,
           name: RegistrationScreen.name,
-          builder: (context, _) {
-            return const RegistrationScreen();
+          pageBuilder: (context, state) {
+            return CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: const RegistrationScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation,
+                      child) =>
+                  buildPageTransition(
+                      child: child,
+                      animation: animation,
+                      type: AnimationType.slideLeft,
+                      curve: Curves.easeInOut),
+              transitionDuration: const Duration(milliseconds: 250),
+            );
           },
         ),
         GoRoute(
@@ -105,8 +116,19 @@ class GlobalRouter {
           parentNavigatorKey: _rootNavigatorKey,
           path: EditProfileScreen.route,
           name: EditProfileScreen.name,
-          builder: (context, _) {
-            return const EditProfileScreen();
+          pageBuilder: (context, state) {
+            return CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: const EditProfileScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation,
+                      child) =>
+                  buildPageTransition(
+                      child: child,
+                      animation: animation,
+                      type: AnimationType.slideLeft,
+                      curve: Curves.easeInOut),
+              transitionDuration: const Duration(milliseconds: 250),
+            );
           },
         ),
         GoRoute(
@@ -188,8 +210,8 @@ class GlobalRouter {
                                   child: child,
                                   animation: animation,
                                   type: AnimationType.slideLeft,
-                                  curve: Curves.easeInOutQuart),
-                      transitionDuration: const Duration(milliseconds: 350),
+                                  curve: Curves.easeInOut),
+                      transitionDuration: const Duration(milliseconds: 250),
                     );
                   },
                 ),
@@ -207,8 +229,8 @@ class GlobalRouter {
                                   child: child,
                                   animation: animation,
                                   type: AnimationType.slideLeft,
-                                  curve: Curves.easeInOutQuart),
-                      transitionDuration: const Duration(milliseconds: 350),
+                                  curve: Curves.easeInOut),
+                      transitionDuration: const Duration(milliseconds: 250),
                     );
                   },
                 ),

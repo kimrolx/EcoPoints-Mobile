@@ -40,7 +40,7 @@ class _PointsIndicatorHomeScreenState extends State<PointsIndicatorHomeScreen> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        double points = userProfile.points;
+        double points = userProfile.points ?? 0.00;
         double? targetPoints = userProfile.targetPoints;
 
         return Card(

@@ -17,6 +17,19 @@ class UserProfileService extends ChangeNotifier {
 
   UserProfileModel? get userProfile => _userProfileNotifier.value;
 
+  //* Getters for individual user profile fields
+  String? get userId => _userProfileNotifier.value?.userId;
+  String? get displayName => _userProfileNotifier.value?.displayName;
+  String? get email => _userProfileNotifier.value?.email;
+  String? get gender => _userProfileNotifier.value?.gender;
+  String? get phoneNumber => _userProfileNotifier.value?.phoneNumber;
+  String? get customPictureUrl => _userProfileNotifier.value?.customPictureUrl;
+  String? get originalPictureUrl =>
+      _userProfileNotifier.value?.originalPictureUrl;
+  double? get points => _userProfileNotifier.value?.points;
+  double? get targetPoints => _userProfileNotifier.value?.targetPoints;
+  DateTime? get targetDate => _userProfileNotifier.value?.targetDate;
+
   Future<void> loadUserProfile() async {
     UserProfileModel? profile = await _userService.getUserProfile();
     if (profile == null) {

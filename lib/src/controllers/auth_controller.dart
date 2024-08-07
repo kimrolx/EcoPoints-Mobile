@@ -60,16 +60,23 @@ class AuthController with ChangeNotifier {
   }
 
   //* Register using email and password
-  register(String userName, String password) async {
-    UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: userName, password: password);
+  Future<bool> register(String userName, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: userName, password: password);
 
-    User? user = userCredential.user;
+      User? user = userCredential.user;
 
-    if (user != null) {
-      _userService.createUserProfile();
-      print(
-          "Login successful: ${user.email}, ${user.displayName ?? "No Display Name"}");
+      if (user != null) {
+        _userService.createUserProfile();
+        print(
+            "Login successful: ${user.email}, ${user.displayName ?? "No Display Name"}");
+      }
+
+      return true;
+    } catch (e) {
+      print("Failed to register: $e");
+      return false;
     }
   }
 

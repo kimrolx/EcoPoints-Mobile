@@ -35,7 +35,7 @@ class _TargetPointsDateHomeScreenState
           return const Center(child: CircularProgressIndicator());
         }
 
-        double points = userProfile.points;
+        double points = userProfile.points ?? 0.00;
         double? targetPoints = userProfile.targetPoints;
         DateTime? targetDate = userProfile.targetDate;
 
