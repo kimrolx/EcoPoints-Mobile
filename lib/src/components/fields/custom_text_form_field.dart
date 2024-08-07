@@ -46,14 +46,14 @@ class CustomTextFormField extends StatelessWidget {
       focusNode: focusNode,
       readOnly: readOnly ?? false,
       style: EcoPointsTextStyles.blackTextStyle(
-        size: 16.0,
+        size: 14.0,
         weight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         isDense: true,
         hintText: hintText,
         hintStyle: EcoPointsTextStyles.grayTextStyle(
-          size: 16.0,
+          size: 14.0,
           weight: FontWeight.w500,
         ),
         // labelText: controller!.text.isNotEmpty && controller != null

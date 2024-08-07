@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
-import '../../../components/constants/text_style/ecopoints_themes.dart';
-import '../../../components/dialogs/loading_dialog.dart';
-import '../../../controllers/auth_controller.dart';
-import 'widgets/header.dart';
-import 'widgets/register_button.dart';
-import 'widgets/register_input_fields.dart';
-import 'widgets/signup_with_google.dart';
+import '../../../routes/router.dart';
+import '../../../shared/services/registration_form_service.dart';
+import '../../../shared/utils/ui_helpers.dart';
+import '../login-screen/login_screen.dart';
+import 'widgets/email_field_page.dart';
+import 'widgets/gender_fields_page.dart';
+import 'widgets/name_fields_page.dart';
+import 'widgets/get_started_page.dart';
+import 'widgets/password_field_page.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String route = '/register';
@@ -22,118 +24,125 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  late GlobalKey<FormState> formKey;
-  late TextEditingController email, password, confirmPassword;
-  late FocusNode emailFn, passwordFn, confirmpasswordFn;
+  int _currentPageIndex = 0;
+  late PageController _pageController;
+  late TextEditingController password;
+  late FocusNode passwordFn;
+  final RegistrationService _registrationService =
+      GetIt.instance<RegistrationService>();
 
   @override
   void initState() {
     super.initState();
-    formKey = GlobalKey<FormState>();
-    email = TextEditingController();
-    emailFn = FocusNode();
     password = TextEditingController();
     passwordFn = FocusNode();
-    confirmPassword = TextEditingController();
-    confirmpasswordFn = FocusNode();
+    _pageController = PageController();
+    _pageController.addListener(_updatePageIndex);
   }
 
   @override
   void dispose() {
-    super.dispose();
-    email.dispose();
-    emailFn.dispose();
     password.dispose();
     passwordFn.dispose();
-    confirmPassword.dispose();
-    confirmpasswordFn.dispose();
+    _pageController.dispose();
+    _pageController.removeListener(_updatePageIndex);
+    super.dispose();
+  }
+
+  void _updatePageIndex() {
+    int currentPage = _pageController.page!.round();
+    print("Current Page Index Updated: $currentPage");
+    if (_currentPageIndex != currentPage) {
+      setState(() {
+        _currentPageIndex = currentPage;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      backgroundColor: EcoPointsColors.white,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          width: width,
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  onPressed: Navigator.of(context).pop,
-                  icon: const Icon(CupertinoIcons.back),
-                ),
-                Gap(height * 0.05),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.05,
-                    vertical: height * 0.02,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const HeaderRegistrationScreen(),
-                      Text(
-                        "Let's Turn Trash into Treasure",
-                        style: EcoPointsTextStyles.blackTextStyle(
-                          size: width * 0.04,
-                          weight: FontWeight.w600,
-                        ),
-                      ),
-                      Gap(height * 0.075),
-                      RegisterInputFieldsRegistrationScreen(
-                        formKey: formKey,
-                        email: email,
-                        emailFn: emailFn,
-                        password: password,
-                        passwordFn: passwordFn,
-                        confirmPassword: confirmPassword,
-                        confirmPasswordFn: confirmpasswordFn,
-                        onSubmit: onRegisterButtonClick,
-                      ),
-                      Gap(height * 0.015),
-                      RegisterButtonRegistrationScreen(
-                        onSubmit: onRegisterButtonClick,
-                      ),
-                      Gap(height * 0.02),
-                      const Divider(),
-                      Gap(height * 0.02),
-                      SignUpWithGoogleRegistrationScreen(
-                        onPressed: onGoogleLoginClick,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+    return dismissKeyboardOnTap(
+      context: context,
+      child: Scaffold(
+        backgroundColor: EcoPointsColors.white,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SafeArea(
+              child: IconButton(
+                onPressed: () {
+                  if (_currentPageIndex == 0 || _currentPageIndex == 5) {
+                    onAlreadyHaveAccountClick();
+                  } else {
+                    onPreviousPage();
+                  }
+                },
+                icon: const Icon(CupertinoIcons.back),
+              ),
             ),
-          ),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  GetStartedRegistrationScreen(onSubmit: onGetStartedClick),
+                  NameFieldsRegistrationScreen(
+                    onNextPageClick: onNextPage,
+                    onAlreadyHaveAccountClick: onAlreadyHaveAccountClick,
+                  ),
+                  GenderFieldsRegistrationScreen(
+                    onNextPage: onNextPage,
+                    onAlreadyHaveAccountClick: onAlreadyHaveAccountClick,
+                  ),
+                  EmailFieldRegistrationScreen(
+                    onNextPage: onNextPage,
+                    onAlreadyHaveAccountClick: onAlreadyHaveAccountClick,
+                  ),
+                  PasswordFieldRegistrationScreen(
+                    onNextPage: onNextPage,
+                    onAlreadyHaveAccountClick: onAlreadyHaveAccountClick,
+                    passwordController: password,
+                    passwordFn: passwordFn,
+                  ),
+                  // ConfirmationCodeRegistrationScreen(
+                  //   onNextPage: onNextPage,
+                  // ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  onRegisterButtonClick() {
-    if (formKey.currentState?.validate() ?? false) {
-      WaitingDialog.show(
-        context,
-        future: Future.delayed(const Duration(seconds: 2)).then(
-          (_) async {
-            await AuthController.I
-                .register(email.text.trim(), password.text.trim());
-          },
-        ),
+  onGetStartedClick() {
+    onNextPage();
+  }
+
+  onNextPage() {
+    if (_pageController.hasClients) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
       );
     }
   }
 
-  onGoogleLoginClick() async {
-    await WaitingDialog.show(context,
-        future: AuthController.I.loginWithGoogle());
+  onPreviousPage() {
+    if (_pageController.hasClients) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  onAlreadyHaveAccountClick() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    _registrationService.userProfile.reset();
+    GlobalRouter.I.router.go(LoginScreen.route);
   }
 }

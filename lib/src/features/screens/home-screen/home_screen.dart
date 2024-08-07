@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         left: width * 0.16,
                         right: width * 0.16,
                         child: PointsIndicatorHomeScreen(
-                          points: userProfile.points,
+                          points: userProfile.points ?? 0.00,
                           targetPoints: userProfile.targetPoints,
                         ),
                       ),

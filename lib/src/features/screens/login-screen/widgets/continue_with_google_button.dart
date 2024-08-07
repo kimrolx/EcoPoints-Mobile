@@ -20,7 +20,7 @@ class ContinueWithGoogleButtonLoginScreen extends StatelessWidget {
       onPressed: onPressed,
       backgroundColor: EcoPointsColors.lightGray,
       width: width,
-      borderRadius: 10.0,
+      borderRadius: 50.0,
       padding: const EdgeInsets.all(7),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

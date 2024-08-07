@@ -1,27 +1,68 @@
 class UserProfileModel {
-  final String userId;
-  final String? displayName;
-  final String? email;
-  final String? gender;
-  final String? phoneNumber;
+  String? userId;
+  String? displayName;
+  String? email;
+  String? gender;
+  String? phoneNumber;
   final String? customPictureUrl;
   final String? originalPictureUrl;
-  double points;
+  double? points;
   double? targetPoints;
   DateTime? targetDate;
 
   UserProfileModel({
-    required this.userId,
+    this.userId,
     this.displayName,
     this.email,
     this.gender,
     this.phoneNumber,
     this.customPictureUrl,
     this.originalPictureUrl,
-    required this.points,
+    this.points,
     this.targetPoints,
     this.targetDate,
   });
+
+  void updateDisplayName({String? firstName, String? lastName}) {
+    if (firstName != null && lastName != null) {
+      String capitalizedFirstName =
+          firstName[0].toUpperCase() + firstName.substring(1).toLowerCase();
+      String capitalizedLastName =
+          lastName[0].toUpperCase() + lastName.substring(1).toLowerCase();
+      displayName = "$capitalizedFirstName $capitalizedLastName";
+      print("From UserProfileModel - Updated Display Name: $displayName");
+    } else {
+      displayName = (firstName != null
+              ? firstName[0].toUpperCase() +
+                  firstName.substring(1).toLowerCase()
+              : null) ??
+          (lastName != null
+              ? lastName[0].toUpperCase() + lastName.substring(1).toLowerCase()
+              : null);
+    }
+  }
+
+  void updateEmail(String email) {
+    this.email = email;
+    print("From UserProfileModel - Updated Email: $email");
+  }
+
+  void updateGender(String gender) {
+    this.gender = gender;
+    print("From UserProfileModel - Updated Gender: $gender");
+  }
+
+  void reset() {
+    userId = null;
+    displayName = null;
+    email = null;
+    gender = null;
+    phoneNumber = null;
+    points = null;
+    targetPoints = null;
+    targetDate = null;
+    print("UserProfileModel has been reset");
+  }
 
   Map<String, dynamic> toMap() {
     return {

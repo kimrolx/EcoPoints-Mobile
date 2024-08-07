@@ -78,18 +78,13 @@ class _InputFieldsLoginScreenState extends State<InputFieldsLoginScreen> {
                     });
                   },
                   icon: Icon(obfuscate
-                      ? Icons.remove_red_eye_rounded
-                      : CupertinoIcons.eye_slash)),
+                      ? CupertinoIcons.eye_slash
+                      : Icons.remove_red_eye_rounded)),
               validator: MultiValidator([
                 RequiredValidator(errorText: "Password is required"),
                 MinLengthValidator(
                   8,
-                  errorText: "Password must to be at least 12 characters long",
-                ),
-                PatternValidator(
-                  r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+?\-=[\]{};':,.<>]).*$",
-                  errorText:
-                      'Password must contain at least one symbol, one uppercase letter, one lowercase letter, and one number',
+                  errorText: "Password must to be at least 8 characters long",
                 ),
               ]).call,
             ),

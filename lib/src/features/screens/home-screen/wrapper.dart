@@ -50,7 +50,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
     UserProfileModel? userProfile = await _userService.getUserProfile();
     if (userProfile != null) {
       setState(() {
-        points = userProfile.points;
+        points = userProfile.points ?? 0.00;
         targetPoints = userProfile.targetPoints;
         targetDate = userProfile.targetDate;
       });

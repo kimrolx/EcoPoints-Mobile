@@ -1,3 +1,4 @@
+import 'package:ecopoints/src/shared/utils/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -50,56 +51,61 @@ class _LoginScreenState extends State<LoginScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: EcoPointsColors.white,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: width * 0.05,
-                vertical: height * 0.02,
-              ),
-              child: Column(
-                children: [
-                  Image.asset(
-                    "assets/logos/logo.png",
-                    width: 100,
-                    height: 100,
-                  ),
-                  Gap(height * 0.02),
-                  const HeaderLoginScreen(),
-                  Text(
-                    "Your partner in a sustainable future.",
-                    style: EcoPointsTextStyles.blackTextStyle(
-                      size: 16.0,
-                      weight: FontWeight.w500,
+    return dismissKeyboardOnTap(
+      context: context,
+      child: Scaffold(
+        backgroundColor: EcoPointsColors.white,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.05,
+                  vertical: height * 0.02,
+                ),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      "assets/logos/logo.png",
+                      width: 100,
+                      height: 100,
                     ),
-                  ),
-                  Gap(height * 0.075),
-                  InputFieldsLoginScreen(
-                    formKey: formKey,
-                    email: username,
-                    password: password,
-                    emailFn: usernameFn,
-                    passwordFn: passwordFn,
-                    onSubmit: onLoginButtonClick,
-                  ),
-                  Gap(height * 0.015),
-                  LoginButtonLoginScreen(
-                    onSubmit: onLoginButtonClick,
-                  ),
-                  const ForgotPasswordLoginScreen(), //TODO: Add `Forgot Password` event handler
-                  const Divider(),
-                  Gap(height * 0.02),
-                  ContinueWithGoogleButtonLoginScreen(
-                    onPressed: onGoogleLoginClick,
-                  ),
-                  const SignUpLoginScreen(),
-                ],
+                    Gap(height * 0.02),
+                    const HeaderLoginScreen(),
+                    Text(
+                      "Your partner in a sustainable future.",
+                      style: EcoPointsTextStyles.blackTextStyle(
+                        size: 16.0,
+                        weight: FontWeight.w500,
+                      ),
+                    ),
+                    Gap(height * 0.075),
+                    InputFieldsLoginScreen(
+                      formKey: formKey,
+                      email: username,
+                      password: password,
+                      emailFn: usernameFn,
+                      passwordFn: passwordFn,
+                      onSubmit: onLoginButtonClick,
+                    ),
+                    Gap(height * 0.015),
+                    LoginButtonLoginScreen(
+                      onSubmit: onLoginButtonClick,
+                    ),
+                    ForgotPasswordLoginScreen(
+                      onPressed: onForgotPasswordClick,
+                    ), //TODO: Add `Forgot Password` event handler
+                    const Divider(),
+                    Gap(height * 0.02),
+                    ContinueWithGoogleButtonLoginScreen(
+                      onPressed: onGoogleLoginClick,
+                    ),
+                    const SignUpLoginScreen(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -117,7 +123,6 @@ class _LoginScreenState extends State<LoginScreen> {
             AuthController.I.login(username.text.trim(), password.text.trim());
           },
         ),
-        prompt: "Give us a sec...",
       );
     }
   }
@@ -126,4 +131,6 @@ class _LoginScreenState extends State<LoginScreen> {
     await WaitingDialog.show(context,
         future: AuthController.I.loginWithGoogle());
   }
+
+  onForgotPasswordClick() {}
 }

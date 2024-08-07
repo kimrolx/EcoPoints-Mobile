@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -36,17 +35,19 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
   void initState() {
     super.initState();
     _fetchUserName();
-    _userProfileService.loadUserProfile();
     totalPrice = widget.reward.requiredPoint;
   }
 
-  void _fetchUserName() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      setState(() {
-        userName = user.displayName!;
-      });
-    }
+  void _fetchUserName() {
+    _userProfileService.loadUserProfile().then((_) {
+      if (_userProfileService.userProfile != null) {
+        setState(() {
+          userName = _userProfileService.displayName ?? "Default User";
+        });
+      }
+    }).catchError((e) {
+      print("Failed to load user profile: $e");
+    });
   }
 
   void _showConfirmClaimDialog(
@@ -76,7 +77,7 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
           SizedBox(width: width, height: height),
           Container(
             height: height * 0.55,
-            color: EcoPointsColors.red,
+            color: EcoPointsColors.lightGreenShade,
             child: PictureStackRewardDetailsScreen(
               reward: widget.reward,
             ),

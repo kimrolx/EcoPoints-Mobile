@@ -11,12 +11,13 @@ class LoginButtonLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
     return CustomElevatedButton(
       onPressed: onSubmit,
       backgroundColor: EcoPointsColors.darkGreen,
       width: width,
       padding: const EdgeInsets.all(10),
-      borderRadius: 10.0,
+      borderRadius: 50.0,
       child: Text(
         "Log in",
         style: EcoPointsTextStyles.whiteTextStyle(
