@@ -89,12 +89,11 @@ class _EditPictureProfileScreenState extends State<EditPictureProfileScreen> {
                 backgroundColor: Colors.transparent,
                 radius: width * 0.1,
               )
-            : Text(
-                "No profile picture",
-                style: EcoPointsTextStyles.blackTextStyle(
-                  size: width * 0.04,
-                  weight: FontWeight.w500,
-                ),
+            : CircleAvatar(
+                backgroundImage:
+                    const NetworkImage("https://via.placeholder.com/150"),
+                backgroundColor: Colors.transparent,
+                radius: width * 0.09,
               ),
         Gap(height * 0.01),
         GestureDetector(

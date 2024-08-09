@@ -21,20 +21,20 @@ class ContinueWithGoogleButtonLoginScreen extends StatelessWidget {
       backgroundColor: EcoPointsColors.lightGray,
       width: width,
       borderRadius: 50.0,
-      padding: const EdgeInsets.all(7),
+      padding: const EdgeInsets.all(4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(
             "assets/icons/google-icon.svg",
-            width: width * 0.035,
-            height: height * 0.035,
+            width: width * 0.032,
+            height: height * 0.032,
           ),
           Gap(width * 0.02),
           Text(
             "Continue with Google",
             style: EcoPointsTextStyles.blackTextStyle(
-              size: width * 0.035,
+              size: width * 0.037,
               weight: FontWeight.w500,
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:ecopoints/src/components/misc/custom_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:gap/gap.dart';
@@ -12,10 +13,12 @@ import '../../../../shared/services/registration_form_service.dart';
 class NameFieldsRegistrationScreen extends StatefulWidget {
   final Function() onNextPageClick;
   final Function() onAlreadyHaveAccountClick;
+  final bool isLoading;
   const NameFieldsRegistrationScreen(
       {super.key,
       required this.onNextPageClick,
-      required this.onAlreadyHaveAccountClick});
+      required this.onAlreadyHaveAccountClick,
+      required this.isLoading});
 
   @override
   State<NameFieldsRegistrationScreen> createState() =>
@@ -89,7 +92,7 @@ class _NameFieldsRegistrationScreenState
             style: EcoPointsTextStyles.blackTextStyle(
                 size: width * 0.035, weight: FontWeight.normal),
           ),
-          Gap(width * 0.04),
+          Gap(width * 0.03),
           Form(
             key: formKey,
             child: Row(
@@ -134,20 +137,25 @@ class _NameFieldsRegistrationScreenState
               ],
             ),
           ),
-          Gap(width * 0.04),
+          Gap(width * 0.02),
           CustomElevatedButton(
             onPressed: _handleNext,
             backgroundColor: EcoPointsColors.darkGreen,
             width: width,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(4),
             borderRadius: 50.0,
-            child: Text(
-              "Next",
-              style: EcoPointsTextStyles.whiteTextStyle(
-                size: width * 0.04,
-                weight: FontWeight.w500,
-              ),
-            ),
+            child: widget.isLoading
+                ? const CustomCircularProgressIndicator(
+                    backgroundColor: Colors.transparent,
+                    width: 22.5,
+                    height: 22.5)
+                : Text(
+                    "Next",
+                    style: EcoPointsTextStyles.whiteTextStyle(
+                      size: width * 0.04,
+                      weight: FontWeight.w500,
+                    ),
+                  ),
           ),
           Expanded(
             child: SafeArea(

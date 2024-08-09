@@ -4,6 +4,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/fields/custom_text_form_field.dart';
+import '../../../../enums/animation_type_enum.dart';
 import 'edit_gender.dart';
 import 'edit_phone_number.dart';
 
@@ -63,10 +64,20 @@ class UserFieldsProfileScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => EditGenderProfileScreen(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        EditGenderProfileScreen(
                       genderController: genderController,
                     ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return buildPageTransition(
+                        child: child,
+                        animation: animation,
+                        type: AnimationType.slideUp,
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 250),
                   ),
                 );
               },
@@ -91,11 +102,21 @@ class UserFieldsProfileScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => EditPhoneNumberProfileScreen(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        EditPhoneNumberProfileScreen(
                       numberController: numberController,
                       numberFn: numberFn,
                     ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return buildPageTransition(
+                        child: child,
+                        animation: animation,
+                        type: AnimationType.slideUp,
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
                   ),
                 );
               },

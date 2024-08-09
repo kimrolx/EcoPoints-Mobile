@@ -41,7 +41,7 @@ class _EditGenderProfileScreenState extends State<EditGenderProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(CupertinoIcons.back),
+                    icon: const Icon(CupertinoIcons.clear),
                     onPressed: () {
                       //TODO: change to gorouter
                       Navigator.pop(context);

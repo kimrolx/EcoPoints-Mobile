@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../components/misc/shimmer_loading_containers.dart';
 import '../../../models/user_profile_model.dart';
 import '../../../providers/bottom_sheet_provider.dart';
 import '../../../shared/services/user_profile_service.dart';
@@ -46,13 +47,32 @@ class _HomeScreenState extends State<HomeScreen> {
     double height = MediaQuery.of(context).size.height;
     final bottomSheetProvider = BottomSheetProvider.of(context);
 
+    final List<double> skeletonHeights = [200, 150, 110, 90, 90];
+    final List<double> skeletonGaps = [20, 30, 25, 15, 35];
+
     return Scaffold(
       backgroundColor: EcoPointsColors.lightGray,
       body: ValueListenableBuilder<UserProfileModel?>(
         valueListenable: _userProfileService.userProfileNotifier,
         builder: (context, userProfile, _) {
           if (userProfile == null) {
-            return const Center(child: CircularProgressIndicator());
+            return ListView.builder(
+              itemCount: skeletonHeights.length,
+              itemBuilder: (_, index) => Padding(
+                padding: EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  top: index == 0 ? 16.0 : skeletonGaps[index - 1] / 2,
+                  bottom: index == skeletonHeights.length - 1
+                      ? 16.0
+                      : skeletonGaps[index] / 2,
+                ),
+                child: ShimmerSkeleton(
+                  width: double.infinity,
+                  height: skeletonHeights[index],
+                ),
+              ),
+            );
           }
           return RefreshIndicator(
             onRefresh: () async {

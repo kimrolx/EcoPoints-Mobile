@@ -16,12 +16,12 @@ class LoginButtonLoginScreen extends StatelessWidget {
       onPressed: onSubmit,
       backgroundColor: EcoPointsColors.darkGreen,
       width: width,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(4),
       borderRadius: 50.0,
       child: Text(
         "Log in",
         style: EcoPointsTextStyles.whiteTextStyle(
-          size: width * 0.04,
+          size: width * 0.037,
           weight: FontWeight.w600,
         ),
       ),

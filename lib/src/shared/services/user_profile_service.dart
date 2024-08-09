@@ -31,6 +31,7 @@ class UserProfileService extends ChangeNotifier {
   DateTime? get targetDate => _userProfileNotifier.value?.targetDate;
 
   Future<void> loadUserProfile() async {
+    await Future.delayed(const Duration(milliseconds: 1500));
     UserProfileModel? profile = await _userService.getUserProfile();
     if (profile == null) {
       await _userService.createUserProfile();
