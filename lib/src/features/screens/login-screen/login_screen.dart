@@ -1,4 +1,3 @@
-import 'package:ecopoints/src/shared/utils/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -6,6 +5,9 @@ import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
+import '../../../routes/router.dart';
+import '../../../shared/utils/ui_helpers.dart';
+import '../forgot_password_screen.dart';
 import 'widgets/continue_with_google_button.dart';
 import 'widgets/forgot_password.dart';
 import 'widgets/header.dart';
@@ -23,6 +25,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isLoading = false;
   late GlobalKey<FormState> formKey;
   late TextEditingController username, password;
   late FocusNode usernameFn, passwordFn;
@@ -82,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         weight: FontWeight.w500,
                       ),
                     ),
-                    Gap(height * 0.075),
+                    Gap(height * 0.07),
                     InputFieldsLoginScreen(
                       formKey: formKey,
                       email: username,
@@ -91,15 +94,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       passwordFn: passwordFn,
                       onSubmit: onLoginButtonClick,
                     ),
-                    Gap(height * 0.015),
+                    Gap(height * 0.01),
                     LoginButtonLoginScreen(
                       onSubmit: onLoginButtonClick,
                     ),
                     ForgotPasswordLoginScreen(
+                      isLoading: isLoading,
                       onPressed: onForgotPasswordClick,
-                    ), //TODO: Add `Forgot Password` event handler
+                    ),
                     const Divider(),
-                    Gap(height * 0.02),
+                    Gap(height * 0.01),
                     ContinueWithGoogleButtonLoginScreen(
                       onPressed: onGoogleLoginClick,
                     ),
@@ -132,5 +136,21 @@ class _LoginScreenState extends State<LoginScreen> {
         future: AuthController.I.loginWithGoogle());
   }
 
-  onForgotPasswordClick() {}
+  void onForgotPasswordClick() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 700));
+
+    if (mounted) {
+      GlobalRouter.I.router.push(ForgotPasswordScreen.route);
+    }
+
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 }

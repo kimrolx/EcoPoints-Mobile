@@ -9,6 +9,7 @@ import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../components/dialogs/loading_dialog.dart';
 import '../../../../components/fields/custom_text_form_field.dart';
+import '../../../../components/misc/custom_circular_progress_indicator.dart';
 import '../../../../controllers/auth_controller.dart';
 import '../../../../models/user_profile_model.dart';
 import '../../../../shared/services/registration_form_service.dart';
@@ -18,12 +19,14 @@ class PasswordFieldRegistrationScreen extends StatefulWidget {
   final FocusNode passwordFn;
   final Function() onNextPage;
   final Function() onAlreadyHaveAccountClick;
+  final bool isLoading;
   const PasswordFieldRegistrationScreen(
       {super.key,
       required this.onNextPage,
       required this.onAlreadyHaveAccountClick,
       required this.passwordController,
-      required this.passwordFn});
+      required this.passwordFn,
+      required this.isLoading});
 
   @override
   State<PasswordFieldRegistrationScreen> createState() =>
@@ -151,15 +154,20 @@ class _PasswordFieldRegistrationScreenState
             onPressed: _handleNext,
             backgroundColor: EcoPointsColors.darkGreen,
             width: width,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(4),
             borderRadius: 50.0,
-            child: Text(
-              "Next",
-              style: EcoPointsTextStyles.whiteTextStyle(
-                size: width * 0.04,
-                weight: FontWeight.w500,
-              ),
-            ),
+            child: widget.isLoading
+                ? const CustomCircularProgressIndicator(
+                    backgroundColor: Colors.transparent,
+                    width: 22.5,
+                    height: 22.5)
+                : Text(
+                    "Create Account",
+                    style: EcoPointsTextStyles.whiteTextStyle(
+                      size: width * 0.04,
+                      weight: FontWeight.w500,
+                    ),
+                  ),
           ),
           Expanded(
             child: SafeArea(

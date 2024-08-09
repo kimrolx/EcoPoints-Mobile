@@ -7,15 +7,18 @@ import '../../../../components/buttons/custom_elevated_button.dart';
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../components/fields/custom_text_form_field.dart';
+import '../../../../components/misc/custom_circular_progress_indicator.dart';
 import '../../../../shared/services/registration_form_service.dart';
 
 class EmailFieldRegistrationScreen extends StatefulWidget {
   final Function() onNextPage;
   final Function() onAlreadyHaveAccountClick;
+  final bool isLoading;
   const EmailFieldRegistrationScreen(
       {super.key,
       required this.onNextPage,
-      required this.onAlreadyHaveAccountClick});
+      required this.onAlreadyHaveAccountClick,
+      required this.isLoading});
 
   @override
   State<EmailFieldRegistrationScreen> createState() =>
@@ -80,7 +83,7 @@ class _EmailFieldRegistrationScreenState
             style: EcoPointsTextStyles.blackTextStyle(
                 size: width * 0.035, weight: FontWeight.normal),
           ),
-          Gap(width * 0.04),
+          Gap(width * 0.03),
           Form(
             key: formKey,
             child: Column(
@@ -108,20 +111,25 @@ class _EmailFieldRegistrationScreenState
               ],
             ),
           ),
-          Gap(width * 0.04),
+          Gap(width * 0.02),
           CustomElevatedButton(
             onPressed: _handleNext,
             backgroundColor: EcoPointsColors.darkGreen,
             width: width,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(4),
             borderRadius: 50.0,
-            child: Text(
-              "Next",
-              style: EcoPointsTextStyles.whiteTextStyle(
-                size: width * 0.04,
-                weight: FontWeight.w500,
-              ),
-            ),
+            child: widget.isLoading
+                ? const CustomCircularProgressIndicator(
+                    backgroundColor: Colors.transparent,
+                    width: 22.5,
+                    height: 22.5)
+                : Text(
+                    "Next",
+                    style: EcoPointsTextStyles.whiteTextStyle(
+                      size: width * 0.04,
+                      weight: FontWeight.w500,
+                    ),
+                  ),
           ),
           Expanded(
             child: SafeArea(

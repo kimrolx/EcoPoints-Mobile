@@ -9,6 +9,7 @@ import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../components/dialogs/loading_dialog.dart';
 import '../../../../shared/services/user_profile_service.dart';
+import '../../../../shared/utils/ui_helpers.dart';
 
 class EditPhoneNumberProfileScreen extends StatefulWidget {
   final TextEditingController numberController;
@@ -59,71 +60,74 @@ class _EditPhoneNumberProfileScreenState
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: EcoPointsColors.white,
-      appBar: AppBar(
+    return dismissKeyboardOnTap(
+      context: context,
+      child: Scaffold(
         backgroundColor: EcoPointsColors.white,
-        centerTitle: true,
-        title: Text(
-          "Phone Number",
-          style: EcoPointsTextStyles.blackTextStyle(
-              size: width * 0.045, weight: FontWeight.w500),
+        appBar: AppBar(
+          backgroundColor: EcoPointsColors.white,
+          centerTitle: true,
+          title: Text(
+            "Phone Number",
+            style: EcoPointsTextStyles.blackTextStyle(
+                size: width * 0.045, weight: FontWeight.w500),
+          ),
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.clear),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
-        leading: IconButton(
-          icon: const Icon(CupertinoIcons.back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Form(
-              key: formKey,
-              onChanged: _validatePhoneNumber,
-              child: IntlPhoneField(
-                initialCountryCode: 'PH',
-                onChanged: (phone) {
-                  setState(() {
-                    phoneNumber = phone.completeNumber;
-                  });
-                },
-                focusNode: widget.numberFn,
-                decoration: const InputDecoration(
-                  hintText: "910 123 4567",
-                  hintStyle: TextStyle(color: EcoPointsColors.darkGray),
-                  errorStyle: TextStyle(color: EcoPointsColors.red),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Form(
+                key: formKey,
+                onChanged: _validatePhoneNumber,
+                child: IntlPhoneField(
+                  initialCountryCode: 'PH',
+                  onChanged: (phone) {
+                    setState(() {
+                      phoneNumber = phone.completeNumber;
+                    });
+                  },
+                  focusNode: widget.numberFn,
+                  decoration: const InputDecoration(
+                    hintText: "910 123 4567",
+                    hintStyle: TextStyle(color: EcoPointsColors.darkGray),
+                    errorStyle: TextStyle(color: EcoPointsColors.red),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(),
+                    ),
                   ),
+                  validator: _phoneValidator,
                 ),
-                validator: _phoneValidator,
               ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: Expanded(
-                child: CustomElevatedButton(
-                  borderRadius: 8,
-                  backgroundColor: isValid
-                      ? EcoPointsColors.lightGreen
-                      : EcoPointsColors.darkGray,
-                  onPressed: isValid ? () => onSave() : () {},
-                  child: Text(
-                    "Save",
-                    style: EcoPointsTextStyles.whiteTextStyle(
-                      size: width * 0.04,
-                      weight: FontWeight.w500,
+              const Spacer(),
+              SizedBox(
+                width: double.infinity,
+                child: Expanded(
+                  child: CustomElevatedButton(
+                    borderRadius: 8,
+                    backgroundColor: isValid
+                        ? EcoPointsColors.lightGreen
+                        : EcoPointsColors.darkGray,
+                    onPressed: isValid ? () => onSave() : () {},
+                    child: Text(
+                      "Save",
+                      style: EcoPointsTextStyles.whiteTextStyle(
+                        size: width * 0.04,
+                        weight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

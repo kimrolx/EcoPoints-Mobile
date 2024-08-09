@@ -96,16 +96,22 @@ class _RecyclingLogScreenState extends State<RecyclingLogScreen> {
       stream: _recyclingLogService.getRecyclingLogs(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return ErrorText(
-            width: width,
-            text:
-                "Oh no! Something went wrong. Please try again later or contact support.",
+          return Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: ErrorText(
+              width: width,
+              text:
+                  "Oh no! Something went wrong. Please try again later or contact support.",
+            ),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return ErrorText(
-            width: width,
-            text:
-                "It seems you don't have any recycling activity yet. Start recycling now!",
+          return Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: ErrorText(
+              width: width,
+              text:
+                  "It seems you don't have any recycling activity yet. Start recycling now!",
+            ),
           );
         } else {
           final logs = snapshot.data!;

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../../../components/constants/colors/ecopoints_colors.dart';
+import '../../../../components/misc/custom_circular_progress_indicator.dart';
+
 class ForgotPasswordLoginScreen extends StatelessWidget {
   final Function() onPressed;
-  const ForgotPasswordLoginScreen({super.key, required this.onPressed});
+  final bool isLoading;
+  const ForgotPasswordLoginScreen(
+      {super.key, required this.onPressed, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +22,12 @@ class ForgotPasswordLoginScreen extends StatelessWidget {
           fontWeight: FontWeight.normal,
         ),
       ),
-      child: const Text(
-        "Forgot your password?",
-      ),
+      child: isLoading
+          ? const CustomCircularProgressIndicator(
+              backgroundColor: EcoPointsColors.white, width: 22.5, height: 22.5)
+          : const Text(
+              "Forgot your password?",
+            ),
     );
   }
 }

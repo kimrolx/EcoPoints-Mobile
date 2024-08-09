@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../components/misc/error_text.dart';
+import '../../../../components/misc/shimmer_loading_containers.dart';
 import '../../../../models/recycling_log_model.dart';
 import '../../../../models/transaction_model.dart';
 import '../../../../shared/services/recycling_log_service.dart';
@@ -88,7 +89,17 @@ class _TransactionsHomeScreenState extends State<TransactionsHomeScreen>
               );
             } else if (!recyclingLogSnapshot.hasData ||
                 !transactionSnapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: 3,
+                itemBuilder: (_, index) => Padding(
+                  padding: EdgeInsets.only(bottom: height * 0.02),
+                  child: ShimmerSkeleton(
+                    width: width,
+                    height: height * 0.08,
+                  ),
+                ),
+              );
             } else if (recyclingLogSnapshot.data!.isEmpty &&
                 transactionSnapshot.data!.isEmpty) {
               return ErrorText(

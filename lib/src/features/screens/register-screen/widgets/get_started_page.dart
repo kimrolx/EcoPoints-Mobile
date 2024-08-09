@@ -8,7 +8,9 @@ import '../../../../components/constants/text_style/ecopoints_themes.dart';
 
 class GetStartedRegistrationScreen extends StatelessWidget {
   final Function() onSubmit;
-  const GetStartedRegistrationScreen({super.key, required this.onSubmit});
+  final bool isLoading;
+  const GetStartedRegistrationScreen(
+      {super.key, required this.onSubmit, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class GetStartedRegistrationScreen extends StatelessWidget {
           ),
           Gap(height * 0.01),
           _buildHeader(width, height),
-          Gap(height * 0.02),
+          Gap(height * 0.01),
           _buildGetStartedButton(onSubmit, width),
         ],
       ),
@@ -65,12 +67,12 @@ class GetStartedRegistrationScreen extends StatelessWidget {
       onPressed: onSubmit,
       backgroundColor: EcoPointsColors.darkGreen,
       width: width,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(4),
       borderRadius: 50.0,
       child: Text(
         "Get Started",
         style: EcoPointsTextStyles.whiteTextStyle(
-          size: width * 0.04,
+          size: width * 0.037,
           weight: FontWeight.w500,
         ),
       ),

@@ -86,15 +86,21 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
       stream: _transactionService.getUserTransactions(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return ErrorText(
-            width: width,
-            text:
-                "Oh no! Something went wrong. Please try again later or contact support.",
+          return Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: ErrorText(
+              width: width,
+              text:
+                  "Oh no! Something went wrong. Please try again later or contact support.",
+            ),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return ErrorText(
-            width: width,
-            text: "It seems you don't have any transactions yet.",
+          return Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: ErrorText(
+              width: width,
+              text: "It seems you don't have any transactions yet.",
+            ),
           );
         } else {
           final logs = snapshot.data!;

@@ -25,6 +25,7 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   int _currentPageIndex = 0;
+  bool isLoading = false;
   late PageController _pageController;
   late TextEditingController password;
   late FocusNode passwordFn;
@@ -86,24 +87,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  GetStartedRegistrationScreen(onSubmit: onGetStartedClick),
+                  GetStartedRegistrationScreen(
+                    onSubmit: onGetStartedClick,
+                    isLoading: isLoading,
+                  ),
                   NameFieldsRegistrationScreen(
                     onNextPageClick: onNextPage,
                     onAlreadyHaveAccountClick: onAlreadyHaveAccountClick,
+                    isLoading: isLoading,
                   ),
                   GenderFieldsRegistrationScreen(
                     onNextPage: onNextPage,
                     onAlreadyHaveAccountClick: onAlreadyHaveAccountClick,
+                    isLoading: isLoading,
                   ),
                   EmailFieldRegistrationScreen(
                     onNextPage: onNextPage,
                     onAlreadyHaveAccountClick: onAlreadyHaveAccountClick,
+                    isLoading: isLoading,
                   ),
                   PasswordFieldRegistrationScreen(
                     onNextPage: onNextPage,
                     onAlreadyHaveAccountClick: onAlreadyHaveAccountClick,
                     passwordController: password,
                     passwordFn: passwordFn,
+                    isLoading: isLoading,
                   ),
                   // ConfirmationCodeRegistrationScreen(
                   //   onNextPage: onNextPage,
@@ -121,13 +129,30 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     onNextPage();
   }
 
-  onNextPage() {
+  onNextPage() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+
+    if (_currentPageIndex != 0) {
+      await Future.delayed(const Duration(milliseconds: 700));
+    }
+
     if (_pageController.hasClients) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeInOut,
       );
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   onPreviousPage() {

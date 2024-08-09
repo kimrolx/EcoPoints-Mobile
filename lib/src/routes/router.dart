@@ -100,8 +100,19 @@ class GlobalRouter {
           parentNavigatorKey: _rootNavigatorKey,
           path: ForgotPasswordScreen.route,
           name: ForgotPasswordScreen.name,
-          builder: (context, _) {
-            return const ForgotPasswordScreen();
+          pageBuilder: (context, state) {
+            return CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: const ForgotPasswordScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation,
+                      child) =>
+                  buildPageTransition(
+                      child: child,
+                      animation: animation,
+                      type: AnimationType.slideLeft,
+                      curve: Curves.easeInOut),
+              transitionDuration: const Duration(milliseconds: 250),
+            );
           },
         ),
         GoRoute(
