@@ -7,7 +7,7 @@ import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../routes/router.dart';
 import '../../../shared/utils/ui_helpers.dart';
-import '../forgot_password_screen.dart';
+import '../forgot-password-screen/forgot_password_screen.dart';
 import 'widgets/continue_with_google_button.dart';
 import 'widgets/forgot_password.dart';
 import 'widgets/header.dart';
