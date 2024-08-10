@@ -43,6 +43,18 @@ class UserFirestoreService {
     }
   }
 
+  //* Sends a password reset email to the user.
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      print("Password reset email sent to $email");
+    } catch (e) {
+      print("Failed to send password reset email: $e");
+      throw Exception(
+          "It seems there was a problem sending password reset email. Please try again later.");
+    }
+  }
+
   //* Create user document in cloud firestore upon first time logging in.
   Future<void> createUserProfile() async {
     User? user = _firebaseAuth.currentUser;
