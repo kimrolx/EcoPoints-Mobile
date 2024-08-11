@@ -37,7 +37,7 @@ class PictureStackRewardDetailsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
               ),
               child: IconButton(
-                icon: const Icon(CupertinoIcons.back),
+                icon: const Icon(CupertinoIcons.clear),
                 onPressed: () => context.pop(),
               ),
             ),

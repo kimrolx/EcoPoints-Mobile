@@ -6,6 +6,7 @@ import '../controllers/auth_controller.dart';
 import '../enums/animation_type_enum.dart';
 import '../enums/enum.dart';
 import '../features/screens/account-screen/account_screen.dart';
+import '../features/screens/new-rewards-screen/new_rewards_screen.dart';
 import '../features/screens/placeholder_screen.dart';
 import '../features/screens/profile-screen/profile_screen.dart';
 import '../features/screens/home-screen/home_screen.dart';
@@ -156,7 +157,7 @@ class GlobalRouter {
                   buildPageTransition(
                       child: child,
                       animation: animation,
-                      type: AnimationType.slideLeft,
+                      type: AnimationType.slideUp,
                       curve: Curves.easeInOut),
               transitionDuration: const Duration(milliseconds: 250),
             );
@@ -170,6 +171,25 @@ class GlobalRouter {
             final TransactionModel transaction =
                 state.extra as TransactionModel;
             return TransactionReceiptScreen(transaction: transaction);
+          },
+        ),
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
+          path: NewRewardsScreen.route,
+          name: NewRewardsScreen.name,
+          pageBuilder: (context, state) {
+            return CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: const NewRewardsScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation,
+                      child) =>
+                  buildPageTransition(
+                      child: child,
+                      animation: animation,
+                      type: AnimationType.slideLeft,
+                      curve: Curves.easeInOut),
+              transitionDuration: const Duration(milliseconds: 250),
+            );
           },
         ),
         ShellRoute(
