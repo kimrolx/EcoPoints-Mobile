@@ -50,7 +50,6 @@ class _EditPictureProfileScreenState extends State<EditPictureProfileScreen> {
   }
 
   void _navigateToPreviewScreen(XFile imageFile) {
-    //TODO Change to gorouter
     Navigator.push(
       context,
       MaterialPageRoute(

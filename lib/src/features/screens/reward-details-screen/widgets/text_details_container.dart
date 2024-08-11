@@ -66,13 +66,11 @@ class _TextDetailsContainerRewardDetailsScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  buildTextRow(context, width),
-                  Gap(height * 0.01),
-                  Text(
-                    "Expires: $formattedExpiryDate",
-                    style: EcoPointsTextStyles.grayTextStyle(
-                        size: width * 0.035, weight: FontWeight.normal),
-                  ),
+                  buildTextRow(context, width, height),
+                  Gap(height * 0.005),
+                  Text("Expires: $formattedExpiryDate",
+                      style: EcoPointsTextStyles.grayTextStyle(
+                          size: width * 0.035, weight: FontWeight.normal)),
                   Gap(height * 0.01),
                   const Divider(color: EcoPointsColors.lightGray),
                   Gap(height * 0.01),
@@ -85,7 +83,7 @@ class _TextDetailsContainerRewardDetailsScreenState
                     style: EcoPointsTextStyles.blackTextStyle(
                         size: width * 0.045, weight: FontWeight.w500),
                   ),
-                  Gap(height * 0.01),
+                  Gap(height * 0.005),
                   Text(widget.reward.rewardDescription,
                       style: EcoPointsTextStyles.blackTextStyle(
                           size: width * 0.035, weight: FontWeight.normal)),
@@ -101,9 +99,10 @@ class _TextDetailsContainerRewardDetailsScreenState
     );
   }
 
-  Widget buildTextRow(BuildContext context, double width) {
+  Widget buildTextRow(BuildContext context, double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Flexible(
           child: Text(
@@ -112,7 +111,7 @@ class _TextDetailsContainerRewardDetailsScreenState
                 size: width * 0.048, weight: FontWeight.w500),
           ),
         ),
-        const Spacer(),
+        Gap(height * 0.02),
         Text(
           "${widget.reward.requiredPoint.toStringAsFixed(2)}pts",
           style: EcoPointsTextStyles.lightGreenTextStyle(
@@ -171,17 +170,26 @@ class _TextDetailsContainerRewardDetailsScreenState
   Widget buildClaimButton(BuildContext context, double width, double height) {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: CustomElevatedButton(
-        borderRadius: 50,
-        height: height * 0.06,
-        width: width,
-        backgroundColor: EcoPointsColors.darkGreen,
-        onPressed: widget.onClaimPressed,
-        child: Text(
-          "Claim Reward",
-          style: EcoPointsTextStyles.whiteTextStyle(
-              size: width * 0.04, weight: FontWeight.w600),
-        ),
+      child: Column(
+        children: [
+          Text(
+              "Claim at ${widget.reward.stallName} - ${widget.reward.campus} Campus",
+              style: EcoPointsTextStyles.grayTextStyle(
+                  size: width * 0.035, weight: FontWeight.normal)),
+          Gap(height * 0.01),
+          CustomElevatedButton(
+            borderRadius: 50,
+            height: height * 0.06,
+            width: width,
+            backgroundColor: EcoPointsColors.darkGreen,
+            onPressed: widget.onClaimPressed,
+            child: Text(
+              "Claim Reward",
+              style: EcoPointsTextStyles.whiteTextStyle(
+                  size: width * 0.04, weight: FontWeight.w600),
+            ),
+          ),
+        ],
       ),
     );
   }

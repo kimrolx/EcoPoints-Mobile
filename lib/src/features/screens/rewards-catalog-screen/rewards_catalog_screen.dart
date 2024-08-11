@@ -3,7 +3,9 @@ import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../models/reward_category_model.dart';
+import '../../../routes/router.dart';
 import '../../../shared/services/rewards_firestore_service.dart';
+import '../new-rewards-screen/new_rewards_screen.dart';
 import 'widgets/category_row.dart';
 import 'widgets/new_rewards_row.dart';
 import 'widgets/reward_list_builder.dart';
@@ -123,7 +125,6 @@ class _RewardsCatalogScreenState extends State<RewardsCatalogScreen> {
   }
 
   onSeeMoreNewRewards() {
-    //TODO add see more new rewards event handler here
-    print("See more new rewards tapped");
+    GlobalRouter.I.router.push(NewRewardsScreen.route);
   }
 }
