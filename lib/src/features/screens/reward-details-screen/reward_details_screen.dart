@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../models/reward_model.dart';
 import '../../../models/transaction_model.dart';
+import '../../../shared/services/rewards_firestore_service.dart';
 import '../../../shared/services/user_profile_service.dart';
 import 'widgets/confirm_claim_dialog.dart';
 import 'widgets/insufficient_points_dialog.dart';
@@ -26,8 +27,10 @@ class RewardDetailsScreen extends StatefulWidget {
 class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
   final UserProfileService _userProfileService =
       GetIt.instance<UserProfileService>();
+  final RewardsService _rewardsService = GetIt.instance<RewardsService>();
 
   late double totalPrice;
+  bool isOutOfStock = false;
   int totalAmount = 1;
   String userName = '';
 
@@ -36,17 +39,26 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
     super.initState();
     _fetchUserName();
     totalPrice = widget.reward.requiredPoint;
+    isOutOfStock = widget.reward.rewardStock < 1;
+  }
+
+  @override
+  void dispose() {
+    _fetchUserName();
+    super.dispose();
   }
 
   void _fetchUserName() {
     _userProfileService.loadUserProfile().then((_) {
-      if (_userProfileService.userProfile != null) {
+      if (mounted && _userProfileService.userProfile != null) {
         setState(() {
           userName = _userProfileService.displayName ?? "Default User";
         });
       }
     }).catchError((e) {
-      print("Failed to load user profile: $e");
+      if (mounted) {
+        print("Failed to load user profile: $e");
+      }
     });
   }
 
@@ -69,6 +81,7 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    print("Is ${widget.reward.rewardName} out of stock? $isOutOfStock");
 
     return Scaffold(
       backgroundColor: EcoPointsColors.white,
@@ -89,13 +102,14 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
             child: TextDetailsContainerRewardDetailsScreen(
               reward: widget.reward,
               totalAmount: totalAmount,
+              isOutOfStock: isOutOfStock,
+              onClaimPressed: onClaimPressed,
               onAmountChanged: (newAmount) {
                 setState(() {
                   totalAmount = newAmount;
                   totalPrice = widget.reward.requiredPoint * totalAmount;
                 });
               },
-              onClaimPressed: onClaimPressed,
             ),
           ),
         ],
@@ -104,6 +118,10 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
   }
 
   onClaimPressed() {
+    if (isOutOfStock) {
+      return;
+    }
+
     final transaction = TransactionModel(
       reward: widget.reward,
       quantity: totalAmount,
@@ -114,9 +132,19 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
     );
 
     double userPoints = _userProfileService.userProfile?.points ?? 0.00;
+
     if (userPoints >= totalPrice) {
-      _showConfirmClaimDialog(context, transaction);
+      try {
+        _rewardsService.updateRewardStock(widget.reward.rewardID, totalAmount);
+        if (!mounted) return;
+        print("Stock updated successfully: ${widget.reward.rewardID}");
+        _showConfirmClaimDialog(context, transaction);
+      } catch (e) {
+        if (!mounted) return;
+        print("Error updating stock: $e");
+      }
     } else {
+      if (!mounted) return;
       _showInsuffientPointsDialog(context);
     }
   }

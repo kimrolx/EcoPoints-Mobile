@@ -40,10 +40,10 @@ class RecyclingLogModel {
       bottlesRecycled: map['bottlesRecycled'] ?? 0,
       pointsGained: (map['pointsGained'] is int)
           ? (map['pointsGained'] as int).toDouble()
-          : map['pointsGained'] ?? 0.00,
+          : map['pointsGained'] as double,
       oldPoints: (map['oldPoints'] is int)
           ? (map['oldPoints'] as int).toDouble()
-          : map['oldPoints'],
+          : map['oldPoints'] as double,
       refId: map['refId'] ?? '',
     );
   }

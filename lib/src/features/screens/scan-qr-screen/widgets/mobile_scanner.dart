@@ -62,29 +62,28 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
           if (barcode.rawValue != null) {
             try {
               final data = jsonDecode(barcode.rawValue!);
-
               if (data != null &&
                   data['points'] != null &&
                   data['bottles_recycled'] != null) {
+                if (!mounted) return;
+
                 RecyclingLogService recyclingLogService =
                     GetIt.instance<RecyclingLogService>();
 
                 RecyclingLogModel newLog = RecyclingLogModel(
                   dateTime: DateTime.now(),
                   bottlesRecycled: data['bottles_recycled'],
-                  pointsGained: data['points'],
+                  pointsGained: (data['points'] is int)
+                      ? (data['points'] as int).toDouble()
+                      : data['points'] as double,
                 );
 
-                await WaitingDialog.show(
-                  context,
-                  future: Future.delayed(const Duration(seconds: 2)),
-                );
+                await WaitingDialog.show(context,
+                    future: Future.delayed(const Duration(seconds: 2)));
 
                 if (mounted) {
                   await Future.delayed(const Duration(milliseconds: 500));
-
-                  GlobalRouter.I.router.goNamed(HomeScreen.name);
-
+                  GlobalRouter.I.router.go(HomeScreen.route);
                   await recyclingLogService.addRecyclingLog(newLog);
 
                   showDialog(
@@ -93,7 +92,9 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
                     barrierDismissible: false,
                     builder: (context) => SuccessfulScanDialog(
                       bottlesRecycled: data['bottles_recycled'],
-                      pointsGained: data['points'],
+                      pointsGained: (data['points'] is int)
+                          ? (data['points'] as int).toDouble()
+                          : data['points'] as double,
                     ),
                   );
 
@@ -109,8 +110,9 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
               }
             } catch (e) {
               _showErrorDialog(
-                context,
-                "The QR code is not supported by EcoPoints. Please scan a valid EcoPoints trashcan QR Code, or EcoPoints vendor QR code.",
+                GlobalRouter
+                    .I.router.routerDelegate.navigatorKey.currentContext!,
+                "Oh no! There was an error processing the QR code. Please try again or contact support.",
                 width,
                 height,
               );
@@ -118,7 +120,7 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
           } else {
             _showErrorDialog(
               context,
-              "The QR code is not supported by EcoPoints. Please scan a valid EcoPoints trashcan QR Code, or EcoPoints vendor QR code.",
+              "This is an empty barcode. Please scan a valid EcoPoints trashcan QR Code, or EcoPoints vendor QR code.",
               width,
               height,
             );
@@ -164,6 +166,7 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
               Gap(height * 0.015),
               Text(
                 message,
+                textAlign: TextAlign.center,
                 style: EcoPointsTextStyles.blackTextStyle(
                   size: width * 0.035,
                   weight: FontWeight.normal,

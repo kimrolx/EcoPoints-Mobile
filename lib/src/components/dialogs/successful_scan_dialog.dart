@@ -90,7 +90,7 @@ class SuccessfulScanDialog extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: "$pointsGained ",
+                  text: "${pointsGained.toStringAsFixed(2)} ",
                   style: EcoPointsTextStyles.lightGreenTextStyle(
                     size: width * 0.04,
                     weight: FontWeight.bold,
