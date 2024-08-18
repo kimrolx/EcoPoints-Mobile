@@ -16,6 +16,8 @@ class SmallRewardContainerNewRewardsScreen extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
+    bool isSoldOut = reward.rewardStock < 1;
+
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -36,16 +38,37 @@ class SmallRewardContainerNewRewardsScreen extends StatelessWidget {
           onTap: () => onRewardTap(),
           child: Column(
             children: [
-              Ink(
-                height: height * 0.15,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(25)),
-                  image: DecorationImage(
-                    image: NetworkImage(reward.rewardPicture),
-                    fit: BoxFit.cover,
+              Stack(
+                children: [
+                  Ink(
+                    height: height * 0.15,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(25)),
+                      image: DecorationImage(
+                        image: NetworkImage(reward.rewardPicture),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
+                  if (isSoldOut)
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.6),
+                          borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(25)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Out of Stock",
+                            style: EcoPointsTextStyles.whiteTextStyle(
+                                size: width * 0.04, weight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
               SizedBox(
                 child: Padding(

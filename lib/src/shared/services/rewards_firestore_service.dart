@@ -17,4 +17,11 @@ class RewardsService {
           .toList();
     });
   }
+
+  Future<void> updateRewardStock(String rewardId, int amount) async {
+    return _firestore
+        .collection('rewards')
+        .doc(rewardId)
+        .update({'rewardStock': FieldValue.increment(-amount)});
+  }
 }

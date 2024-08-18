@@ -5,6 +5,7 @@ import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../models/reward_category_model.dart';
 import '../../../routes/router.dart';
 import '../../../shared/services/rewards_firestore_service.dart';
+import '../../../shared/utils/ui_helpers.dart';
 import '../new-rewards-screen/new_rewards_screen.dart';
 import 'widgets/category_row.dart';
 import 'widgets/new_rewards_row.dart';
@@ -77,48 +78,51 @@ class _RewardsCatalogScreenState extends State<RewardsCatalogScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: EcoPointsColors.lightGray,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  height: height * 0.135,
-                  width: width,
-                ),
-                Container(
-                  color: EcoPointsColors.darkGreen,
-                  height: height * 0.1,
-                  width: width,
-                ),
-                Positioned(
-                  top: height * 0.07,
-                  right: width * 0.03,
-                  left: width * 0.03,
-                  child: SearchBarRewardsScreen(
-                    searchController: searchController,
-                    searchFn: searchFn,
+    return dismissKeyboardOnTap(
+      context: context,
+      child: Scaffold(
+        backgroundColor: EcoPointsColors.lightGray,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  SizedBox(
+                    height: height * 0.135,
+                    width: width,
                   ),
-                ),
-              ],
-            ),
-            CategoryRowRewardsScreen(
-              categories: categories,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-              child: NewRewardsRowRewardsScreen(
-                onTap: onSeeMoreNewRewards,
+                  Container(
+                    color: EcoPointsColors.darkGreen,
+                    height: height * 0.1,
+                    width: width,
+                  ),
+                  Positioned(
+                    top: height * 0.07,
+                    right: width * 0.03,
+                    left: width * 0.03,
+                    child: SearchBarRewardsScreen(
+                      searchController: searchController,
+                      searchFn: searchFn,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            RewardsListBuilderRewardScreen(
-              rewardsService: _rewardsService,
-            ),
-          ],
+              CategoryRowRewardsScreen(
+                categories: categories,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                child: NewRewardsRowRewardsScreen(
+                  onTap: onSeeMoreNewRewards,
+                ),
+              ),
+              RewardsListBuilderRewardScreen(
+                rewardsService: _rewardsService,
+              ),
+            ],
+          ),
         ),
       ),
     );

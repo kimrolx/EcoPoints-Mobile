@@ -29,10 +29,9 @@ class RecyclingLogService {
 
         Map<String, dynamic> userData =
             userSnapshot.data() as Map<String, dynamic>;
-
         double currentPoints = (userData['points'] is int)
             ? (userData['points'] as int).toDouble()
-            : userData['points'] as double;
+            : (userData['points'] as double);
 
         log.oldPoints = currentPoints;
 

@@ -9,16 +9,19 @@ import '../../../../models/reward_model.dart';
 import '../../../../shared/utils/date_formatter_util.dart';
 
 class TextDetailsContainerRewardDetailsScreen extends StatefulWidget {
+  final bool isOutOfStock;
   final RewardModel reward;
   final int totalAmount;
   final Function(int) onAmountChanged;
   final Function() onClaimPressed;
-  const TextDetailsContainerRewardDetailsScreen(
-      {super.key,
-      required this.reward,
-      required this.totalAmount,
-      required this.onAmountChanged,
-      required this.onClaimPressed});
+  const TextDetailsContainerRewardDetailsScreen({
+    super.key,
+    required this.reward,
+    required this.totalAmount,
+    required this.onAmountChanged,
+    required this.onClaimPressed,
+    required this.isOutOfStock,
+  });
 
   @override
   State<TextDetailsContainerRewardDetailsScreen> createState() =>
@@ -28,7 +31,6 @@ class TextDetailsContainerRewardDetailsScreen extends StatefulWidget {
 class _TextDetailsContainerRewardDetailsScreenState
     extends State<TextDetailsContainerRewardDetailsScreen> {
   late int _currentIntValue;
-
   @override
   void initState() {
     super.initState();
@@ -181,13 +183,24 @@ class _TextDetailsContainerRewardDetailsScreenState
             borderRadius: 50,
             height: height * 0.06,
             width: width,
-            backgroundColor: EcoPointsColors.darkGreen,
+            borderSide: widget.isOutOfStock
+                ? const BorderSide(color: EcoPointsColors.red)
+                : null,
+            backgroundColor: widget.isOutOfStock
+                ? EcoPointsColors.white
+                : EcoPointsColors.darkGreen,
             onPressed: widget.onClaimPressed,
-            child: Text(
-              "Claim Reward",
-              style: EcoPointsTextStyles.whiteTextStyle(
-                  size: width * 0.04, weight: FontWeight.w600),
-            ),
+            child: widget.isOutOfStock
+                ? Text(
+                    "Unavailable",
+                    style: EcoPointsTextStyles.redTextStyle(
+                        size: width * 0.04, weight: FontWeight.w600),
+                  )
+                : Text(
+                    "Claim Reward",
+                    style: EcoPointsTextStyles.whiteTextStyle(
+                        size: width * 0.04, weight: FontWeight.w600),
+                  ),
           ),
         ],
       ),

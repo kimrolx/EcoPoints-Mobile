@@ -20,6 +20,8 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
     String formattedExpiryDate =
         DateFormatterUtil.formatDateWithoutTime(reward.expiryDate);
 
+    bool isSoldOut = reward.rewardStock < 1;
+
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -42,16 +44,37 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
             width: width * 0.7,
             child: Column(
               children: [
-                Ink(
-                  height: height * 0.1725,
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(25)),
-                    image: DecorationImage(
-                      image: NetworkImage(reward.rewardPicture),
-                      fit: BoxFit.cover,
+                Stack(
+                  children: [
+                    Ink(
+                      height: height * 0.1725,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(25)),
+                        image: DecorationImage(
+                          image: NetworkImage(reward.rewardPicture),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
+                    if (isSoldOut)
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(25)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Out of Stock",
+                              style: EcoPointsTextStyles.whiteTextStyle(
+                                  size: width * 0.05, weight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
