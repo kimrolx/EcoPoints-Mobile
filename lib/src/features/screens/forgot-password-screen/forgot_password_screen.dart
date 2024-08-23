@@ -1,5 +1,3 @@
-import 'package:ecopoints/src/features/screens/forgot-password-screen/widgets/forgot_password_form.dart';
-import 'package:ecopoints/src/shared/utils/ui_helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -12,9 +10,11 @@ import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../components/dialogs/error_dialog.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../routes/router.dart';
-import '../../../shared/services/user_firestore_service.dart';
+import '../../../shared/services/firebase_services.dart';
+import '../../../shared/utils/ui_helpers.dart';
 import '../login-screen/login_screen.dart';
-import 'widgets/email_sent_dialog.dart';
+import '../../../components/dialogs/email_sent_dialog.dart';
+import 'widgets/forgot_password_form.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   static const String route = '/forgotpassword';
@@ -30,8 +30,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late TextEditingController emailController;
   late FocusNode emailFn;
   late GlobalKey<FormState> formKey;
-  final UserFirestoreService _userFirestoreService =
-      GetIt.instance<UserFirestoreService>();
+  final FirebaseServices _userFirestoreService =
+      GetIt.instance<FirebaseServices>();
 
   @override
   void initState() {
@@ -49,20 +49,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
-  void _showPasswordResetEmailSent(BuildContext context) {
+  void _showPasswordResetEmailSent(BuildContext context, String description) {
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => PasswordResetDialogForgotPasswordScreen(
         onDialogDismiss: onDialogDismiss,
+        description: description,
       ),
     );
   }
 
-  void _showErrorDialog(BuildContext context) {
+  void _showErrorDialog(
+      BuildContext context, String title, String description) {
     showDialog(
       context: context,
-      builder: (context) => const ErrorDialog(),
+      builder: (context) => ErrorDialog(title: title, description: description),
     );
   }
 
@@ -154,12 +156,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         if (mounted) {
           Navigator.of(context).pop();
 
-          _showPasswordResetEmailSent(context);
+          _showPasswordResetEmailSent(
+              context, "A password reset email has been sent to your email.");
         }
       } catch (e) {
         if (mounted) {
           Navigator.of(context).pop();
-          _showErrorDialog(context);
+          _showErrorDialog(context, "Oh no!",
+              "Something went wrong. Please try again later or contact support.");
         }
       }
     }

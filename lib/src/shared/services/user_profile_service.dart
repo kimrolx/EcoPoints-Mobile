@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../models/user_profile_model.dart';
-import 'user_firestore_service.dart';
+import 'firebase_services.dart';
 
 class UserProfileService extends ChangeNotifier {
-  final UserFirestoreService _userService =
-      GetIt.instance<UserFirestoreService>();
+  final FirebaseServices _userService = GetIt.instance<FirebaseServices>();
 
   final ValueNotifier<UserProfileModel?> _userProfileNotifier =
       ValueNotifier<UserProfileModel?>(null);

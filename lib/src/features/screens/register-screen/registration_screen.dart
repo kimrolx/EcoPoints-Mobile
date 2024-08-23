@@ -113,9 +113,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     passwordFn: passwordFn,
                     isLoading: isLoading,
                   ),
-                  // ConfirmationCodeRegistrationScreen(
-                  //   onNextPage: onNextPage,
-                  // ),
                 ],
               ),
             ),

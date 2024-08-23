@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import '../../models/user_profile_model.dart';
 import 'registration_form_service.dart';
 
-class UserFirestoreService {
+class FirebaseServices {
   final RegistrationService _registrationService =
       GetIt.instance<RegistrationService>();
 

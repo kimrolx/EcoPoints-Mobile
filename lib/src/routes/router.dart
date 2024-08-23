@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +9,7 @@ import '../controllers/auth_controller.dart';
 import '../enums/animation_type_enum.dart';
 import '../enums/enum.dart';
 import '../features/screens/account-screen/account_screen.dart';
+import '../features/screens/login-email-verification-screen/login_email_verification_screen.dart';
 import '../features/screens/new-rewards-screen/new_rewards_screen.dart';
 import '../features/screens/placeholder_screen.dart';
 import '../features/screens/profile-screen/profile_screen.dart';
@@ -38,15 +42,35 @@ class GlobalRouter {
 
   Future<String?> handleRedirect(
       BuildContext context, GoRouterState state) async {
+    print(state.matchedLocation);
+
     const List<String> unauthAllowedRoutes = [
       ForgotPasswordScreen.route,
       RegistrationScreen.route,
     ];
 
     if (AuthController.I.state == AuthState.authenticated) {
-      if (state.matchedLocation == LoginScreen.route) {
-        return HomeScreen.route;
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        await user.reload();
+        if (user.emailVerified) {
+          //* If user is authenticated and is verified
+          if (state.matchedLocation == RegistrationScreen.route ||
+              state.matchedLocation == LoginScreen.route ||
+              state.matchedLocation == LoginEmailVerificationScreen.route) {
+            return HomeScreen.route;
+          }
+        } else {
+          //* If user is authenticated but email is not verified
+          if (state.matchedLocation == LoginScreen.route ||
+              state.matchedLocation == LoginEmailVerificationScreen.route ||
+              state.matchedLocation == RegistrationScreen.route) {
+            return LoginEmailVerificationScreen.route;
+          }
+        }
       }
+
       return null;
     }
 
@@ -122,6 +146,14 @@ class GlobalRouter {
           name: ScanQRScreen.name,
           builder: (context, _) {
             return const ScanQRScreen();
+          },
+        ),
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
+          path: LoginEmailVerificationScreen.route,
+          name: LoginEmailVerificationScreen.name,
+          builder: (context, _) {
+            return const LoginEmailVerificationScreen();
           },
         ),
         GoRoute(

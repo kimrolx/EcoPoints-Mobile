@@ -67,7 +67,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Recent Recycling Activities",
+                "Recent Transactions",
                 style: EcoPointsTextStyles.blackTextStyle(
                   size: width * 0.045,
                   weight: FontWeight.w500,
