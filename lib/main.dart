@@ -9,8 +9,9 @@ import 'src/shared/services/recycling_log_service.dart';
 import 'src/shared/services/registration_form_service.dart';
 import 'src/shared/services/rewards_firestore_service.dart';
 import 'src/shared/services/transaction_service.dart';
-import 'src/shared/services/user_firestore_service.dart';
+import 'src/shared/services/firebase_services.dart';
 import 'src/shared/services/user_profile_service.dart';
+import 'src/shared/utils/cooldown_timer_util.dart';
 import 'src/shared/utils/local_storage_util.dart';
 
 void main() async {
@@ -29,8 +30,8 @@ void main() async {
 void setupServices() {
   GetIt.instance
       .registerLazySingleton<RegistrationService>(() => RegistrationService());
-  GetIt.instance
-      .registerSingleton<UserFirestoreService>(UserFirestoreService());
+  GetIt.instance.registerSingleton<FirebaseServices>(FirebaseServices());
+  GetIt.instance.registerSingleton<CooldownTimerUtil>(CooldownTimerUtil());
   GetIt.instance.registerSingleton<UserProfileService>(UserProfileService());
   GetIt.instance.registerSingleton<RewardsService>(RewardsService());
   GetIt.instance

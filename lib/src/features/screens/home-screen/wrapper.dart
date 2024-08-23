@@ -7,7 +7,7 @@ import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../models/user_profile_model.dart';
 import '../../../providers/bottom_sheet_provider.dart';
 import '../../../routes/router.dart';
-import '../../../shared/services/user_firestore_service.dart';
+import '../../../shared/services/firebase_services.dart';
 import '../account-screen/account_screen.dart';
 import '../placeholder_screen.dart';
 import '../rewards-catalog-screen/rewards_catalog_screen.dart';
@@ -30,8 +30,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
   DateTime? targetDate;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final UserFirestoreService _userService =
-      GetIt.instance<UserFirestoreService>();
+  final FirebaseServices _userService = GetIt.instance<FirebaseServices>();
 
   @override
   void initState() {

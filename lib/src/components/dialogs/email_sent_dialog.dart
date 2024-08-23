@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../components/buttons/custom_elevated_button.dart';
-import '../../../../components/constants/colors/ecopoints_colors.dart';
-import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../buttons/custom_elevated_button.dart';
+import '../constants/colors/ecopoints_colors.dart';
+import '../constants/text_style/ecopoints_themes.dart';
 
 class PasswordResetDialogForgotPasswordScreen extends StatelessWidget {
   final Function() onDialogDismiss;
+  final String? title;
+  final String description;
   const PasswordResetDialogForgotPasswordScreen(
-      {super.key, required this.onDialogDismiss});
+      {super.key,
+      required this.onDialogDismiss,
+      required this.description,
+      this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +44,7 @@ class PasswordResetDialogForgotPasswordScreen extends StatelessWidget {
                     ),
                     Gap(height * 0.01),
                     Text(
-                      "Email sent!",
+                      title ?? "Email Sent!",
                       style: EcoPointsTextStyles.lightGreenTextStyle(
                         size: width * 0.05,
                         weight: FontWeight.w600,
@@ -48,7 +53,7 @@ class PasswordResetDialogForgotPasswordScreen extends StatelessWidget {
                     ),
                     Gap(height * 0.01),
                     Text(
-                      "Please check your email for the password reset link.",
+                      description,
                       style: EcoPointsTextStyles.blackTextStyle(
                         size: width * 0.035,
                         weight: FontWeight.normal,

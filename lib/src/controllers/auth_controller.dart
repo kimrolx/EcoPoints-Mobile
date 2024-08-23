@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../enums/enum.dart';
-import '../shared/services/user_firestore_service.dart';
+import '../shared/services/firebase_services.dart';
 
 class AuthController with ChangeNotifier {
   static void initialize() {
@@ -17,8 +17,7 @@ class AuthController with ChangeNotifier {
   static AuthController get I => GetIt.instance<AuthController>();
 
   late StreamSubscription<User?> currentAuthedUser;
-  final UserFirestoreService _userService =
-      GetIt.instance<UserFirestoreService>();
+  final FirebaseServices _userService = GetIt.instance<FirebaseServices>();
 
   AuthState state = AuthState.unauthenticated;
 
@@ -54,8 +53,6 @@ class AuthController with ChangeNotifier {
 
     if (user != null) {
       _userService.createUserProfile();
-      print(
-          "Login successful: ${user.email}, ${user.displayName ?? "No Display Name"}");
     }
   }
 
@@ -69,8 +66,6 @@ class AuthController with ChangeNotifier {
 
       if (user != null) {
         _userService.createUserProfile();
-        print(
-            "Login successful: ${user.email}, ${user.displayName ?? "No Display Name"}");
       }
 
       return true;
