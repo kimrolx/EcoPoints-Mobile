@@ -28,7 +28,7 @@ class _RewardsListBuilderRewardScreenState
     double width = MediaQuery.of(context).size.width;
 
     return StreamBuilder<List<RewardModel>>(
-      stream: widget.rewardsService.getRewards(),
+      stream: widget.rewardsService.getNewRewards(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorText(

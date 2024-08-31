@@ -9,6 +9,8 @@ class UserProfileModel {
   double? points;
   double? targetPoints;
   DateTime? targetDate;
+  DateTime? lastEmailVerificationSent;
+  bool? isEmailVerified;
 
   UserProfileModel({
     this.userId,
@@ -21,6 +23,8 @@ class UserProfileModel {
     this.points,
     this.targetPoints,
     this.targetDate,
+    this.lastEmailVerificationSent,
+    this.isEmailVerified = false,
   });
 
   void updateDisplayName({String? firstName, String? lastName}) {
@@ -76,6 +80,8 @@ class UserProfileModel {
       'points': points,
       'targetPoints': targetPoints,
       'targetDate': targetDate?.toIso8601String(),
+      'lastEmailVerificationSent': lastEmailVerificationSent?.toIso8601String(),
+      'isEmailVerified': isEmailVerified,
     };
   }
 
@@ -98,6 +104,10 @@ class UserProfileModel {
           : map['points'] as double,
       targetDate:
           map['targetDate'] != null ? DateTime.parse(map['targetDate']) : null,
+      lastEmailVerificationSent: map['lastEmailVerificationSent'] != null
+          ? DateTime.parse(map['lastEmailVerificationSent'])
+          : null,
+      isEmailVerified: map['isEmailVerified'],
     );
   }
 }

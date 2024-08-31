@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecopoints/src/shared/utils/cooldown_timer_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,27 +34,48 @@ class _LoginEmailVerificationScreenState
   final FirebaseServices _firebaseServices = GetIt.instance<FirebaseServices>();
   final CooldownTimerUtil _cooldownTimerUtil =
       GetIt.instance<CooldownTimerUtil>();
+  StreamSubscription<DocumentSnapshot>? _firestoreSubscription;
   Timer? _verificationCheckTimer;
   late StreamSubscription<int> _cooldownSubscription;
+  late String _userId;
+  int _secondsRemaining = 0;
 
   @override
   void initState() {
     super.initState();
-    _startVerificationCheck();
+    _userId = _firebaseServices.getCurrentUser()?.uid ?? '';
 
-    _cooldownSubscription = _cooldownTimerUtil.secondsStream.listen((seconds) {
-      setState(() {});
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        _userId = user.uid;
+        _setupFirestoreListener();
+      } else {
+        _firestoreSubscription?.cancel();
+        _firestoreSubscription = null;
+        _secondsRemaining = 0;
+        if (mounted) setState(() {});
+        print("User is logged out, listener canceled.");
+      }
     });
 
-    if (!_cooldownTimerUtil.isTimerActive()) {
-      _cooldownTimerUtil.startCooldown();
-    }
+    _cooldownSubscription =
+        _cooldownTimerUtil.getCooldownStream(_userId).listen((seconds) {
+      if (mounted) {
+        setState(() {
+          _secondsRemaining = seconds;
+        });
+      }
+    });
+
+    _startVerificationCheck();
   }
 
   @override
   void dispose() {
+    _firestoreSubscription?.cancel();
     _verificationCheckTimer?.cancel();
     _cooldownSubscription.cancel();
+    _cooldownTimerUtil.dispose(_userId);
     super.dispose();
   }
 
@@ -113,16 +135,16 @@ class _LoginEmailVerificationScreenState
                   Center(
                     child: CustomElevatedButton(
                       borderRadius: 50,
-                      backgroundColor: _cooldownTimerUtil.secondsRemaining > 0
+                      backgroundColor: _secondsRemaining > 0
                           ? EcoPointsColors.lightGray
                           : EcoPointsColors.lightGreen,
                       width: width * 0.5,
-                      onPressed: _cooldownTimerUtil.secondsRemaining > 0
+                      onPressed: _secondsRemaining > 0
                           ? () {}
                           : _resendEmailVerification,
                       child: Text(
-                        _cooldownTimerUtil.secondsRemaining > 0
-                            ? "Resend in ${_cooldownTimerUtil.secondsRemaining} seconds"
+                        _secondsRemaining > 0
+                            ? "Resend in $_secondsRemaining seconds"
                             : "Resend Email",
                         style: EcoPointsTextStyles.blackTextStyle(
                           size: width * 0.035,
@@ -144,10 +166,67 @@ class _LoginEmailVerificationScreenState
     AuthController.I.logout();
   }
 
+  void _setupFirestoreListener() {
+    // Cancel any existing listener to avoid duplicates
+    _firestoreSubscription?.cancel();
+
+    // Set up a new Firestore listener for the current user
+    _firestoreSubscription = FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userId)
+        .snapshots()
+        .listen((snapshot) {
+      if (snapshot.exists &&
+          snapshot.data()!['lastEmailVerificationSent'] != null) {
+        DateTime lastSentTime =
+            DateTime.parse(snapshot.data()!['lastEmailVerificationSent']);
+        int elapsedSeconds = DateTime.now().difference(lastSentTime).inSeconds;
+
+        if (elapsedSeconds < _cooldownTimerUtil.cooldownDuration) {
+          int remainingSeconds =
+              _cooldownTimerUtil.cooldownDuration - elapsedSeconds;
+
+          if (!_cooldownTimerUtil.isCooldownActive(_userId)) {
+            print(
+                "Starting cooldown with remaining seconds: $remainingSeconds");
+            _cooldownTimerUtil.startCooldownWithSeconds(
+                _userId, remainingSeconds);
+          }
+          if (mounted) {
+            setState(() {
+              _secondsRemaining = remainingSeconds;
+            });
+          }
+        } else {
+          print("Cooldown expired, no countdown needed.");
+          if (mounted) {
+            setState(() {
+              _secondsRemaining = 0;
+            });
+          }
+        }
+      } else {
+        print(
+            "No previous cooldown found or lastEmailVerificationSent is null.");
+        if (mounted) {
+          setState(() {
+            _secondsRemaining = 0;
+          });
+        }
+      }
+    });
+  }
+
   //* Method to handle resending the email verification
   void _resendEmailVerification() async {
-    await _firebaseServices.sendEmailVerification();
-    _cooldownTimerUtil.startCooldown();
+    bool emailSent = await _firebaseServices.sendEmailVerification();
+    if (emailSent) {
+      print("Email sent, starting cooldown..."); // Debug print
+      _cooldownTimerUtil.startCooldownWithSeconds(
+          _userId, _cooldownTimerUtil.cooldownDuration);
+    } else {
+      print("Failed to send email."); // Debug print
+    }
   }
 
   //* Method to start checking if the user's email is verified

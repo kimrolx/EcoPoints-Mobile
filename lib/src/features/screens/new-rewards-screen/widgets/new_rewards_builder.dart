@@ -18,7 +18,7 @@ class NewRewardsBuilderNewRewardsScreen extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return StreamBuilder<List<RewardModel>>(
-      stream: rewardsService.getRewards(),
+      stream: rewardsService.getNewRewards(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return SliverFillRemaining(

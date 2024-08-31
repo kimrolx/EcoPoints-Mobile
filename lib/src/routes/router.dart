@@ -9,7 +9,7 @@ import '../controllers/auth_controller.dart';
 import '../enums/animation_type_enum.dart';
 import '../enums/enum.dart';
 import '../features/screens/account-screen/account_screen.dart';
-import '../features/screens/login-email-verification-screen/login_email_verification_screen.dart';
+import '../features/screens/email-verification-screen/email_verification_screen.dart';
 import '../features/screens/new-rewards-screen/new_rewards_screen.dart';
 import '../features/screens/placeholder_screen.dart';
 import '../features/screens/profile-screen/profile_screen.dart';
@@ -117,7 +117,7 @@ class GlobalRouter {
                       animation: animation,
                       type: AnimationType.slideLeft,
                       curve: Curves.easeInOut),
-              transitionDuration: const Duration(milliseconds: 250),
+              transitionDuration: const Duration(milliseconds: 350),
             );
           },
         ),
@@ -136,7 +136,7 @@ class GlobalRouter {
                       animation: animation,
                       type: AnimationType.slideLeft,
                       curve: Curves.easeInOut),
-              transitionDuration: const Duration(milliseconds: 250),
+              transitionDuration: const Duration(milliseconds: 350),
             );
           },
         ),
@@ -171,7 +171,7 @@ class GlobalRouter {
                       animation: animation,
                       type: AnimationType.slideLeft,
                       curve: Curves.easeInOut),
-              transitionDuration: const Duration(milliseconds: 250),
+              transitionDuration: const Duration(milliseconds: 350),
             );
           },
         ),
@@ -191,7 +191,7 @@ class GlobalRouter {
                       animation: animation,
                       type: AnimationType.slideUp,
                       curve: Curves.easeInOut),
-              transitionDuration: const Duration(milliseconds: 250),
+              transitionDuration: const Duration(milliseconds: 350),
             );
           },
         ),
@@ -220,7 +220,7 @@ class GlobalRouter {
                       animation: animation,
                       type: AnimationType.slideLeft,
                       curve: Curves.easeInOut),
-              transitionDuration: const Duration(milliseconds: 250),
+              transitionDuration: const Duration(milliseconds: 350),
             );
           },
         ),
@@ -274,7 +274,7 @@ class GlobalRouter {
                                   animation: animation,
                                   type: AnimationType.slideLeft,
                                   curve: Curves.easeInOut),
-                      transitionDuration: const Duration(milliseconds: 250),
+                      transitionDuration: const Duration(milliseconds: 350),
                     );
                   },
                 ),
@@ -293,7 +293,7 @@ class GlobalRouter {
                                   animation: animation,
                                   type: AnimationType.slideLeft,
                                   curve: Curves.easeInOut),
-                      transitionDuration: const Duration(milliseconds: 250),
+                      transitionDuration: const Duration(milliseconds: 350),
                     );
                   },
                 ),

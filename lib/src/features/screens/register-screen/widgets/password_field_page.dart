@@ -12,7 +12,6 @@ import '../../../../components/fields/custom_text_form_field.dart';
 import '../../../../components/misc/custom_circular_progress_indicator.dart';
 import '../../../../controllers/auth_controller.dart';
 import '../../../../models/user_profile_model.dart';
-import '../../../../shared/services/firebase_services.dart';
 import '../../../../shared/services/registration_form_service.dart';
 
 class PasswordFieldRegistrationScreen extends StatefulWidget {
@@ -38,7 +37,6 @@ class _PasswordFieldRegistrationScreenState
     extends State<PasswordFieldRegistrationScreen> {
   final RegistrationService _registrationService =
       GetIt.instance<RegistrationService>();
-  final FirebaseServices _firebaseService = GetIt.instance<FirebaseServices>();
   late GlobalKey<FormState> formKey;
   bool obfuscate = true;
 
@@ -54,32 +52,21 @@ class _PasswordFieldRegistrationScreenState
       FocusManager.instance.primaryFocus?.unfocus();
       final UserProfileModel userProfile = _registrationService.userProfile;
 
-      try {
-        bool registrationSuccess = await WaitingDialog.show(
-              context,
-              future: Future.delayed(const Duration(milliseconds: 1500))
-                  .then((_) async {
-                return AuthController.I.register(
-                    userProfile.email ?? "No email provided",
-                    widget.passwordController.text.trim());
-              }),
-            ) ??
-            false;
+      await WaitingDialog.show(
+        context,
+        future: Future.delayed(const Duration(seconds: 1)).then((_) async {
+          bool registrationSuccess = await AuthController.I.register(
+              userProfile.email!.trim(), widget.passwordController.text.trim());
 
-        if (registrationSuccess) {
-          await _firebaseService.sendEmailVerification();
-
-          Future.delayed(const Duration(milliseconds: 1500)).then((_) {
-            userProfile.reset();
-          });
-        } else {
-          print("Registration failed. User profile not reset.");
-        }
-      } catch (e) {
-        print("An error occurred during registration: $e");
-      }
-    } else {
-      print("Validation failed.");
+          if (registrationSuccess) {
+            Future.delayed(const Duration(seconds: 1)).then((_) {
+              userProfile.reset();
+            });
+          } else {
+            print("Registration failed.");
+          }
+        }),
+      );
     }
   }
 

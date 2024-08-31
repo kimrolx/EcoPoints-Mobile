@@ -32,15 +32,40 @@ class FirebaseServices {
     return _firebaseAuth.currentUser?.email;
   }
 
-  //* Send an email verification to the user.
-  Future<void> sendEmailVerification() async {
+  //* Send an email verification to the user with cooldown check.
+  Future<bool> sendEmailVerification() async {
     User? user = _firebaseAuth.currentUser;
     if (user != null && !user.emailVerified) {
+      if (await isEmailVerificationOnCooldown(user.uid)) {
+        print("Email verification is in cooldown. Please wait.");
+        return false;
+      }
+
       await user.sendEmailVerification();
-      print("Verification email sent to ${user.email}");
+
+      final now = DateTime.now();
+      _firestore.collection('users').doc(user.uid).set({
+        'lastEmailVerificationSent': now.toIso8601String(),
+      }, SetOptions(merge: true));
+
+      return true;
     } else {
       print("User is either not logged in or email is already verified.");
+      return false;
     }
+  }
+
+  //* Check if cooldown is active for a specific user
+  Future<bool> isEmailVerificationOnCooldown(String userId) async {
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(userId).get();
+    if (userDoc.exists && userDoc['lastEmailVerificationSent'] != null) {
+      DateTime lastSentTime =
+          DateTime.parse(userDoc['lastEmailVerificationSent']);
+      int elapsedSeconds = DateTime.now().difference(lastSentTime).inSeconds;
+      return elapsedSeconds < 180;
+    }
+    return false;
   }
 
   //* Sends a password reset email to the user.
@@ -75,6 +100,8 @@ class FirebaseServices {
           points: 0.0,
           targetPoints: 0.0,
           targetDate: null,
+          lastEmailVerificationSent: null,
+          isEmailVerified: false,
         );
         await userDoc.set(userProfile.toMap());
         print("User profile created with registration data for ${user.uid}");
