@@ -1,48 +1,65 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CooldownTimerUtil {
-  Timer? _cooldownTimer;
+  final Map<String, Timer?> _cooldownTimers = {};
+  final Map<String, int> _secondsRemainingMap = {};
+  final Map<String, StreamController<int>> _streamControllers = {};
   final int cooldownDuration;
-  int _secondsRemaining;
-  bool isCooldownActive = false;
-  final _secondsStreamController = StreamController<int>.broadcast();
 
-  CooldownTimerUtil({this.cooldownDuration = 180}) : _secondsRemaining = 0;
+  CooldownTimerUtil({this.cooldownDuration = 180});
 
-  int get secondsRemaining => _secondsRemaining;
-  Stream<int> get secondsStream => _secondsStreamController.stream;
+  // Method to start or resume the cooldown with a specific number of seconds
+  void startCooldownWithSeconds(String userId, int seconds) {
+    // Cancel any existing cooldown
+    _cooldownTimers[userId]?.cancel();
 
-  void startCooldown() {
-    if (_cooldownTimer == null || !_cooldownTimer!.isActive) {
-      _secondsRemaining = cooldownDuration;
-      isCooldownActive = true;
-      _secondsStreamController.add(_secondsRemaining); //* Notify listeners
-      _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (_secondsRemaining > 0) {
-          _secondsRemaining--;
-          _secondsStreamController.add(_secondsRemaining); //* Notify listeners
-        } else {
-          _cooldownTimer?.cancel();
-          isCooldownActive = false;
-          _secondsStreamController.add(_secondsRemaining); //* Notify listeners
-        }
-      });
+    // Initialize stream controller if not already present
+    if (!_streamControllers.containsKey(userId)) {
+      _streamControllers[userId] = StreamController<int>.broadcast();
     }
+
+    _secondsRemainingMap[userId] = seconds;
+
+    // Save cooldown start time to Firestore
+    FirebaseFirestore.instance.collection('users').doc(userId).set({
+      'lastEmailVerificationSent': DateTime.now().toIso8601String(),
+    }, SetOptions(merge: true));
+
+    // Start countdown timer
+    _cooldownTimers[userId] =
+        Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_secondsRemainingMap[userId]! > 0) {
+        _secondsRemainingMap[userId] = _secondsRemainingMap[userId]! - 1;
+        _streamControllers[userId]?.add(_secondsRemainingMap[userId]!);
+      } else {
+        _cooldownTimers[userId]?.cancel();
+        _secondsRemainingMap[userId] = 0;
+        _streamControllers[userId]?.add(0);
+        _streamControllers[userId]?.close();
+        _streamControllers.remove(userId);
+        _cooldownTimers.remove(userId);
+      }
+    });
   }
 
-  void stopCooldown() {
-    _cooldownTimer?.cancel();
-    _secondsRemaining = 0;
-    isCooldownActive = false;
-    _secondsStreamController.add(_secondsRemaining); //* Notify listeners
+  bool isCooldownActive(String userId) {
+    return _cooldownTimers.containsKey(userId) &&
+        _cooldownTimers[userId]?.isActive == true &&
+        _secondsRemainingMap[userId]! > 0;
   }
 
-  bool isTimerActive() {
-    return isCooldownActive;
+  Stream<int> getCooldownStream(String userId) {
+    if (!_streamControllers.containsKey(userId)) {
+      _streamControllers[userId] = StreamController<int>.broadcast();
+    }
+    return _streamControllers[userId]!.stream;
   }
 
-  void dispose() {
-    _cooldownTimer?.cancel();
-    _secondsStreamController.close();
+  void dispose(String userId) {
+    _cooldownTimers[userId]?.cancel();
+    _cooldownTimers.remove(userId);
+    _streamControllers[userId]?.close();
+    _streamControllers.remove(userId);
   }
 }

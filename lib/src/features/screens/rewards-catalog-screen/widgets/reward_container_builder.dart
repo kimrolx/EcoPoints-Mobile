@@ -79,7 +79,7 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: SizedBox(
-                    height: height * 0.165,
+                    height: height * 0.155,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

@@ -28,10 +28,10 @@ void main() async {
 }
 
 void setupServices() {
+  GetIt.instance.registerSingleton<CooldownTimerUtil>(CooldownTimerUtil());
   GetIt.instance
       .registerLazySingleton<RegistrationService>(() => RegistrationService());
   GetIt.instance.registerSingleton<FirebaseServices>(FirebaseServices());
-  GetIt.instance.registerSingleton<CooldownTimerUtil>(CooldownTimerUtil());
   GetIt.instance.registerSingleton<UserProfileService>(UserProfileService());
   GetIt.instance.registerSingleton<RewardsService>(RewardsService());
   GetIt.instance

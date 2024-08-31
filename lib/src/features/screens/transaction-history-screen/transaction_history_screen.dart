@@ -1,4 +1,3 @@
-import 'package:ecopoints/src/components/misc/error_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -6,6 +5,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../components/misc/error_text.dart';
 import '../../../models/transaction_model.dart';
 import '../../../shared/services/transaction_service.dart';
 import '../../../shared/utils/date_formatter_util.dart';
@@ -45,7 +45,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
         backgroundColor: EcoPointsColors.darkGreen,
         centerTitle: true,
         title: Text(
-          "Recycling Log",
+          "Transactions",
           style: EcoPointsTextStyles.whiteTextStyle(
               size: width * 0.04, weight: FontWeight.w600),
         ),
@@ -86,21 +86,15 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
       stream: _transactionService.getUserTransactions(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: ErrorText(
-              width: width,
-              text:
-                  "Oh no! Something went wrong. Please try again later or contact support.",
-            ),
+          return ErrorText(
+            width: width,
+            text:
+                "Oh no! Something went wrong. Please try again later or contact support.",
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: ErrorText(
-              width: width,
-              text: "It seems you don't have any transactions yet.",
-            ),
+          return ErrorText(
+            width: width,
+            text: "It seems you don't have any transactions yet.",
           );
         } else {
           final logs = snapshot.data!;

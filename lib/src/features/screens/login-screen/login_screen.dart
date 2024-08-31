@@ -1,11 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../routes/router.dart';
+import '../../../shared/services/firebase_services.dart';
 import '../../../shared/utils/ui_helpers.dart';
 import '../forgot-password-screen/forgot_password_screen.dart';
 import 'widgets/continue_with_google_button.dart';
@@ -25,6 +28,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseServices _firebaseService = GetIt.instance<FirebaseServices>();
   bool isLoading = false;
   late GlobalKey<FormState> formKey;
   late TextEditingController username, password;
@@ -124,7 +128,21 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         future: Future.delayed(const Duration(seconds: 1)).then(
           (_) async {
-            AuthController.I.login(username.text.trim(), password.text.trim());
+            User? user = await AuthController.I
+                .login(username.text.trim(), password.text.trim());
+            print("User: $user");
+            print("is email verified: ${user?.emailVerified}");
+
+            if (user != null && !user.emailVerified) {
+              bool emailSent = await _firebaseService.sendEmailVerification();
+
+              if (emailSent) {
+                print(
+                    "Email verification sent to ${user.email} from LoginScreen.");
+              } else {
+                print("Failed to send email verification.");
+              }
+            }
           },
         ),
       );
