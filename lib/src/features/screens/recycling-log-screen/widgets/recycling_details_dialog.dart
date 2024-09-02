@@ -44,54 +44,18 @@ class DetailedRecyclingLogDialog extends StatelessWidget {
                 weight: FontWeight.w600,
               ),
             ),
-            const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Name",
-                  style: EcoPointsTextStyles.grayTextStyle(
-                    size: width * 0.037,
-                    weight: FontWeight.normal,
-                  ),
-                ),
-                Text(
-                  userName,
-                  style: EcoPointsTextStyles.blackTextStyle(
-                    size: width * 0.037,
-                    weight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Bottles Recycled",
-                  style: EcoPointsTextStyles.grayTextStyle(
-                    size: width * 0.037,
-                    weight: FontWeight.normal,
-                  ),
-                ),
-                Text(
-                  "${log.bottlesRecycled}",
-                  style: EcoPointsTextStyles.blackTextStyle(
-                    size: width * 0.037,
-                    weight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            const Gap(10),
+            Gap(height * 0.01),
+            rowBuilder("Name", userName, width),
+            Gap(height * 0.01),
+            rowBuilder("Bottles Recycled", "${log.bottlesRecycled}", width),
+            Gap(height * 0.01),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Points Received",
                   style: EcoPointsTextStyles.grayTextStyle(
-                    size: width * 0.037,
+                    size: width * 0.038,
                     weight: FontWeight.normal,
                   ),
                 ),
@@ -100,32 +64,14 @@ class DetailedRecyclingLogDialog extends StatelessWidget {
                   style: EcoPointsTextStyles.lightGreenTextStyle(
                     decoration: TextDecoration.underline,
                     decorationColor: EcoPointsColors.lightGreen,
-                    size: width * 0.037,
+                    size: width * 0.038,
                     weight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
-            const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Date & Time",
-                  style: EcoPointsTextStyles.grayTextStyle(
-                    size: width * 0.037,
-                    weight: FontWeight.normal,
-                  ),
-                ),
-                Text(
-                  formattedDate,
-                  style: EcoPointsTextStyles.blackTextStyle(
-                    size: width * 0.037,
-                    weight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
+            Gap(height * 0.01),
+            rowBuilder("Date & Time", formattedDate, width),
             Gap(height * 0.035),
             Align(
               alignment: Alignment.centerRight,
@@ -148,6 +94,29 @@ class DetailedRecyclingLogDialog extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget rowBuilder(String title, String value, double width) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Text(
+            title,
+            style: EcoPointsTextStyles.grayTextStyle(
+                size: width * 0.038, weight: FontWeight.normal),
+          ),
+        ),
+        Flexible(
+          child: Text(
+            value,
+            style: EcoPointsTextStyles.blackTextStyle(
+                size: width * 0.038, weight: FontWeight.w500),
+            textAlign: TextAlign.end,
+          ),
+        ),
+      ],
     );
   }
 }

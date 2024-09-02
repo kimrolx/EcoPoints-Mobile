@@ -43,11 +43,11 @@ class TransactionReceiptScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CloseTransactionReceiptScreen(onPressed: onCloseClick),
-                Gap(height * 0.03),
+                Gap(height * 0.02),
                 const Center(
                   child: HeaderTransactionReceiptScreen(),
                 ),
-                Gap(height * 0.04),
+                Gap(height * 0.02),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.08),
                   child: TransactionDetailsTransactionReceiptScreen(

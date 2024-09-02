@@ -32,34 +32,14 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
   late double totalPrice;
   bool isOutOfStock = false;
   int totalAmount = 1;
-  String userName = '';
+  late String userName;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserName();
     totalPrice = widget.reward.requiredPoint;
     isOutOfStock = widget.reward.rewardStock < 1;
-  }
-
-  @override
-  void dispose() {
-    _fetchUserName();
-    super.dispose();
-  }
-
-  void _fetchUserName() {
-    _userProfileService.loadUserProfile().then((_) {
-      if (mounted && _userProfileService.userProfile != null) {
-        setState(() {
-          userName = _userProfileService.displayName ?? "Default User";
-        });
-      }
-    }).catchError((e) {
-      if (mounted) {
-        print("Failed to load user profile: $e");
-      }
-    });
+    userName = _userProfileService.displayName ?? "Default User";
   }
 
   void _showConfirmClaimDialog(

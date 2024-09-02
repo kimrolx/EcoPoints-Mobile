@@ -120,11 +120,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         onTap: () {
                           onLogoutClick(context);
                         },
-                        child: Text(
-                          "Log out",
-                          style: EcoPointsTextStyles.redTextStyle(
-                            size: width * 0.04,
-                            weight: FontWeight.w600,
+                        child: SizedBox(
+                          width: width * 0.3,
+                          height: height * 0.05,
+                          child: Center(
+                            child: Text(
+                              "Log out",
+                              style: EcoPointsTextStyles.redTextStyle(
+                                size: width * 0.04,
+                                weight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                       ),

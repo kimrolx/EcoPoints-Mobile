@@ -80,42 +80,46 @@ class _EditPictureProfileScreenState extends State<EditPictureProfileScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return Column(
-      children: [
-        widget.photoURL != null && widget.photoURL!.isNotEmpty
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(widget.photoURL!),
-                backgroundColor: Colors.transparent,
-                radius: width * 0.1,
-              )
-            : CircleAvatar(
-                backgroundImage:
-                    const NetworkImage("https://via.placeholder.com/150"),
-                backgroundColor: Colors.transparent,
-                radius: width * 0.09,
-              ),
-        Gap(height * 0.01),
-        GestureDetector(
-          onTap: () => _showEditPictureDialog(),
-          child: Text(
+    return GestureDetector(
+      onTap: () => _showEditPictureDialog(),
+      child: Column(
+        children: [
+          widget.photoURL != null && widget.photoURL!.isNotEmpty
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(widget.photoURL!),
+                  backgroundColor: Colors.transparent,
+                  radius: width * 0.1,
+                )
+              : CircleAvatar(
+                  backgroundImage:
+                      const NetworkImage("https://via.placeholder.com/150"),
+                  backgroundColor: Colors.transparent,
+                  radius: width * 0.09,
+                ),
+          Gap(height * 0.01),
+          Text(
             "Edit picture",
             style: EcoPointsTextStyles.darkGreenTextStyle(
               size: width * 0.035,
               weight: FontWeight.w500,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   onSave(BuildContext context, XFile imageFile) async {
+    final navigator = Navigator.of(context);
+
     await WaitingDialog.show(
       context,
       future: Future.delayed(const Duration(seconds: 2)).then(
         (_) async {
-          Navigator.pop(context);
           await _userProfileService.updateUserProfilePicture(imageFile.path);
+          if (mounted) {
+            navigator.pop();
+          }
         },
       ),
     );
