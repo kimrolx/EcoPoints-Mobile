@@ -24,16 +24,12 @@ class SignUpLoginScreen extends StatelessWidget {
             children: [
               WidgetSpan(
                 alignment: PlaceholderAlignment.middle,
-                child: TextButton(
-                  onPressed: () {
+                child: GestureDetector(
+                  onTap: () {
                     onJoinUsPressed(context);
                   },
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    minimumSize: const Size(0, 0),
-                  ),
                   child: Text(
-                    "Join us!",
+                    "Register here!",
                     style: EcoPointsTextStyles.darkGreenTextStyle(
                       size: width * 0.035,
                       weight: FontWeight.w500,

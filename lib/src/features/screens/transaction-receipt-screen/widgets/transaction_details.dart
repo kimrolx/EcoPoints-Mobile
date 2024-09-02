@@ -21,7 +21,7 @@ class TransactionDetailsTransactionReceiptScreen extends StatelessWidget {
         DateFormatterUtil.formatDateWithTime(transaction.timeCreated);
 
     return Container(
-      height: 430,
+      height: 390,
       decoration: BoxDecoration(
         color: EcoPointsColors.white,
         borderRadius: BorderRadius.circular(10),
