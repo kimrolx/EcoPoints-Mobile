@@ -1,3 +1,4 @@
+import 'package:ecopoints/src/shared/services/qr_code_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -33,6 +34,7 @@ void setupServices() {
       .registerLazySingleton<RegistrationService>(() => RegistrationService());
   GetIt.instance.registerSingleton<FirebaseServices>(FirebaseServices());
   GetIt.instance.registerSingleton<UserProfileService>(UserProfileService());
+  GetIt.instance.registerSingleton<QrCodeService>(QrCodeService());
   GetIt.instance.registerSingleton<RewardsService>(RewardsService());
   GetIt.instance
       .registerLazySingleton<RecyclingLogService>(() => RecyclingLogService());
