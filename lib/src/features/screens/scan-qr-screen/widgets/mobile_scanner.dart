@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:ecopoints/src/shared/services/qr_code_service.dart';
+import 'package:ecopoints/src/shared/services/user_profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
@@ -23,6 +25,9 @@ class MobileScannerQRScreen extends StatefulWidget {
 }
 
 class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
+  final QrCodeService qrCodeService = GetIt.instance<QrCodeService>();
+  final UserProfileService userProfileService =
+      GetIt.instance<UserProfileService>();
   final MobileScannerController controller = MobileScannerController(
     detectionSpeed: DetectionSpeed.noDuplicates,
   );
@@ -64,41 +69,64 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
               final data = jsonDecode(barcode.rawValue!);
               if (data != null &&
                   data['points'] != null &&
-                  data['bottles_recycled'] != null) {
+                  data['bottles_recycled'] != null &&
+                  data['uuid'] != null) {
                 if (!mounted) return;
 
-                RecyclingLogService recyclingLogService =
-                    GetIt.instance<RecyclingLogService>();
+                bool isAlreadyScanned =
+                    await qrCodeService.checkIfScanned(data['uuid']);
 
-                RecyclingLogModel newLog = RecyclingLogModel(
-                  dateTime: DateTime.now(),
-                  bottlesRecycled: data['bottles_recycled'],
-                  pointsGained: (data['points'] is int)
-                      ? (data['points'] as int).toDouble()
-                      : data['points'] as double,
-                );
-
-                await WaitingDialog.show(context,
-                    future: Future.delayed(const Duration(seconds: 2)));
-
-                if (mounted) {
-                  await Future.delayed(const Duration(milliseconds: 500));
-                  GlobalRouter.I.router.go(HomeScreen.route);
-                  await recyclingLogService.addRecyclingLog(newLog);
-
-                  showDialog(
-                    context: GlobalRouter
+                if (isAlreadyScanned) {
+                  _showErrorDialog(
+                    GlobalRouter
                         .I.router.routerDelegate.navigatorKey.currentContext!,
-                    barrierDismissible: false,
-                    builder: (context) => SuccessfulScanDialog(
-                      bottlesRecycled: data['bottles_recycled'],
-                      pointsGained: (data['points'] is int)
-                          ? (data['points'] as int).toDouble()
-                          : data['points'] as double,
-                    ),
+                    "This QR code has already been scanned.",
+                    width,
+                    height,
+                  );
+                } else {
+                  RecyclingLogService recyclingLogService =
+                      GetIt.instance<RecyclingLogService>();
+
+                  RecyclingLogModel newLog = RecyclingLogModel(
+                    dateTime: DateTime.now(),
+                    bottlesRecycled: data['bottles_recycled'],
+                    pointsGained: (data['points'] is int)
+                        ? (data['points'] as int).toDouble()
+                        : data['points'] as double,
                   );
 
-                  print("Recycling log added and user points updated.");
+                  await WaitingDialog.show(
+                      GlobalRouter
+                          .I.router.routerDelegate.navigatorKey.currentContext!,
+                      future: Future.delayed(const Duration(seconds: 2)));
+
+                  if (mounted) {
+                    GlobalRouter.I.router.go(HomeScreen.route);
+                    await recyclingLogService.addRecyclingLog(newLog);
+
+                    await qrCodeService.flagQRCodeAsScanned(
+                        data['points'],
+                        data['bottles_recycled'],
+                        userProfileService.userId!,
+                        userProfileService.email!,
+                        data['uuid'],
+                        data['timestamp']);
+
+                    showDialog(
+                      context: GlobalRouter
+                          .I.router.routerDelegate.navigatorKey.currentContext!,
+                      barrierDismissible: false,
+                      builder: (context) => SuccessfulScanDialog(
+                        bottlesRecycled: data['bottles_recycled'],
+                        pointsGained: (data['points'] is int)
+                            ? (data['points'] as int).toDouble()
+                            : data['points'] as double,
+                      ),
+                    );
+
+                    print("Recycling log added and user points updated.");
+                  }
                 }
               } else {
                 _showErrorDialog(
