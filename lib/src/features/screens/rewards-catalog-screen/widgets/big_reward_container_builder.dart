@@ -5,44 +5,40 @@ import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../models/reward_model.dart';
 import '../../../../routes/router.dart';
+import '../../../../shared/utils/date_formatter_util.dart';
 import '../../reward-details-screen/reward_details_screen.dart';
 
-//! This is deprecated, use SmallRewardContainer instead
-class SmallRewardContainerNewRewardsScreen extends StatelessWidget {
+class RewardContainerBuilderRewardScreen extends StatelessWidget {
   final RewardModel reward;
-  const SmallRewardContainerNewRewardsScreen({super.key, required this.reward});
+  const RewardContainerBuilderRewardScreen({super.key, required this.reward});
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
+    String formattedExpiryDate =
+        DateFormatterUtil.formatDateWithoutTime(reward.expiryDate);
+
     bool isSoldOut = reward.rewardStock < 1;
 
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: EcoPointsColors.black.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 10),
-          ),
-        ],
+    return Card(
+      color: EcoPointsColors.white,
+      clipBehavior: Clip.antiAlias,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25),
       ),
-      child: Card(
-        color: EcoPointsColors.white,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: InkWell(
-          onTap: () => onRewardTap(),
+      child: InkWell(
+        onTap: () => onRewardTap(),
+        child: SizedBox(
+          width: width * 0.65,
           child: Column(
             children: [
               Stack(
                 children: [
                   Ink(
-                    height: height * 0.15,
+                    height: height * 0.18,
                     decoration: BoxDecoration(
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(25)),
@@ -64,16 +60,17 @@ class SmallRewardContainerNewRewardsScreen extends StatelessWidget {
                           child: Text(
                             "Out of Stock",
                             style: EcoPointsTextStyles.whiteTextStyle(
-                                size: width * 0.04, weight: FontWeight.w500),
+                                size: width * 0.05, weight: FontWeight.w500),
                           ),
                         ),
                       ),
                     ),
                 ],
               ),
-              SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SizedBox(
+                  height: height * 0.12,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -84,23 +81,34 @@ class SmallRewardContainerNewRewardsScreen extends StatelessWidget {
                           Flexible(
                             child: Text(reward.rewardName,
                                 style: EcoPointsTextStyles.blackTextStyle(
-                                    size: width * 0.035,
+                                    size: width * 0.04,
                                     weight: FontWeight.w500)),
                           ),
-                          Gap(width * 0.02),
+                          Gap(width * 0.05),
                           Text("${reward.requiredPoint.toStringAsFixed(2)}pts",
                               style: EcoPointsTextStyles.lightGreenTextStyle(
-                                  size: width * 0.035,
-                                  weight: FontWeight.w500)),
+                                  size: width * 0.04, weight: FontWeight.w500)),
                         ],
                       ),
-                      const Divider(
-                        color: EcoPointsColors.lightGray,
-                      ),
-                      Center(
-                        child: Text("See Details",
-                            style: EcoPointsTextStyles.lightGreenTextStyle(
-                                size: width * 0.033, weight: FontWeight.w500)),
+                      Gap(height * 0.005),
+                      Text(reward.rewardDescription,
+                          style: EcoPointsTextStyles.grayTextStyle(
+                              size: width * 0.035, weight: FontWeight.w500)),
+                      const Spacer(),
+                      Row(
+                        children: [
+                          Text(
+                            reward.campus,
+                            style: EcoPointsTextStyles.blackTextStyle(
+                                size: width * 0.035, weight: FontWeight.normal),
+                          ),
+                          const Spacer(),
+                          Text(
+                            "Ends $formattedExpiryDate",
+                            style: EcoPointsTextStyles.grayTextStyle(
+                                size: width * 0.035, weight: FontWeight.normal),
+                          ),
+                        ],
                       ),
                     ],
                   ),

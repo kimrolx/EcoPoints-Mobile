@@ -9,17 +9,17 @@ import '../../../components/reward-containers/small_reward_container_builder.dar
 import '../../../components/reward-list-builder/sliver_rewards_list_builder.dart';
 import '../../../shared/services/rewards_firestore_service.dart';
 
-class NewRewardsScreen extends StatefulWidget {
-  static const String route = "/new-rewards-screen";
-  static const String path = "/new-rewards-screen";
-  static const String name = "NewRewardsScreen";
-  const NewRewardsScreen({super.key});
+class MostClaimedScreen extends StatefulWidget {
+  static const String route = "/most-claimed-screen";
+  static const String path = "/most-claimed-screen";
+  static const String name = "MostClaimedScreen";
+  const MostClaimedScreen({super.key});
 
   @override
-  State<NewRewardsScreen> createState() => _NewRewardsScreenState();
+  State<MostClaimedScreen> createState() => _MostClaimedScreenState();
 }
 
-class _NewRewardsScreenState extends State<NewRewardsScreen> {
+class _MostClaimedScreenState extends State<MostClaimedScreen> {
   final RewardsService _rewardsService = GetIt.instance<RewardsService>();
 
   @override
@@ -50,7 +50,7 @@ class _NewRewardsScreenState extends State<NewRewardsScreen> {
               expandedHeight: height * 0.15,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
-                  "New Rewards",
+                  "Most Claimed Rewards",
                   style: EcoPointsTextStyles.whiteTextStyle(
                     size: width * 0.038,
                     weight: FontWeight.w500,
@@ -80,7 +80,7 @@ class _NewRewardsScreenState extends State<NewRewardsScreen> {
               padding: EdgeInsets.symmetric(
                   horizontal: width * 0.035, vertical: height * 0.015),
               sliver: RewardsListBuilder(
-                getRewardsFunction: _rewardsService.getNewRewards(),
+                getRewardsFunction: _rewardsService.getMostClaimedRewards(),
                 rewardContainer: (reward) =>
                     SliverSmallRewardContainer(reward: reward),
               ),

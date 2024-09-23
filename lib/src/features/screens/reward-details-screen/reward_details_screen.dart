@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../models/reward_model.dart';
 import '../../../models/transaction_model.dart';
-import '../../../shared/services/rewards_firestore_service.dart';
 import '../../../shared/services/user_profile_service.dart';
 import 'widgets/confirm_claim_dialog.dart';
 import 'widgets/insufficient_points_dialog.dart';
@@ -27,7 +26,6 @@ class RewardDetailsScreen extends StatefulWidget {
 class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
   final UserProfileService _userProfileService =
       GetIt.instance<UserProfileService>();
-  final RewardsService _rewardsService = GetIt.instance<RewardsService>();
 
   late double totalPrice;
   bool isOutOfStock = false;
@@ -115,7 +113,6 @@ class _RewardDetailsScreenState extends State<RewardDetailsScreen> {
 
     if (userPoints >= totalPrice) {
       try {
-        _rewardsService.updateRewardStock(widget.reward.rewardID, totalAmount);
         if (!mounted) return;
         print("Stock updated successfully: ${widget.reward.rewardID}");
         _showConfirmClaimDialog(context, transaction);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../components/buttons/custom_elevated_button.dart';
@@ -8,6 +9,7 @@ import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../components/dialogs/loading_dialog.dart';
 import '../../../../models/transaction_model.dart';
 import '../../../../routes/router.dart';
+import '../../../../shared/services/rewards_firestore_service.dart';
 import '../../../../shared/services/transaction_service.dart';
 import '../../transaction-receipt-screen/transaction_receipt_screen.dart';
 
@@ -20,6 +22,7 @@ class ConfirmClaimDialog extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final TransactionService transactionService = TransactionService();
+    final RewardsService rewardService = GetIt.instance<RewardsService>();
 
     return Dialog(
       child: Container(
@@ -81,7 +84,8 @@ class ConfirmClaimDialog extends StatelessWidget {
                   borderRadius: 50,
                   backgroundColor: EcoPointsColors.darkGreen,
                   onPressed: () {
-                    onConfirmClick(context, transactionService);
+                    onConfirmClick(context, transaction, transactionService,
+                        rewardService);
                   },
                   child: Text(
                     "Confirm",
@@ -100,11 +104,17 @@ class ConfirmClaimDialog extends StatelessWidget {
   }
 
   onConfirmClick(
-      BuildContext context, TransactionService transactionService) async {
+      BuildContext context,
+      TransactionModel transaction,
+      TransactionService transactionService,
+      RewardsService rewardService) async {
     await WaitingDialog.show(
       context,
       future: Future.delayed(const Duration(seconds: 2)).then(
         (_) async {
+          rewardService.updateRewardStock(
+              transaction.reward.rewardID, transaction.quantity);
+          rewardService.updateTimesClaimed(transaction.reward.rewardID);
           await transactionService.addTransaction(transaction);
           GlobalRouter.I.router
               .go(TransactionReceiptScreen.route, extra: transaction);
