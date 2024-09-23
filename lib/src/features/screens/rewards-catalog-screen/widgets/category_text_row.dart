@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 
-class NewRewardsRowRewardsScreen extends StatelessWidget {
+class CategoryTextRowRewardsCatalogScreen extends StatelessWidget {
   final Function() onTap;
-  const NewRewardsRowRewardsScreen({super.key, required this.onTap});
+  final String title;
+  const CategoryTextRowRewardsCatalogScreen(
+      {super.key, required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class NewRewardsRowRewardsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          "New Rewards",
+          title,
           style: EcoPointsTextStyles.blackTextStyle(
               size: width * 0.05, weight: FontWeight.w500),
         ),

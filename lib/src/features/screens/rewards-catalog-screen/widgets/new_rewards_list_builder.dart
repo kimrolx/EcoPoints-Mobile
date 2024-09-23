@@ -8,20 +8,20 @@ import '../../../../models/reward_model.dart';
 import '../../../../routes/router.dart';
 import '../../../../shared/services/rewards_firestore_service.dart';
 import '../../new-rewards-screen/new_rewards_screen.dart';
-import 'reward_container_builder.dart';
+import 'big_reward_container_builder.dart';
 
-class RewardsListBuilderRewardScreen extends StatefulWidget {
+class NewRewardsListBuilderRewardsCatalogScreen extends StatefulWidget {
   final RewardsService rewardsService;
-  const RewardsListBuilderRewardScreen(
+  const NewRewardsListBuilderRewardsCatalogScreen(
       {super.key, required this.rewardsService});
 
   @override
-  State<RewardsListBuilderRewardScreen> createState() =>
-      _RewardsListBuilderRewardScreenState();
+  State<NewRewardsListBuilderRewardsCatalogScreen> createState() =>
+      _NewRewardsListBuilderRewardsCatalogScreenState();
 }
 
-class _RewardsListBuilderRewardScreenState
-    extends State<RewardsListBuilderRewardScreen> {
+class _NewRewardsListBuilderRewardsCatalogScreenState
+    extends State<NewRewardsListBuilderRewardsCatalogScreen> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -31,10 +31,13 @@ class _RewardsListBuilderRewardScreenState
       stream: widget.rewardsService.getNewRewards(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return ErrorText(
-            width: width,
-            text:
-                "Oh no! An error occurred while trying to load the rewards. Please try again later or contact support.",
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: height * 0.1),
+            child: ErrorText(
+              width: width,
+              text:
+                  "Oh no! An error occurred while trying to load the rewards. Please try again later or contact support.",
+            ),
           );
         } else if (!snapshot.hasData) {
           return SizedBox(
@@ -64,7 +67,7 @@ class _RewardsListBuilderRewardScreenState
           int itemCount = hasMore ? 4 : rewards.length;
 
           return SizedBox(
-            height: height * 0.4,
+            height: height * 0.35,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
@@ -76,7 +79,7 @@ class _RewardsListBuilderRewardScreenState
                         left: width * 0.02,
                         right: width * 0.02,
                         top: height * 0.005,
-                        bottom: height * 0.025,
+                        bottom: height * 0.01,
                       ),
                       child: RewardContainerBuilderRewardScreen(
                           reward: rewards[index]));

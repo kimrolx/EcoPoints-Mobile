@@ -5,6 +5,22 @@ import '../../models/reward_model.dart';
 class RewardsService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //* Helper function to sort rewards by stock
+  List<RewardModel> sortRewardsByStock(List<RewardModel> rewards) {
+    rewards.sort((a, b) {
+      if (a.rewardStock > 0 && b.rewardStock > 0) {
+        return 0; //* Both in stock, no reordering needed
+      } else if (a.rewardStock > 0) {
+        return -1; //* a in stock, b out of stock, a comes first
+      } else if (b.rewardStock > 0) {
+        return 1; //* b in stock, a out of stock, b comes first
+      } else {
+        return 0; //* Both out of stock, no reordering needed
+      }
+    });
+    return rewards;
+  }
+
   Stream<List<RewardModel>> getNewRewards() {
     return _firestore
         .collection('rewards')
@@ -16,25 +32,71 @@ class RewardsService {
       List<RewardModel> rewards =
           snapshot.docs.map((doc) => RewardModel.fromMap(doc.data())).toList();
 
-      //* Sorting logic: move 'Out of Stock' items to the bottom
-      rewards.sort((a, b) {
-        //* Check if either of the rewards is out of stock
-        if (a.rewardStock > 0 && b.rewardStock > 0) {
-          //* Both are in stock, keep the order by createdAt
-          return 0;
-        } else if (a.rewardStock > 0) {
-          //* a is in stock, b is out of stock, a comes first
-          return -1;
-        } else if (b.rewardStock > 0) {
-          //* b is in stock, a is out of stock, b comes first
-          return 1;
-        } else {
-          //* Both are out of stock, keep the order by createdAt
-          return 0;
-        }
-      });
+      return sortRewardsByStock(rewards);
+    });
+  }
 
-      return rewards;
+  Stream<List<RewardModel>> getFoodRewards() {
+    return _firestore
+        .collection('rewards')
+        .where('status', isEqualTo: 'Approved')
+        .where('category', isEqualTo: 'Food')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      print("Food Rewards data snapshot received: ${snapshot.docs.length}");
+      List<RewardModel> rewards =
+          snapshot.docs.map((doc) => RewardModel.fromMap(doc.data())).toList();
+
+      return sortRewardsByStock(rewards);
+    });
+  }
+
+  Stream<List<RewardModel>> getSupplyRewards() {
+    return _firestore
+        .collection('rewards')
+        .where('status', isEqualTo: 'Approved')
+        .where('category', isEqualTo: 'School Supply')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      print("Supply Rewards data snapshot received: ${snapshot.docs.length}");
+      List<RewardModel> rewards =
+          snapshot.docs.map((doc) => RewardModel.fromMap(doc.data())).toList();
+
+      return sortRewardsByStock(rewards);
+    });
+  }
+
+  Stream<List<RewardModel>> getEventRewards() {
+    return _firestore
+        .collection('rewards')
+        .where('status', isEqualTo: 'Approved')
+        .where('category', isEqualTo: 'Event Ticket')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      print("Events Rewards data snapshot received: ${snapshot.docs.length}");
+      List<RewardModel> rewards =
+          snapshot.docs.map((doc) => RewardModel.fromMap(doc.data())).toList();
+
+      return sortRewardsByStock(rewards);
+    });
+  }
+
+  Stream<List<RewardModel>> getMostClaimedRewards() {
+    return _firestore
+        .collection('rewards')
+        .where('status', isEqualTo: 'Approved')
+        .orderBy('timesClaimed', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      print(
+          "Most Claimed Rewards data snapshot received: ${snapshot.docs.length}");
+      List<RewardModel> rewards =
+          snapshot.docs.map((doc) => RewardModel.fromMap(doc.data())).toList();
+
+      return sortRewardsByStock(rewards);
     });
   }
 
@@ -43,5 +105,12 @@ class RewardsService {
         .collection('rewards')
         .doc(rewardId)
         .update({'rewardStock': FieldValue.increment(-amount)});
+  }
+
+  Future<void> updateTimesClaimed(String rewardId) async {
+    return _firestore
+        .collection('rewards')
+        .doc(rewardId)
+        .update({'timesClaimed': FieldValue.increment(1)});
   }
 }

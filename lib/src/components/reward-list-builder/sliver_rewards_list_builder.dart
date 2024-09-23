@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import '../../../../components/misc/error_text.dart';
-import '../../../../components/misc/shimmer_loading_containers.dart';
-import '../../../../models/reward_model.dart';
-import '../../../../shared/services/rewards_firestore_service.dart';
-import 'small_reward_container_builder.dart';
+import '../../models/reward_model.dart';
+import '../misc/error_text.dart';
+import '../misc/shimmer_loading_containers.dart';
 
-//! This is deprecated, use SliverRewardsListBuilder instead
-class NewRewardsBuilderNewRewardsScreen extends StatelessWidget {
-  final RewardsService rewardsService;
-  const NewRewardsBuilderNewRewardsScreen(
-      {super.key, required this.rewardsService});
+class RewardsListBuilder extends StatelessWidget {
+  final Stream<List<RewardModel>> getRewardsFunction;
+  final Widget Function(RewardModel reward) rewardContainer;
+  const RewardsListBuilder(
+      {super.key,
+      required this.getRewardsFunction,
+      required this.rewardContainer});
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
 
     return StreamBuilder<List<RewardModel>>(
-      stream: rewardsService.getNewRewards(),
+      stream: getRewardsFunction,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return SliverFillRemaining(
@@ -53,14 +52,11 @@ class NewRewardsBuilderNewRewardsScreen extends StatelessWidget {
           final rewards = snapshot.data!;
           return SliverMasonryGrid.count(
             crossAxisCount: 2,
+            crossAxisSpacing: 12.0,
             childCount: rewards.length,
             itemBuilder: (context, index) {
               final reward = rewards[index];
-              return Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.03, vertical: height * 0.01),
-                child: SmallRewardContainerNewRewardsScreen(reward: reward),
-              );
+              return rewardContainer(reward);
             },
           );
         }
