@@ -29,21 +29,25 @@ class UserProfileModel {
 
   void updateDisplayName({String? firstName, String? lastName}) {
     if (firstName != null && lastName != null) {
-      String capitalizedFirstName =
-          firstName[0].toUpperCase() + firstName.substring(1).toLowerCase();
-      String capitalizedLastName =
-          lastName[0].toUpperCase() + lastName.substring(1).toLowerCase();
+      String capitalizedFirstName = capitalizeEachWord(firstName);
+      String capitalizedLastName = capitalizeEachWord(lastName);
       displayName = "$capitalizedFirstName $capitalizedLastName";
       print("From UserProfileModel - Updated Display Name: $displayName");
     } else {
-      displayName = (firstName != null
-              ? firstName[0].toUpperCase() +
-                  firstName.substring(1).toLowerCase()
-              : null) ??
-          (lastName != null
-              ? lastName[0].toUpperCase() + lastName.substring(1).toLowerCase()
-              : null);
+      displayName =
+          (firstName != null ? capitalizeEachWord(firstName) : null) ??
+              (lastName != null ? capitalizeEachWord(lastName) : null);
     }
+  }
+
+  //* Helper function to capitalize the first letter of each word
+  String capitalizeEachWord(String text) {
+    return text.split(' ').map((word) {
+      if (word.isNotEmpty) {
+        return word[0].toUpperCase() + word.substring(1).toLowerCase();
+      }
+      return word;
+    }).join(' ');
   }
 
   void updateEmail(String email) {
