@@ -6,11 +6,14 @@ import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../models/reward_model.dart';
 import '../../../../routes/router.dart';
 import '../../../../shared/utils/date_formatter_util.dart';
+import '../../../../shared/utils/debouncer.dart';
 import '../../reward-details-screen/reward_details_screen.dart';
 
 class RewardContainerBuilderRewardScreen extends StatelessWidget {
   final RewardModel reward;
   const RewardContainerBuilderRewardScreen({super.key, required this.reward});
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +125,8 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
   }
 
   void onRewardTap() {
-    GlobalRouter.I.router.push(RewardDetailsScreen.route, extra: reward);
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.push(RewardDetailsScreen.route, extra: reward);
+    }
   }
 }

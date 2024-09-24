@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import '../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../models/transaction_model.dart';
 import '../../../routes/router.dart';
+import '../../../shared/utils/debouncer.dart';
 import '../home-screen/home_screen.dart';
 import 'widgets/close_receipt_button.dart';
 import 'widgets/green_background.dart';
@@ -17,6 +18,8 @@ class TransactionReceiptScreen extends StatelessWidget {
   static const String name = "TransactionReceiptScreen";
 
   const TransactionReceiptScreen({super.key, required this.transaction});
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +65,8 @@ class TransactionReceiptScreen extends StatelessWidget {
   }
 
   onCloseClick() {
-    GlobalRouter.I.router.go(HomeScreen.route);
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.go(HomeScreen.route);
+    }
   }
 }

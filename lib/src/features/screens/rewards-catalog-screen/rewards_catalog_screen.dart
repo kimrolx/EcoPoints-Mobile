@@ -9,6 +9,7 @@ import '../../../models/reward_category_model.dart';
 import '../../../models/reward_model.dart';
 import '../../../routes/router.dart';
 import '../../../shared/services/rewards_firestore_service.dart';
+import '../../../shared/utils/debouncer.dart';
 import '../../../shared/utils/ui_helpers.dart';
 import '../most-claimed-screen/most_claimed_screen.dart';
 import '../new-rewards-screen/new_rewards_screen.dart';
@@ -32,6 +33,8 @@ class RewardsCatalogScreen extends StatefulWidget {
 class _RewardsCatalogScreenState extends State<RewardsCatalogScreen> {
   late TextEditingController searchController;
   late FocusNode searchFn;
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   late List<RewardCategoryModel> categories;
   final RewardsService _rewardsService = GetIt.instance<RewardsService>();
@@ -175,14 +178,20 @@ class _RewardsCatalogScreenState extends State<RewardsCatalogScreen> {
   }
 
   onSeeMoreNewRewards() {
-    GlobalRouter.I.router.push(NewRewardsScreen.route);
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.push(NewRewardsScreen.route);
+    }
   }
 
   onForYouTap() {
-    GlobalRouter.I.router.push(PlaceholderScreen.route);
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.push(PlaceholderScreen.route);
+    }
   }
 
   onSeeMoreMostClaimedRewards() {
-    GlobalRouter.I.router.push(MostClaimedScreen.route);
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.push(MostClaimedScreen.route);
+    }
   }
 }

@@ -9,6 +9,7 @@ import '../../../components/dialogs/loading_dialog.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../routes/router.dart';
 import '../../../shared/services/firebase_services.dart';
+import '../../../shared/utils/debouncer.dart';
 import '../../../shared/utils/ui_helpers.dart';
 import '../forgot-password-screen/forgot_password_screen.dart';
 import 'widgets/continue_with_google_button.dart';
@@ -33,6 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
   late GlobalKey<FormState> formKey;
   late TextEditingController username, password;
   late FocusNode usernameFn, passwordFn;
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   @override
   void initState() {
@@ -162,7 +165,9 @@ class _LoginScreenState extends State<LoginScreen> {
     await Future.delayed(const Duration(milliseconds: 700));
 
     if (mounted) {
-      GlobalRouter.I.router.push(ForgotPasswordScreen.route);
+      if (debouncer.canExecute()) {
+        GlobalRouter.I.router.push(ForgotPasswordScreen.route);
+      }
     }
 
     if (mounted) {
