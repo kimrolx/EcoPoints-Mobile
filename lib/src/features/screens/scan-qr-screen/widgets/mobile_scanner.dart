@@ -15,6 +15,7 @@ import '../../../../components/dialogs/successful_scan_dialog.dart';
 import '../../../../models/recycling_log_model.dart';
 import '../../../../routes/router.dart';
 import '../../../../shared/services/recycling_log_service.dart';
+import '../../../../shared/utils/debouncer.dart';
 import '../../home-screen/home_screen.dart';
 
 class MobileScannerQRScreen extends StatefulWidget {
@@ -31,6 +32,8 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
   final MobileScannerController controller = MobileScannerController(
     detectionSpeed: DetectionSpeed.noDuplicates,
   );
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   @override
   void initState() {
@@ -77,13 +80,15 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
                     await qrCodeService.checkIfScanned(data['uuid']);
 
                 if (isAlreadyScanned) {
-                  _showErrorDialog(
-                    GlobalRouter
-                        .I.router.routerDelegate.navigatorKey.currentContext!,
-                    "This QR code has already been scanned.",
-                    width,
-                    height,
-                  );
+                  if (debouncer.canExecute()) {
+                    _showErrorDialog(
+                      GlobalRouter
+                          .I.router.routerDelegate.navigatorKey.currentContext!,
+                      "This QR code has already been scanned.",
+                      width,
+                      height,
+                    );
+                  }
                 } else {
                   RecyclingLogService recyclingLogService =
                       GetIt.instance<RecyclingLogService>();
@@ -113,45 +118,53 @@ class _MobileScannerQRScreenState extends State<MobileScannerQRScreen> {
                         data['uuid'],
                         data['timestamp']);
 
-                    showDialog(
-                      context: GlobalRouter
-                          .I.router.routerDelegate.navigatorKey.currentContext!,
-                      barrierDismissible: false,
-                      builder: (context) => SuccessfulScanDialog(
-                        bottlesRecycled: data['bottles_recycled'],
-                        pointsGained: (data['points'] is int)
-                            ? (data['points'] as int).toDouble()
-                            : data['points'] as double,
-                      ),
-                    );
+                    if (debouncer.canExecute()) {
+                      showDialog(
+                        context: GlobalRouter.I.router.routerDelegate
+                            .navigatorKey.currentContext!,
+                        barrierDismissible: false,
+                        builder: (context) => SuccessfulScanDialog(
+                          bottlesRecycled: data['bottles_recycled'],
+                          pointsGained: (data['points'] is int)
+                              ? (data['points'] as int).toDouble()
+                              : data['points'] as double,
+                        ),
+                      );
+                    }
 
                     print("Recycling log added and user points updated.");
                   }
                 }
               } else {
+                if (debouncer.canExecute()) {
+                  _showErrorDialog(
+                    context,
+                    "The QR code is not supported by EcoPoints. Please scan a valid EcoPoints trashcan QR Code, or EcoPoints vendor QR code.",
+                    width,
+                    height,
+                  );
+                }
+              }
+            } catch (e) {
+              if (debouncer.canExecute()) {
                 _showErrorDialog(
-                  context,
-                  "The QR code is not supported by EcoPoints. Please scan a valid EcoPoints trashcan QR Code, or EcoPoints vendor QR code.",
+                  GlobalRouter
+                      .I.router.routerDelegate.navigatorKey.currentContext!,
+                  "Oh no! There was an error processing the QR code. Please try again or contact support.",
                   width,
                   height,
                 );
               }
-            } catch (e) {
+            }
+          } else {
+            if (debouncer.canExecute()) {
               _showErrorDialog(
-                GlobalRouter
-                    .I.router.routerDelegate.navigatorKey.currentContext!,
-                "Oh no! There was an error processing the QR code. Please try again or contact support.",
+                context,
+                "This is an empty barcode. Please scan a valid EcoPoints trashcan QR Code, or EcoPoints vendor QR code.",
                 width,
                 height,
               );
             }
-          } else {
-            _showErrorDialog(
-              context,
-              "This is an empty barcode. Please scan a valid EcoPoints trashcan QR Code, or EcoPoints vendor QR code.",
-              width,
-              height,
-            );
           }
         }
 

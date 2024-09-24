@@ -4,12 +4,15 @@ import 'package:gap/gap.dart';
 import '../../features/screens/reward-details-screen/reward_details_screen.dart';
 import '../../models/reward_model.dart';
 import '../../routes/router.dart';
+import '../../shared/utils/debouncer.dart';
 import '../constants/colors/ecopoints_colors.dart';
 import '../constants/text_style/ecopoints_themes.dart';
 
 class SliverSmallRewardContainer extends StatelessWidget {
   final RewardModel reward;
   const SliverSmallRewardContainer({super.key, required this.reward});
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +105,8 @@ class SliverSmallRewardContainer extends StatelessWidget {
   }
 
   void onRewardTap() {
-    GlobalRouter.I.router.push(RewardDetailsScreen.route, extra: reward);
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.push(RewardDetailsScreen.route, extra: reward);
+    }
   }
 }

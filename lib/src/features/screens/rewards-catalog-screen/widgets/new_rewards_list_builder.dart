@@ -7,6 +7,7 @@ import '../../../../components/misc/shimmer_loading_containers.dart';
 import '../../../../models/reward_model.dart';
 import '../../../../routes/router.dart';
 import '../../../../shared/services/rewards_firestore_service.dart';
+import '../../../../shared/utils/debouncer.dart';
 import '../../new-rewards-screen/new_rewards_screen.dart';
 import 'big_reward_container_builder.dart';
 
@@ -22,6 +23,8 @@ class NewRewardsListBuilderRewardsCatalogScreen extends StatefulWidget {
 
 class _NewRewardsListBuilderRewardsCatalogScreenState
     extends State<NewRewardsListBuilderRewardsCatalogScreen> {
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -102,8 +105,7 @@ class _NewRewardsListBuilderRewardsCatalogScreenState
                         backgroundColor: EcoPointsColors.white,
                         child: IconButton(
                           icon: const Icon(CupertinoIcons.forward),
-                          onPressed: () => GlobalRouter.I.router
-                              .push(NewRewardsScreen.route),
+                          onPressed: onMoreRewardsClick,
                         ),
                       ),
                     ),
@@ -115,5 +117,11 @@ class _NewRewardsListBuilderRewardsCatalogScreenState
         }
       },
     );
+  }
+
+  void onMoreRewardsClick() {
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.push(NewRewardsScreen.route);
+    }
   }
 }

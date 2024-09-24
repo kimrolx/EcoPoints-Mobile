@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
 import '../../../../components/dialogs/loading_dialog.dart';
 import '../../../../routes/router.dart';
+import '../../../../shared/utils/debouncer.dart';
 import '../../register-screen/registration_screen.dart';
 
 class SignUpLoginScreen extends StatelessWidget {
   const SignUpLoginScreen({super.key});
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,9 @@ class SignUpLoginScreen extends StatelessWidget {
       context,
       future: Future.delayed(const Duration(seconds: 1)).then(
         (_) async {
-          GlobalRouter.I.router.push(RegistrationScreen.path);
+          if (debouncer.canExecute()) {
+            GlobalRouter.I.router.push(RegistrationScreen.path);
+          }
         },
       ),
     );

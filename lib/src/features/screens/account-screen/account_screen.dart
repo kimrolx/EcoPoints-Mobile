@@ -6,6 +6,7 @@ import '../../../models/setting_option_model.dart';
 import '../../../models/user_profile_model.dart';
 import '../../../routes/router.dart';
 import '../../../shared/services/user_profile_service.dart';
+import '../../../shared/utils/debouncer.dart';
 import '../profile-screen/profile_screen.dart';
 import '../recycling-log-screen/recycling_log_screen.dart';
 import '../transaction-history-screen/transaction_history_screen.dart';
@@ -25,6 +26,8 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   final UserProfileService _userProfileService =
       GetIt.instance<UserProfileService>();
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   late List<SettingOption> settingsOptions;
 
@@ -103,16 +106,22 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   onEditProfileClick() {
-    GlobalRouter.I.router.push(EditProfileScreen.route);
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.push(EditProfileScreen.route);
+    }
   }
 
   onRecyclingLogClick() {
-    GlobalRouter.I.router
-        .push("${AccountScreen.route}/${RecyclingLogScreen.route}");
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router
+          .push("${AccountScreen.route}/${RecyclingLogScreen.route}");
+    }
   }
 
   onTransactionHistoryClick() {
-    GlobalRouter.I.router
-        .push("${AccountScreen.route}/${TransactionHistoryScreen.route}");
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router
+          .push("${AccountScreen.route}/${TransactionHistoryScreen.route}");
+    }
   }
 }

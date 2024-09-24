@@ -11,11 +11,14 @@ import '../../../../models/transaction_model.dart';
 import '../../../../routes/router.dart';
 import '../../../../shared/services/rewards_firestore_service.dart';
 import '../../../../shared/services/transaction_service.dart';
+import '../../../../shared/utils/debouncer.dart';
 import '../../transaction-receipt-screen/transaction_receipt_screen.dart';
 
 class ConfirmClaimDialog extends StatelessWidget {
   final TransactionModel transaction;
   const ConfirmClaimDialog({super.key, required this.transaction});
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +119,10 @@ class ConfirmClaimDialog extends StatelessWidget {
               transaction.reward.rewardID, transaction.quantity);
           rewardService.updateTimesClaimed(transaction.reward.rewardID);
           await transactionService.addTransaction(transaction);
-          GlobalRouter.I.router
-              .go(TransactionReceiptScreen.route, extra: transaction);
+          if (debouncer.canExecute()) {
+            GlobalRouter.I.router
+                .go(TransactionReceiptScreen.route, extra: transaction);
+          }
         },
       ),
     );

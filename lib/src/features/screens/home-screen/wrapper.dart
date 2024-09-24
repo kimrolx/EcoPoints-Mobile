@@ -8,6 +8,7 @@ import '../../../models/user_profile_model.dart';
 import '../../../providers/bottom_sheet_provider.dart';
 import '../../../routes/router.dart';
 import '../../../shared/services/firebase_services.dart';
+import '../../../shared/utils/debouncer.dart';
 import '../account-screen/account_screen.dart';
 import '../placeholder_screen.dart';
 import '../rewards-catalog-screen/rewards_catalog_screen.dart';
@@ -31,6 +32,8 @@ class _HomeWrapperState extends State<HomeWrapper> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseServices _userService = GetIt.instance<FirebaseServices>();
+
+  static final Debouncer debouncer = Debouncer(milliseconds: 1000);
 
   @override
   void initState() {
@@ -159,7 +162,9 @@ class _HomeWrapperState extends State<HomeWrapper> {
   }
 
   onScanQRClick() {
-    GlobalRouter.I.router.push(ScanQRScreen.route);
+    if (debouncer.canExecute()) {
+      GlobalRouter.I.router.push(ScanQRScreen.route);
+    }
   }
 
   Widget _buildNavItem({
