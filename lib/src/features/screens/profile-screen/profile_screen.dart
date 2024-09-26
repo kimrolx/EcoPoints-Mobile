@@ -116,13 +116,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Expanded(
                     child: Align(
                       alignment: Alignment.bottomCenter,
-                      child: InkWell(
+                      child: GestureDetector(
                         onTap: () {
                           onLogoutClick(context);
                         },
                         child: SizedBox(
                           width: width * 0.3,
-                          height: height * 0.05,
+                          height: height * 0.06,
                           child: Center(
                             child: Text(
                               "Log out",
