@@ -109,8 +109,8 @@ class _HomeWrapperState extends State<HomeWrapper> {
             _buildNavItem(
               selectedIndex: index,
               itemIndex: 0,
-              icon: CupertinoIcons.house_fill,
-              unselectedIcon: CupertinoIcons.home,
+              icon: Icons.wallet,
+              unselectedIcon: Icons.wallet,
               label: "Home",
             ),
             _buildNavItem(

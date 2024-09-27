@@ -53,6 +53,7 @@ class RewardsListBuilder extends StatelessWidget {
           return SliverMasonryGrid.count(
             crossAxisCount: 2,
             crossAxisSpacing: 12.0,
+            mainAxisSpacing: 12.0,
             childCount: rewards.length,
             itemBuilder: (context, index) {
               final reward = rewards[index];

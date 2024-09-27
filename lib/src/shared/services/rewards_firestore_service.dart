@@ -21,11 +21,12 @@ class RewardsService {
     return rewards;
   }
 
-  Stream<List<RewardModel>> getNewRewards() {
+  Stream<List<RewardModel>> getNewRewards({int limit = 10}) {
     return _firestore
         .collection('rewards')
         .where('status', isEqualTo: 'Approved')
         .orderBy('createdAt', descending: true)
+        .limit(limit)
         .snapshots()
         .map((snapshot) {
       print("Rewards data snapshot received: ${snapshot.docs.length}");
@@ -84,11 +85,12 @@ class RewardsService {
     });
   }
 
-  Stream<List<RewardModel>> getMostClaimedRewards() {
+  Stream<List<RewardModel>> getMostClaimedRewards({int limit = 15}) {
     return _firestore
         .collection('rewards')
         .where('status', isEqualTo: 'Approved')
         .orderBy('timesClaimed', descending: true)
+        .limit(limit)
         .snapshots()
         .map((snapshot) {
       print(
@@ -107,10 +109,10 @@ class RewardsService {
         .update({'rewardStock': FieldValue.increment(-amount)});
   }
 
-  Future<void> updateTimesClaimed(String rewardId) async {
+  Future<void> updateTimesClaimed(String rewardId, int amount) async {
     return _firestore
         .collection('rewards')
         .doc(rewardId)
-        .update({'timesClaimed': FieldValue.increment(1)});
+        .update({'timesClaimed': FieldValue.increment(amount)});
   }
 }

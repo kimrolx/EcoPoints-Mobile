@@ -7,6 +7,7 @@ import '../../routes/router.dart';
 import '../../shared/utils/debouncer.dart';
 import '../constants/colors/ecopoints_colors.dart';
 import '../constants/text_style/ecopoints_themes.dart';
+import '../misc/out_of_stock_banner.dart';
 
 class SliverSmallRewardContainer extends StatelessWidget {
   final RewardModel reward;
@@ -45,23 +46,7 @@ class SliverSmallRewardContainer extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (isSoldOut)
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(25)),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Out of Stock",
-                          style: EcoPointsTextStyles.whiteTextStyle(
-                              size: width * 0.04, weight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                  ),
+                if (isSoldOut) OutOfStockBanner(fontSize: width * 0.04)
               ],
             ),
             SizedBox(

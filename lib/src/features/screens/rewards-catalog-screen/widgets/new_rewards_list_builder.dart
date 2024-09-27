@@ -70,7 +70,7 @@ class _NewRewardsListBuilderRewardsCatalogScreenState
           int itemCount = hasMore ? 4 : rewards.length;
 
           return SizedBox(
-            height: height * 0.35,
+            height: height * 0.358,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,

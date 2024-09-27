@@ -219,4 +219,62 @@ class FirebaseServices {
     DocumentReference userDoc = _firestore.collection('users').doc(userId);
     await userDoc.update(updates);
   }
+
+  //* Add reward to favorites
+  Future<void> addToFavorites(
+      String userId, String rewardId, Map<String, dynamic> rewardData) async {
+    try {
+      String favoriteId = "${userId}_$rewardId";
+
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('favorites')
+          .doc(favoriteId)
+          .set(rewardData);
+
+      print('Reward added to favorites.');
+    } catch (error) {
+      print('Error adding reward to favorites: $error');
+      throw Exception('Failed to add reward to favorites');
+    }
+  }
+
+  //* Remove reward from favorites
+  Future<void> removeFromFavorites(String userId, String rewardId) async {
+    try {
+      String favoriteId = "${userId}_$rewardId";
+
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('favorites')
+          .doc(favoriteId)
+          .delete();
+
+      print('Reward removed from favorites.');
+    } catch (error) {
+      print('Error removing reward from favorites: $error');
+      throw Exception('Failed to remove reward from favorites');
+    }
+  }
+
+  //* Check if reward is favorite
+  Future<bool> isFavorite(String userId, String rewardId) async {
+    try {
+      String favoriteId = "${userId}_$rewardId";
+
+      DocumentSnapshot doc = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('favorites')
+          .doc(favoriteId)
+          .get();
+
+      return doc.exists;
+    } catch (error) {
+      print('Error checking if reward is favorite: $error');
+      return false;
+    }
+  }
 }
