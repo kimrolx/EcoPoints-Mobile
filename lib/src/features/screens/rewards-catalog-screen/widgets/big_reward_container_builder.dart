@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 
 import '../../../../components/constants/colors/ecopoints_colors.dart';
 import '../../../../components/constants/text_style/ecopoints_themes.dart';
+import '../../../../components/misc/out_of_stock_banner.dart';
 import '../../../../models/reward_model.dart';
 import '../../../../routes/router.dart';
 import '../../../../shared/utils/date_formatter_util.dart';
@@ -51,29 +52,13 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (isSoldOut)
-                    Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
-                          borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(25)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Out of Stock",
-                            style: EcoPointsTextStyles.whiteTextStyle(
-                                size: width * 0.05, weight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                    ),
+                  if (isSoldOut) OutOfStockBanner(fontSize: width * 0.05)
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: SizedBox(
-                  height: height * 0.12,
+                  height: height * 0.13,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -83,6 +68,7 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(reward.rewardName,
+                                overflow: TextOverflow.ellipsis,
                                 style: EcoPointsTextStyles.blackTextStyle(
                                     size: width * 0.04,
                                     weight: FontWeight.w500)),
@@ -95,23 +81,34 @@ class RewardContainerBuilderRewardScreen extends StatelessWidget {
                       ),
                       Gap(height * 0.005),
                       Text(reward.rewardDescription,
+                          overflow: TextOverflow.ellipsis,
                           style: EcoPointsTextStyles.grayTextStyle(
                               size: width * 0.035, weight: FontWeight.w500)),
                       const Spacer(),
-                      Row(
-                        children: [
-                          Text(
-                            reward.campus,
-                            style: EcoPointsTextStyles.blackTextStyle(
-                                size: width * 0.035, weight: FontWeight.normal),
-                          ),
-                          const Spacer(),
-                          Text(
-                            "Ends $formattedExpiryDate",
-                            style: EcoPointsTextStyles.grayTextStyle(
-                                size: width * 0.035, weight: FontWeight.normal),
-                          ),
-                        ],
+                      const Divider(
+                        color: EcoPointsColors.lightGray,
+                      ),
+                      const Spacer(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "${reward.campus} Campus",
+                              style: EcoPointsTextStyles.blackTextStyle(
+                                  size: width * 0.035,
+                                  weight: FontWeight.normal),
+                            ),
+                            Text(
+                              "Ends $formattedExpiryDate",
+                              overflow: TextOverflow.ellipsis,
+                              style: EcoPointsTextStyles.grayTextStyle(
+                                  size: width * 0.035,
+                                  weight: FontWeight.normal),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -131,12 +131,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.symmetric(horizontal: width * 0.03),
                     child: userProfile.targetPoints != null &&
                             userProfile.targetPoints != 0
-                        ? const TargetPointsDateHomeScreen()
+                        ? GestureDetector(
+                            onTap: () =>
+                                bottomSheetProvider?.showBottomSheet(context),
+                            child: const TargetPointsDateHomeScreen(),
+                          )
                         : GoalSetterHomeScreen(
                             onUpdate: _userProfileService.loadUserProfile,
-                            displayBottomSheet: () {
-                              bottomSheetProvider?.showBottomSheet(context);
-                            },
+                            displayBottomSheet: () =>
+                                bottomSheetProvider?.showBottomSheet(context),
                           ),
                   ),
                   Gap(height * 0.025),

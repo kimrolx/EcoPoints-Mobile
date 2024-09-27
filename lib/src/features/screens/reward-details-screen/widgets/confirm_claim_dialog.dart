@@ -117,7 +117,8 @@ class ConfirmClaimDialog extends StatelessWidget {
         (_) async {
           rewardService.updateRewardStock(
               transaction.reward.rewardID, transaction.quantity);
-          rewardService.updateTimesClaimed(transaction.reward.rewardID);
+          rewardService.updateTimesClaimed(
+              transaction.reward.rewardID, transaction.quantity);
           await transactionService.addTransaction(transaction);
           if (debouncer.canExecute()) {
             GlobalRouter.I.router

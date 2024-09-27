@@ -20,55 +20,59 @@ class EditProfileAccountScreen extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: width,
-        height: height * 0.11,
-        decoration: BoxDecoration(
-          color: EcoPointsColors.darkGreen,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.035,
-            vertical: height * 0.011,
-          ),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(photoURL),
-                backgroundColor: Colors.transparent,
-                radius: width * 0.09,
-              ),
-              Gap(height * 0.015),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        displayName,
-                        style: EcoPointsTextStyles.whiteTextStyle(
-                          size: width * 0.05,
-                          weight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Text(
-                        "Edit Profile",
-                        style: EcoPointsTextStyles.whiteTextStyle(
-                          size: width * 0.035,
-                          weight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ],
+    return Card(
+      color: EcoPointsColors.darkGreen,
+      clipBehavior: Clip.antiAlias,
+      elevation: 3.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox(
+          width: width,
+          height: height * 0.11,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.035,
+              vertical: height * 0.011,
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(photoURL),
+                  backgroundColor: Colors.transparent,
+                  radius: width * 0.09,
                 ),
-              ),
-            ],
+                Gap(height * 0.015),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          displayName,
+                          style: EcoPointsTextStyles.whiteTextStyle(
+                            size: width * 0.05,
+                            weight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          "Edit Profile",
+                          style: EcoPointsTextStyles.whiteTextStyle(
+                            size: width * 0.035,
+                            weight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
